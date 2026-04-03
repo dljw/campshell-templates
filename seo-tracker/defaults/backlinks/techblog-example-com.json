@@ -1,0 +1,13 @@
+{
+  "id": "techblog-example-com",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "sourceDomain": "techblog.example.com",
+  "sourceUrl": "https://techblog.example.com/best-tools-2026",
+  "targetPageId": "homepage",
+  "anchorText": "great product management tool",
+  "linkType": "dofollow",
+  "domainAuthority": 62,
+  "dateDiscovered": "2026-01-20",
+  "status": "active",
+  "_generated": "abe82313e0489020"
+}

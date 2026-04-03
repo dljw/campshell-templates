@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "seo-tracker/competitors.schema.json",
+  "type": "object",
+  "required": [
+    "competitors"
+  ],
+  "properties": {
+    "competitors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "domain"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{2,36}$"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "domain": {
+            "type": "string",
+            "maxLength": 253
+          },
+          "estimatedTraffic": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Estimated monthly organic traffic"
+          },
+          "domainAuthority": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 0
+          },
+          "topKeywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "description": "Top keywords they rank for"
+          },
+          "backlinkCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "_generated": "f7ce38b5c390fac7"
+}

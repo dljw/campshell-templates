@@ -1,0 +1,11 @@
+{
+  "id": "grocery-purchase-01",
+  "createdAt": "2026-03-05T14:30:00.000Z",
+  "type": "withdrawal",
+  "description": "Weekly groceries at Whole Foods",
+  "amount": 85.50,
+  "date": "2026-03-05",
+  "sourceAccountId": "checking-account",
+  "destinationAccountId": "groceries-expense",
+  "categoryId": "groceries"
+}

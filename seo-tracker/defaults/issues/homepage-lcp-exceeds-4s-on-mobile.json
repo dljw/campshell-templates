@@ -1,0 +1,11 @@
+{
+  "id": "homepage-lcp-exceeds-4s-on-mobile",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Homepage LCP exceeds 4s on mobile",
+  "issueType": "speed",
+  "affectedPage": "https://example.com/",
+  "description": "Largest Contentful Paint is 4.2s on mobile. Target under 2.5s. Hero image unoptimized.",
+  "priority": "high",
+  "status": "open",
+  "_generated": "4f136c962ae49c48"
+}

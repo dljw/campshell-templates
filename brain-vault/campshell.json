@@ -1,0 +1,46 @@
+{
+  "name": "brain-vault",
+  "version": "1.0.0",
+  "displayName": "Brain Vault",
+  "description": "A personal knowledge base where every idea is a note — capture daily journals, meeting notes, book reviews, and research in one place",
+  "author": {
+    "name": "campshell"
+  },
+  "license": "MIT",
+  "category": "knowledge",
+  "tags": [],
+  "emoji": "📓",
+  "dataDir": "data/brain-vault",
+  "schemas": {
+    "notes": "schemas/notes.schema.json",
+    "tags": "schemas/tags.schema.json"
+  },
+  "storage": {
+    "notes": {
+      "pattern": "one-per-file",
+      "directory": "notes",
+      "fileNamePattern": "{id}.json"
+    },
+    "tags": {
+      "pattern": "collection",
+      "file": "tags.json"
+    }
+  },
+  "queries": {},
+  "ui": {
+    "framework": "react",
+    "entry": "index.tsx",
+    "route": "/brain-vault"
+  },
+  "relationships": {
+    "notes.tagIds": {
+      "entity": "tags",
+      "type": "many"
+    },
+    "notes.linkedNoteIds": {
+      "entity": "notes",
+      "type": "many"
+    }
+  },
+  "_generated": "b73f97fbb820f722"
+}

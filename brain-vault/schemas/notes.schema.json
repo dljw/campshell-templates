@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "brain-vault/notes.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "createdAt",
+    "title"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 300,
+      "description": "Note title"
+    },
+    "content": {
+      "type": "string",
+      "maxLength": 100000,
+      "description": "Markdown body — the main content of the note"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "daily",
+        "meeting",
+        "project",
+        "book",
+        "article",
+        "research",
+        "reference",
+        "general"
+      ],
+      "description": "What kind of note this is — determines which fields are relevant"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "in-progress",
+        "review",
+        "published",
+        "archived"
+      ]
+    },
+    "tagIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]{2,36}$"
+      },
+      "description": "Array of tags record IDs"
+    },
+    "linkedNoteIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]{2,36}$"
+      },
+      "description": "Array of notes record IDs"
+    },
+    "source": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "URL or citation for source material"
+    },
+    "author": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Author of the source (for books, articles, papers)"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Relevant date (meeting date, daily note date, publish date)"
+    },
+    "rating": {
+      "type": "integer",
+      "maximum": 10,
+      "minimum": 0,
+      "description": "Personal rating or importance (0-10)"
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "Brief abstract or TL;DR"
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 20,
+      "description": "Attendees (for meetings) or collaborators"
+    },
+    "actionItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "task": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "owner": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "done": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Action items with owner and completion status"
+    },
+    "pinned": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false,
+  "_generated": "5e303c7504dd5702"
+}

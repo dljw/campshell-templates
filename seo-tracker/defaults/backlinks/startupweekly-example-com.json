@@ -1,0 +1,13 @@
+{
+  "id": "startupweekly-example-com",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "sourceDomain": "startupweekly.example.com",
+  "sourceUrl": "https://startupweekly.example.com/resources",
+  "targetPageId": "ultimate-guide-getting-started",
+  "anchorText": "comprehensive getting started guide",
+  "linkType": "dofollow",
+  "domainAuthority": 48,
+  "dateDiscovered": "2026-02-05",
+  "status": "active",
+  "_generated": "aa024300a290c02d"
+}

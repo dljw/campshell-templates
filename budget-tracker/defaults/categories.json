@@ -1,0 +1,12 @@
+{
+  "categories": [
+    { "id": "income", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Income", "icon": "wallet", "color": "green" },
+    { "id": "groceries", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Groceries", "icon": "shopping-cart", "color": "orange" },
+    { "id": "housing", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Housing", "icon": "home", "color": "blue" },
+    { "id": "dining", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Dining Out", "icon": "utensils", "color": "red" },
+    { "id": "transport", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Transportation", "icon": "car", "color": "purple" },
+    { "id": "entertainment", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Entertainment", "icon": "tv", "color": "pink" },
+    { "id": "utilities", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Utilities", "icon": "zap", "color": "yellow" },
+    { "id": "healthcare", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Healthcare", "icon": "heart-pulse", "color": "red" }
+  ]
+}

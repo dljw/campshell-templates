@@ -1,0 +1,36 @@
+{
+  "name": "kanban",
+  "version": "1.0.0",
+  "displayName": "Kanban",
+  "description": "Kanban board template",
+  "author": { "name": "campshell" },
+  "license": "MIT",
+  "category": "productivity",
+  "tags": [],
+  "emoji": "📋",
+  "dataDir": "data/kanban",
+  "schemas": {
+    "card": "schemas/card.schema.json",
+    "column": "schemas/column.schema.json"
+  },
+  "storage": {
+    "card": { "pattern": "one-per-file", "directory": "cards" },
+    "column": { "pattern": "collection", "file": "columns.json" }
+  },
+  "queries": {
+    "card": {
+      "filterable": ["column", "priority", "assignee"],
+      "sortable": ["createdAt", "updatedAt", "priority", "dueDate"],
+      "searchable": ["title", "description"],
+      "defaultSort": { "field": "createdAt", "order": "desc" }
+    },
+    "column": {
+      "sortable": ["order"],
+      "defaultSort": { "field": "order", "order": "asc" }
+    }
+  },
+  "relationships": {
+    "card.column": { "entity": "column", "type": "one" }
+  },
+  "ui": { "framework": "react", "entry": "index.tsx", "route": "/kanban" }
+}

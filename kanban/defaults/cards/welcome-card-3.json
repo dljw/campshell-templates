@@ -1,0 +1,10 @@
+{
+  "id": "welcome-card-3",
+  "title": "Explore the file-based interface",
+  "description": "AI agents and humans can both create and edit cards by writing JSON files.",
+  "column": "in-progress",
+  "labels": ["getting-started"],
+  "priority": "high",
+  "order": 0,
+  "createdAt": "2026-03-21T00:00:00.000Z"
+}

@@ -1,0 +1,3 @@
+@import "@campshell/ui-components/globals.css";
+@plugin "@tailwindcss/typography";
+@source ".";

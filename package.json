@@ -1,0 +1,25 @@
+{
+  "name": "campshell-templates",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.9",
+  "scripts": {
+    "build": "turbo build",
+    "test": "turbo test",
+    "lint": "turbo lint",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^22.0.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.5.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@campshell/core": "file:../camp-shell/packages/core",
+      "@campshell/ui-hooks": "file:../camp-shell/packages/ui-hooks",
+      "@campshell/ui-components": "file:../camp-shell/packages/ui-components"
+    }
+  }
+}

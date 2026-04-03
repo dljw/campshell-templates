@@ -1,0 +1,29 @@
+{
+  "tags": [
+    {
+      "id": "productivity",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "productivity",
+      "color": "blue"
+    },
+    {
+      "id": "research",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "research",
+      "color": "purple"
+    },
+    {
+      "id": "personal",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "personal",
+      "color": "green"
+    },
+    {
+      "id": "work",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "work",
+      "color": "orange"
+    }
+  ],
+  "_generated": "4593d5c855749851"
+}

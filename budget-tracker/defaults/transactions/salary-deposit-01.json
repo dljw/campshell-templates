@@ -1,0 +1,12 @@
+{
+  "id": "salary-deposit-01",
+  "createdAt": "2026-03-01T09:00:00.000Z",
+  "type": "deposit",
+  "description": "March salary",
+  "amount": 4500.00,
+  "date": "2026-03-01",
+  "sourceAccountId": "salary-revenue",
+  "destinationAccountId": "checking-account",
+  "categoryId": "income",
+  "tagIds": ["recurring"]
+}

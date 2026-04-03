@@ -1,0 +1,283 @@
+name: seo-tracker
+displayName: SEO Tracker
+emoji: "\U0001F50D"
+category: marketing
+description: Track keywords, pages, backlinks, competitors, and technical SEO issues
+
+entities:
+  keywords:
+    storage: one-per-file
+    layout: table-detail
+    fields:
+      term:
+        type: string
+        required: true
+        max: 200
+        description: The keyword or search phrase
+      pageId:
+        type: ref
+        entity: pages
+        description: Target page this keyword is assigned to
+      position:
+        type: integer
+        min: 0
+        max: 999
+        description: Current SERP ranking position (0 = not ranked)
+      previousPosition:
+        type: integer
+        min: 0
+        max: 999
+        description: Previous ranking position for tracking changes
+      searchVolume:
+        type: integer
+        min: 0
+        description: Estimated monthly search volume
+      difficulty:
+        type: integer
+        min: 0
+        max: 100
+        description: Keyword difficulty score (0-100)
+      intent:
+        type: enum
+        values: [informational, navigational, commercial, transactional]
+      status:
+        type: enum
+        values: [tracking, paused, achieved]
+      notes: string
+
+  pages:
+    storage: one-per-file
+    layout: kanban
+    fields:
+      title:
+        type: string
+        required: true
+        max: 300
+      pageUrl:
+        type: url
+        required: true
+      status:
+        type: enum
+        values: [planned, drafting, review, published, needs-refresh]
+      contentType:
+        type: enum
+        values: [blog, landing, guide, tool, other]
+      wordCount:
+        type: integer
+        min: 0
+      publishDate:
+        type: date
+      lastUpdated:
+        type: date
+      organicTraffic:
+        type: integer
+        min: 0
+        description: Estimated monthly organic visits
+      avgPosition:
+        type: number
+        min: 0
+        max: 999
+        description: Average SERP position across tracked keywords
+      assignedTo: string
+      notes: string
+
+  backlinks:
+    storage: one-per-file
+    layout: table-detail
+    fields:
+      sourceDomain:
+        type: string
+        required: true
+        max: 253
+        description: Domain of the linking site
+      sourceUrl:
+        type: url
+        required: true
+      targetPageId:
+        type: ref
+        entity: pages
+        description: Our page that receives this backlink
+      anchorText:
+        type: string
+        max: 500
+      linkType:
+        type: enum
+        values: [dofollow, nofollow, ugc, sponsored]
+      domainAuthority:
+        type: integer
+        min: 0
+        max: 100
+        description: Domain authority of the linking site
+      dateDiscovered:
+        type: date
+      status:
+        type: enum
+        values: [active, lost, disavowed]
+
+  competitors:
+    storage: collection
+    file: competitors.json
+    fields:
+      domain:
+        type: string
+        required: true
+        max: 253
+      estimatedTraffic:
+        type: integer
+        min: 0
+        description: Estimated monthly organic traffic
+      domainAuthority:
+        type: integer
+        min: 0
+        max: 100
+      topKeywords:
+        type: string[]
+        max_items: 20
+        description: Top keywords they rank for
+      backlinkCount:
+        type: integer
+        min: 0
+      notes: string
+
+  issues:
+    storage: one-per-file
+    layout: kanban
+    fields:
+      title:
+        type: string
+        required: true
+        max: 300
+      issueType:
+        type: enum
+        values: [speed, mobile, indexing, structure, security, other]
+      affectedPage:
+        type: url
+        description: URL of the affected page
+      description:
+        type: string
+        max: 2000
+      priority:
+        type: enum
+        values: [critical, high, medium, low]
+      status:
+        type: enum
+        values: [open, in-progress, resolved]
+
+views:
+  - id: keywords
+    label: Keywords
+    path: /seo-tracker/keywords
+    entities: [keywords]
+  - id: pages
+    label: Pages
+    path: /seo-tracker/pages
+    entities: [pages]
+  - id: backlinks
+    label: Backlinks
+    path: /seo-tracker/backlinks
+    entities: [backlinks]
+  - id: competitors
+    label: Competitors
+    path: /seo-tracker/competitors
+    entities: [competitors]
+  - id: issues
+    label: Issues
+    path: /seo-tracker/issues
+    entities: [issues]
+
+defaults:
+  pages:
+    - title: Homepage
+      pageUrl: https://example.com/
+      status: published
+      contentType: landing
+      wordCount: 1200
+      publishDate: "2025-06-01"
+      lastUpdated: "2026-01-15"
+      organicTraffic: 850
+      avgPosition: 12.5
+    - title: "Ultimate Guide: Getting Started"
+      pageUrl: https://example.com/guides/getting-started
+      status: published
+      contentType: guide
+      wordCount: 3500
+      publishDate: "2025-09-10"
+      lastUpdated: "2026-02-20"
+      organicTraffic: 420
+      avgPosition: 8.3
+    - title: "Top 10 Tips for Beginners"
+      pageUrl: https://example.com/blog/top-10-tips
+      status: drafting
+      contentType: blog
+      assignedTo: "alex"
+
+  keywords:
+    - term: "product management tool"
+      pageId: "$ref:pages[0]"
+      position: 15
+      previousPosition: 22
+      searchVolume: 2400
+      difficulty: 45
+      intent: commercial
+      status: tracking
+    - term: "getting started guide"
+      pageId: "$ref:pages[1]"
+      position: 5
+      previousPosition: 8
+      searchVolume: 1800
+      difficulty: 30
+      intent: informational
+      status: tracking
+    - term: "beginner tips"
+      pageId: "$ref:pages[2]"
+      searchVolume: 3200
+      difficulty: 25
+      intent: informational
+      status: tracking
+      notes: "Page still in drafting"
+
+  backlinks:
+    - sourceDomain: techblog.example.com
+      sourceUrl: https://techblog.example.com/best-tools-2026
+      targetPageId: "$ref:pages[0]"
+      anchorText: "great product management tool"
+      linkType: dofollow
+      domainAuthority: 62
+      dateDiscovered: "2026-01-20"
+      status: active
+    - sourceDomain: startupweekly.example.com
+      sourceUrl: https://startupweekly.example.com/resources
+      targetPageId: "$ref:pages[1]"
+      anchorText: "comprehensive getting started guide"
+      linkType: dofollow
+      domainAuthority: 48
+      dateDiscovered: "2026-02-05"
+      status: active
+
+  competitors:
+    - domain: competitor-a.com
+      estimatedTraffic: 50000
+      domainAuthority: 65
+      topKeywords: ["product management", "project planning", "team collaboration"]
+      backlinkCount: 1200
+      notes: "Main competitor, strong content marketing"
+    - domain: competitor-b.com
+      estimatedTraffic: 25000
+      domainAuthority: 52
+      topKeywords: ["project management tool", "task tracking"]
+      backlinkCount: 600
+      notes: "Newer player, growing fast"
+
+  issues:
+    - title: "Homepage LCP exceeds 4s on mobile"
+      issueType: speed
+      affectedPage: https://example.com/
+      description: "Largest Contentful Paint is 4.2s on mobile. Target under 2.5s. Hero image unoptimized."
+      priority: high
+      status: open
+    - title: "Guide page not indexed by Google"
+      issueType: indexing
+      affectedPage: https://example.com/guides/getting-started
+      description: "Published 3 months ago but not in Google Search Console. Check robots.txt and canonical tags."
+      priority: critical
+      status: in-progress

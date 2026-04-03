@@ -1,0 +1,10 @@
+{
+  "id": "welcome-card-2",
+  "title": "Add your first real task",
+  "description": "Create a new JSON file in .data/kanban/cards/ to add a card to your board.",
+  "column": "backlog",
+  "labels": ["getting-started"],
+  "priority": "low",
+  "order": 0,
+  "createdAt": "2026-03-21T00:00:00.000Z"
+}

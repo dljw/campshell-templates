@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "budget-tracker/budgets.schema.json",
+  "type": "object",
+  "required": ["id", "createdAt", "name", "amount"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Budget name"
+    },
+    "categoryId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$",
+      "description": "Category this budget tracks"
+    },
+    "amount": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Spending limit for the period"
+    },
+    "period": {
+      "type": "string",
+      "enum": ["monthly", "weekly", "yearly"],
+      "description": "Budget period"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date",
+      "description": "When this budget starts tracking"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000
+    }
+  },
+  "additionalProperties": false
+}

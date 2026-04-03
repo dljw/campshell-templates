@@ -1,0 +1,32 @@
+{
+  "competitors": [
+    {
+      "id": "competitor-a-com",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "domain": "competitor-a.com",
+      "estimatedTraffic": 50000,
+      "domainAuthority": 65,
+      "topKeywords": [
+        "product management",
+        "project planning",
+        "team collaboration"
+      ],
+      "backlinkCount": 1200,
+      "notes": "Main competitor, strong content marketing"
+    },
+    {
+      "id": "competitor-b-com",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "domain": "competitor-b.com",
+      "estimatedTraffic": 25000,
+      "domainAuthority": 52,
+      "topKeywords": [
+        "project management tool",
+        "task tracking"
+      ],
+      "backlinkCount": 600,
+      "notes": "Newer player, growing fast"
+    }
+  ],
+  "_generated": "98791f04f9f22664"
+}

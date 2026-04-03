@@ -1,0 +1,11 @@
+{
+  "id": "rent-payment-01",
+  "createdAt": "2026-03-01T10:00:00.000Z",
+  "type": "withdrawal",
+  "description": "March rent",
+  "amount": 1500.00,
+  "date": "2026-03-01",
+  "sourceAccountId": "checking-account",
+  "categoryId": "housing",
+  "tagIds": ["recurring"]
+}

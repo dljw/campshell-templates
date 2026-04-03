@@ -1,0 +1,8 @@
+{
+  "tags": [
+    { "id": "recurring", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Recurring", "color": "blue" },
+    { "id": "essential", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Essential", "color": "red" },
+    { "id": "impulse", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Impulse Buy", "color": "orange" },
+    { "id": "tax-deductible", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Tax Deductible", "color": "green" }
+  ]
+}

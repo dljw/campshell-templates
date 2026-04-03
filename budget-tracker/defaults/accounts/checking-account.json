@@ -1,0 +1,10 @@
+{
+  "id": "checking-account",
+  "createdAt": "2026-01-01T00:00:00.000Z",
+  "name": "Main Checking",
+  "type": "asset",
+  "subType": "checking",
+  "currency": "USD",
+  "balance": 2450.00,
+  "active": true
+}

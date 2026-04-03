@@ -1,0 +1,14 @@
+{
+  "id": "homepage",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Homepage",
+  "pageUrl": "https://example.com/",
+  "status": "published",
+  "contentType": "landing",
+  "wordCount": 1200,
+  "publishDate": "2025-06-01",
+  "lastUpdated": "2026-01-15",
+  "organicTraffic": 850,
+  "avgPosition": 12.5,
+  "_generated": "edaf95ec57692570"
+}

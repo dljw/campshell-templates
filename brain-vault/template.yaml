@@ -1,0 +1,292 @@
+name: brain-vault
+displayName: Brain Vault
+emoji: "\U0001F4D3"
+category: knowledge
+description: A personal knowledge base where every idea is a note — capture daily journals, meeting notes, book reviews, and research in one place
+
+entities:
+  notes:
+    storage: one-per-file
+    layout: table-detail
+    fields:
+      title:
+        type: string
+        required: true
+        max: 300
+        description: Note title
+      content:
+        type: string
+        max: 100000
+        description: Markdown body — the main content of the note
+      type:
+        type: enum
+        values: [daily, meeting, project, book, article, research, reference, general]
+        description: What kind of note this is — determines which fields are relevant
+      status:
+        type: enum
+        values: [draft, in-progress, review, published, archived]
+      tagIds:
+        type: ref[]
+        entity: tags
+        max_items: 20
+        description: Tags for organization and filtering
+      linkedNoteIds:
+        type: ref[]
+        entity: notes
+        max_items: 50
+        description: Wikilink-style connections to other notes
+      source:
+        type: string
+        max: 2000
+        description: URL or citation for source material
+      author:
+        type: string
+        max: 200
+        description: Author of the source (for books, articles, papers)
+      date:
+        type: date
+        description: Relevant date (meeting date, daily note date, publish date)
+      rating:
+        type: integer
+        min: 0
+        max: 10
+        description: Personal rating or importance (0-10)
+      summary:
+        type: string
+        max: 2000
+        description: Brief abstract or TL;DR
+      participants:
+        type: string[]
+        max_items: 20
+        description: Attendees (for meetings) or collaborators
+      actionItems:
+        type: object[]
+        items:
+          task:
+            type: string
+            max: 500
+          owner:
+            type: string
+            max: 100
+          done:
+            type: boolean
+        description: Action items with owner and completion status
+      pinned:
+        type: boolean
+        description: Pin important notes to the top
+
+  tags:
+    storage: collection
+    file: tags.json
+    fields:
+      name:
+        type: string
+        required: true
+        max: 50
+        description: Tag name
+      color:
+        type: enum
+        values: [red, orange, yellow, green, blue, purple, gray]
+
+defaults:
+  tags:
+    - name: productivity
+      color: blue
+    - name: research
+      color: purple
+    - name: personal
+      color: green
+    - name: work
+      color: orange
+
+  notes:
+    - title: Welcome to Your Knowledge Base
+      type: general
+      status: published
+      pinned: true
+      tagIds: ["$ref:tags[0]"]
+      content: |
+        ## Getting Started
+
+        This is your personal knowledge base. Every piece of knowledge lives here as a **note** — whether it's a daily journal, meeting notes, a book review, or research findings.
+
+        ### How It Works
+
+        - **Notes** are the core unit. Each note has a `type` that hints at its purpose, but you're free to structure content however you like.
+        - **Tags** help you organize and filter. Assign as many as you need.
+        - **Links** connect notes together, building a web of knowledge over time.
+        - **Markdown** is the language — use headings, lists, code blocks, quotes, and more.
+
+        ### Note Types
+
+        | Type | Best for |
+        |------|----------|
+        | daily | Journal entries, daily priorities, reflections |
+        | meeting | Meeting notes, agendas, action items |
+        | project | Project plans, goals, task tracking |
+        | book | Book reviews, key takeaways, quotes |
+        | article | Article summaries, commentary |
+        | research | Research findings, paper notes, citations |
+        | reference | How-tos, cheat sheets, reference material |
+        | general | Everything else |
+
+        ### Tips
+
+        - Use the `summary` field for a quick TL;DR visible in card view
+        - Pin important notes so they stay at the top
+        - Link related notes to build your knowledge graph
+      summary: An introduction to your knowledge base and how to use different note types.
+
+    - title: "2025-11-14 — Friday"
+      type: daily
+      status: published
+      date: "2025-11-14"
+      tagIds: ["$ref:tags[0]", "$ref:tags[2]"]
+      linkedNoteIds: ["$ref:notes[0]"]
+      rating: 7
+      content: |
+        ## Priorities
+        - [ ] Set up knowledge base template
+        - [ ] Review and tag existing notes
+        - [ ] Plan weekend reading list
+
+        ## Log
+        - 09:00 — Morning coffee, reviewed goals for the week
+        - 10:30 — Started building the knowledge base
+        - 14:00 — Deep work session on template design
+        - 16:00 — Wrapped up, linked notes together
+
+        ## Reflections
+        Productive day. The single-entity approach for the knowledge base feels right — keeps things simple while being flexible enough for any note type. Looking forward to seeing the graph of linked notes grow.
+      summary: Set up knowledge base, deep work on template design. Good day.
+
+    - title: Weekly Team Standup
+      type: meeting
+      status: published
+      date: "2025-11-14"
+      tagIds: ["$ref:tags[3]"]
+      linkedNoteIds: ["$ref:notes[0]"]
+      participants: ["Alice", "Bob", "Charlie", "Dana"]
+      actionItems:
+        - task: Finalize Q2 roadmap draft
+          owner: Alice
+          done: false
+        - task: Set up staging environment for new template
+          owner: Bob
+          done: true
+        - task: Write documentation for onboarding flow
+          owner: Charlie
+          done: false
+      content: |
+        ## Agenda
+        1. Sprint progress check
+        2. Q2 roadmap discussion
+        3. New template demo
+
+        ## Discussion
+
+        ### Sprint Progress
+        On track for all committed stories. Bob finished the staging setup ahead of schedule. Charlie needs another day on the docs.
+
+        ### Q2 Roadmap
+        Alice presented the draft roadmap. Key themes:
+        - Developer experience improvements
+        - Performance optimization
+        - Community template marketplace
+
+        Team agreed on priorities. Final review next Tuesday.
+
+        ### Template Demo
+        Showed the new knowledge base template. Team liked the single-entity approach. Feedback:
+        - Add markdown preview in the UI
+        - Consider adding a graph view later
+
+        ## Decisions
+        - Sprint cadence stays at 2 weeks
+        - Q2 roadmap final review on Tuesday
+        - Knowledge base template moves to beta next week
+      summary: Sprint on track, Q2 roadmap reviewed, knowledge base template demo went well.
+
+    - title: "Atomic Habits"
+      type: book
+      status: published
+      author: James Clear
+      rating: 9
+      date: "2026-03-15"
+      tagIds: ["$ref:tags[0]", "$ref:tags[2]"]
+      linkedNoteIds: ["$ref:notes[0]"]
+      content: |
+        ## Key Themes
+
+        - **Habit stacking**: Link new habits to existing routines
+        - **The 1% rule**: Small daily improvements compound into remarkable results
+        - **Identity-based habits**: Focus on who you want to become, not what you want to achieve
+        - **Environment design**: Make good habits obvious and bad habits invisible
+
+        ## Favorite Quotes
+
+        > "You do not rise to the level of your goals. You fall to the level of your systems."
+
+        > "Every action you take is a vote for the type of person you wish to become."
+
+        > "The most effective way to change your habits is to focus not on what you want to achieve, but on who you wish to become."
+
+        ## Chapter Notes
+
+        ### Ch 1 — The Surprising Power of Atomic Habits
+        Habits are the compound interest of self-improvement. Getting 1% better every day = 37x improvement in a year. The key insight: focus on trajectory, not current results.
+
+        ### Ch 2 — How Your Habits Shape Your Identity
+        Three layers of behavior change: outcomes, processes, identity. Most people focus on outcomes. The most effective approach starts with identity — decide who you want to be, then prove it with small wins.
+
+        ### Ch 3 — How to Build Better Habits in 4 Simple Steps
+        The habit loop: cue, craving, response, reward. The Four Laws of Behavior Change map to each stage:
+        1. Make it obvious (cue)
+        2. Make it attractive (craving)
+        3. Make it easy (response)
+        4. Make it satisfying (reward)
+
+        ## Personal Takeaways
+        Immediately applicable. Started habit stacking my reading habit onto my morning coffee routine. The identity framing is the most powerful idea — "I am someone who reads every day" vs "I want to read more books."
+      summary: Excellent practical guide to building good habits through small changes, identity shifts, and environment design. Highly recommended.
+
+    - title: The Zettelkasten Method
+      type: research
+      status: published
+      source: "https://zettelkasten.de/introduction/"
+      tagIds: ["$ref:tags[1]", "$ref:tags[0]"]
+      linkedNoteIds: ["$ref:notes[0]"]
+      rating: 9
+      content: |
+        ## Overview
+
+        Zettelkasten (German for "slip box") is a knowledge management method developed by sociologist Niklas Luhmann. He used it to produce over 70 books and 400 articles over his lifetime.
+
+        ## Core Principles
+
+        ### Atomic Notes
+        Each note captures one idea only — no sprawling summaries. Atomic notes are easier to link and reuse.
+
+        ### Unique IDs
+        Every note gets a permanent, unique identifier. This decouples the note's location from its content and makes links stable.
+
+        ### Links Over Hierarchy
+        Instead of filing notes into folders (which forces premature categorization), notes are linked to related ideas. A network of notes emerges organically.
+
+        ### The Principle of Atomicity
+        - Write in your own words — forces genuine understanding
+        - One idea per note — keep it short and focused
+        - Link liberally — connections are the value
+
+        ## Why It Works
+
+        Luhmann described his Zettelkasten as a "conversation partner" — when returning to old notes, unexpected connections surface. The system generates insights that no single note contains.
+
+        ## Relevance to Brain Vault
+
+        Brain Vault's architecture is a natural digital Zettelkasten:
+        - File-per-note = permanent, addressable records
+        - `linkedNoteIds` = wikilink-style connections
+        - Tags provide lightweight categorization without locking notes into folders
+        - Real-time dashboard = instant visibility into the knowledge graph
+      summary: Zettelkasten is a note-taking method based on atomic, linked notes. Brain Vault's file-per-note + linkedNoteIds model implements the same principles digitally.

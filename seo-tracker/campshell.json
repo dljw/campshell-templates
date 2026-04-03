@@ -1,0 +1,91 @@
+{
+  "name": "seo-tracker",
+  "version": "1.0.0",
+  "displayName": "SEO Tracker",
+  "description": "Track keywords, pages, backlinks, competitors, and technical SEO issues",
+  "author": {
+    "name": "campshell"
+  },
+  "license": "MIT",
+  "category": "marketing",
+  "tags": [],
+  "emoji": "🔍",
+  "dataDir": "data/seo-tracker",
+  "schemas": {
+    "keywords": "schemas/keywords.schema.json",
+    "pages": "schemas/pages.schema.json",
+    "backlinks": "schemas/backlinks.schema.json",
+    "competitors": "schemas/competitors.schema.json",
+    "issues": "schemas/issues.schema.json"
+  },
+  "storage": {
+    "keywords": {
+      "pattern": "one-per-file",
+      "directory": "keywords",
+      "fileNamePattern": "{id}.json"
+    },
+    "pages": {
+      "pattern": "one-per-file",
+      "directory": "pages",
+      "fileNamePattern": "{id}.json"
+    },
+    "backlinks": {
+      "pattern": "one-per-file",
+      "directory": "backlinks",
+      "fileNamePattern": "{id}.json"
+    },
+    "competitors": {
+      "pattern": "collection",
+      "file": "competitors.json"
+    },
+    "issues": {
+      "pattern": "one-per-file",
+      "directory": "issues",
+      "fileNamePattern": "{id}.json"
+    }
+  },
+  "queries": {},
+  "ui": {
+    "framework": "react",
+    "entry": "index.tsx",
+    "route": "/seo-tracker",
+    "routes": [
+      {
+        "id": "keywords",
+        "label": "Keywords",
+        "path": "/seo-tracker/keywords"
+      },
+      {
+        "id": "pages",
+        "label": "Pages",
+        "path": "/seo-tracker/pages"
+      },
+      {
+        "id": "backlinks",
+        "label": "Backlinks",
+        "path": "/seo-tracker/backlinks"
+      },
+      {
+        "id": "competitors",
+        "label": "Competitors",
+        "path": "/seo-tracker/competitors"
+      },
+      {
+        "id": "issues",
+        "label": "Issues",
+        "path": "/seo-tracker/issues"
+      }
+    ]
+  },
+  "relationships": {
+    "keywords.pageId": {
+      "entity": "pages",
+      "type": "one"
+    },
+    "backlinks.targetPageId": {
+      "entity": "pages",
+      "type": "one"
+    }
+  },
+  "_generated": "77abb4326c244677"
+}

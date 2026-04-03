@@ -1,0 +1,81 @@
+{
+  "name": "budget-tracker",
+  "version": "1.0.0",
+  "displayName": "Budget Tracker",
+  "description": "Personal finance tracker — manage accounts, transactions, budgets, and spending categories",
+  "author": { "name": "campshell" },
+  "license": "MIT",
+  "category": "finance",
+  "tags": [],
+  "emoji": "💰",
+  "dataDir": "data/budget-tracker",
+  "schemas": {
+    "accounts": "schemas/accounts.schema.json",
+    "transactions": "schemas/transactions.schema.json",
+    "categories": "schemas/categories.schema.json",
+    "budgets": "schemas/budgets.schema.json",
+    "tags": "schemas/tags.schema.json"
+  },
+  "storage": {
+    "accounts": {
+      "pattern": "one-per-file",
+      "directory": "accounts",
+      "fileNamePattern": "{id}.json"
+    },
+    "transactions": {
+      "pattern": "one-per-file",
+      "directory": "transactions",
+      "fileNamePattern": "{id}.json"
+    },
+    "categories": {
+      "pattern": "collection",
+      "file": "categories.json"
+    },
+    "budgets": {
+      "pattern": "one-per-file",
+      "directory": "budgets",
+      "fileNamePattern": "{id}.json"
+    },
+    "tags": {
+      "pattern": "collection",
+      "file": "tags.json"
+    }
+  },
+  "queries": {
+    "transactions": {
+      "filterable": ["type", "categoryId", "sourceAccountId", "date"],
+      "sortable": ["date", "amount", "createdAt"],
+      "searchable": ["description", "notes"],
+      "defaultSort": { "field": "date", "order": "desc" }
+    },
+    "accounts": {
+      "filterable": ["type", "subType", "active"],
+      "sortable": ["name", "balance", "createdAt"],
+      "defaultSort": { "field": "name", "order": "asc" }
+    },
+    "budgets": {
+      "filterable": ["categoryId"],
+      "sortable": ["name", "amount"],
+      "defaultSort": { "field": "name", "order": "asc" }
+    }
+  },
+  "relationships": {
+    "transactions.sourceAccountId": { "entity": "accounts", "type": "one" },
+    "transactions.destinationAccountId": { "entity": "accounts", "type": "one" },
+    "transactions.categoryId": { "entity": "categories", "type": "one" },
+    "transactions.tagIds": { "entity": "tags", "type": "many" },
+    "budgets.categoryId": { "entity": "categories", "type": "one" }
+  },
+  "ui": {
+    "framework": "react",
+    "entry": "index.tsx",
+    "route": "/budget-tracker",
+    "routes": [
+      { "id": "dashboard", "label": "Dashboard", "path": "/budget-tracker" },
+      { "id": "transactions", "label": "Transactions", "path": "/budget-tracker/transactions" },
+      { "id": "accounts", "label": "Accounts", "path": "/budget-tracker/accounts" },
+      { "id": "budgets", "label": "Budgets", "path": "/budget-tracker/budgets" },
+      { "id": "categories", "label": "Categories", "path": "/budget-tracker/categories" }
+    ]
+  }
+}

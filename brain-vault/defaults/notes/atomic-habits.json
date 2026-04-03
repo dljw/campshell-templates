@@ -1,0 +1,20 @@
+{
+  "id": "atomic-habits",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Atomic Habits",
+  "type": "book",
+  "status": "published",
+  "author": "James Clear",
+  "rating": 9,
+  "date": "2026-03-15",
+  "tagIds": [
+    "productivity",
+    "personal"
+  ],
+  "linkedNoteIds": [
+    "welcome-to-your-knowledge-base"
+  ],
+  "content": "## Key Themes\n\n- **Habit stacking**: Link new habits to existing routines\n- **The 1% rule**: Small daily improvements compound into remarkable results\n- **Identity-based habits**: Focus on who you want to become, not what you want to achieve\n- **Environment design**: Make good habits obvious and bad habits invisible\n\n## Favorite Quotes\n\n> \"You do not rise to the level of your goals. You fall to the level of your systems.\"\n\n> \"Every action you take is a vote for the type of person you wish to become.\"\n\n> \"The most effective way to change your habits is to focus not on what you want to achieve, but on who you wish to become.\"\n\n## Chapter Notes\n\n### Ch 1 — The Surprising Power of Atomic Habits\nHabits are the compound interest of self-improvement. Getting 1% better every day = 37x improvement in a year. The key insight: focus on trajectory, not current results.\n\n### Ch 2 — How Your Habits Shape Your Identity\nThree layers of behavior change: outcomes, processes, identity. Most people focus on outcomes. The most effective approach starts with identity — decide who you want to be, then prove it with small wins.\n\n### Ch 3 — How to Build Better Habits in 4 Simple Steps\nThe habit loop: cue, craving, response, reward. The Four Laws of Behavior Change map to each stage:\n1. Make it obvious (cue)\n2. Make it attractive (craving)\n3. Make it easy (response)\n4. Make it satisfying (reward)\n\n## Personal Takeaways\nImmediately applicable. Started habit stacking my reading habit onto my morning coffee routine. The identity framing is the most powerful idea — \"I am someone who reads every day\" vs \"I want to read more books.\"\n",
+  "summary": "Excellent practical guide to building good habits through small changes, identity shifts, and environment design. Highly recommended.",
+  "_generated": "989845492fb11322"
+}

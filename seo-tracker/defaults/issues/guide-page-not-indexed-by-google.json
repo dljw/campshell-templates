@@ -1,0 +1,11 @@
+{
+  "id": "guide-page-not-indexed-by-google",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Guide page not indexed by Google",
+  "issueType": "indexing",
+  "affectedPage": "https://example.com/guides/getting-started",
+  "description": "Published 3 months ago but not in Google Search Console. Check robots.txt and canonical tags.",
+  "priority": "critical",
+  "status": "in-progress",
+  "_generated": "bffa504548bfc8d7"
+}

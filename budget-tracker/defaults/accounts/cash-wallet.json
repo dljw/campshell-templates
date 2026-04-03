@@ -1,0 +1,10 @@
+{
+  "id": "cash-wallet",
+  "createdAt": "2026-01-01T00:00:00.000Z",
+  "name": "Cash Wallet",
+  "type": "asset",
+  "subType": "cash",
+  "currency": "USD",
+  "balance": 120.00,
+  "active": true
+}

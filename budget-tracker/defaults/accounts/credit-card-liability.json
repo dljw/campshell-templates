@@ -1,0 +1,10 @@
+{
+  "id": "credit-card-liability",
+  "createdAt": "2026-01-01T00:00:00.000Z",
+  "name": "Visa Credit Card",
+  "type": "liability",
+  "subType": "credit-card",
+  "currency": "USD",
+  "balance": 340.00,
+  "active": true
+}

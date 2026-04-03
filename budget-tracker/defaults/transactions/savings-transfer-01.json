@@ -1,0 +1,11 @@
+{
+  "id": "savings-transfer-01",
+  "createdAt": "2026-03-02T08:00:00.000Z",
+  "type": "transfer",
+  "description": "Monthly savings contribution",
+  "amount": 500.00,
+  "date": "2026-03-02",
+  "sourceAccountId": "checking-account",
+  "destinationAccountId": "savings-account",
+  "tagIds": ["recurring"]
+}
