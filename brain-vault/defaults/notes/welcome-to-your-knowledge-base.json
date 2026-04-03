@@ -9,6 +9,5 @@
     "productivity"
   ],
   "content": "## Getting Started\n\nThis is your personal knowledge base. Every piece of knowledge lives here as a **note** — whether it's a daily journal, meeting notes, a book review, or research findings.\n\n### How It Works\n\n- **Notes** are the core unit. Each note has a `type` that hints at its purpose, but you're free to structure content however you like.\n- **Tags** help you organize and filter. Assign as many as you need.\n- **Links** connect notes together, building a web of knowledge over time.\n- **Markdown** is the language — use headings, lists, code blocks, quotes, and more.\n\n### Note Types\n\n| Type | Best for |\n|------|----------|\n| daily | Journal entries, daily priorities, reflections |\n| meeting | Meeting notes, agendas, action items |\n| project | Project plans, goals, task tracking |\n| book | Book reviews, key takeaways, quotes |\n| article | Article summaries, commentary |\n| research | Research findings, paper notes, citations |\n| reference | How-tos, cheat sheets, reference material |\n| general | Everything else |\n\n### Tips\n\n- Use the `summary` field for a quick TL;DR visible in card view\n- Pin important notes so they stay at the top\n- Link related notes to build your knowledge graph\n",
-  "summary": "An introduction to your knowledge base and how to use different note types.",
-  "_generated": "958d68458ee0678c"
+  "summary": "An introduction to your knowledge base and how to use different note types."
 }

@@ -35,6 +35,5 @@
     }
   ],
   "content": "## Agenda\n1. Sprint progress check\n2. Q2 roadmap discussion\n3. New template demo\n\n## Discussion\n\n### Sprint Progress\nOn track for all committed stories. Bob finished the staging setup ahead of schedule. Charlie needs another day on the docs.\n\n### Q2 Roadmap\nAlice presented the draft roadmap. Key themes:\n- Developer experience improvements\n- Performance optimization\n- Community template marketplace\n\nTeam agreed on priorities. Final review next Tuesday.\n\n### Template Demo\nShowed the new knowledge base template. Team liked the single-entity approach. Feedback:\n- Add markdown preview in the UI\n- Consider adding a graph view later\n\n## Decisions\n- Sprint cadence stays at 2 weeks\n- Q2 roadmap final review on Tuesday\n- Knowledge base template moves to beta next week\n",
-  "summary": "Sprint on track, Q2 roadmap reviewed, knowledge base template demo went well.",
-  "_generated": "8dfc9c699705f825"
+  "summary": "Sprint on track, Q2 roadmap reviewed, knowledge base template demo went well."
 }
