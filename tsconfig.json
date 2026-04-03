@@ -15,6 +15,7 @@
   "references": [
     { "path": "kanban" },
     { "path": "brain-vault" },
-    { "path": "seo-tracker" }
+    { "path": "seo-tracker" },
+    { "path": "budget-tracker" }
   ]
 }
