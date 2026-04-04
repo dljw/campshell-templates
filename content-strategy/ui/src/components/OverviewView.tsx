@@ -2,12 +2,16 @@ import { Button, Card, CardContent, CardHeader, CardTitle } from "@campshell/ui-
 import { ArrowDown, ArrowUp, Eye, MousePointerClick, Navigation, FileText, Upload } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { UseContentStrategyDataReturn } from "../hooks/useContentStrategyData.js";
-import type { Cycle } from "../types.js";
+import type { Cycle, Domain } from "../types.js";
+import { generateCycleAnalysisPrompt } from "../lib/prompt-generators.js";
+import { CopyPromptButton } from "./CopyPromptButton.js";
 import { ImportCycleDialog } from "./ImportCycleDialog.js";
 import { QuadrantDonut } from "./QuadrantDonut.js";
 
 interface OverviewViewProps {
 	data: UseContentStrategyDataReturn;
+	domainId: string | null;
+	activeDomain: Domain | undefined;
 }
 
 function MetricCard({
@@ -55,26 +59,44 @@ function pctChange(current: number, previous: number): number {
 	return ((current - previous) / previous) * 100;
 }
 
-export function OverviewView({ data }: OverviewViewProps) {
+export function OverviewView({ data, domainId, activeDomain }: OverviewViewProps) {
 	const [importOpen, setImportOpen] = useState(false);
-	const [latestCycle, prevCycle] = useMemo(() => getLatestTwoCycles(data.cycles), [data.cycles]);
+
+	const keywords = useMemo(
+		() => data.keywords.filter((i) => !domainId || i.domainId === domainId),
+		[data.keywords, domainId],
+	);
+	const articles = useMemo(
+		() => data.articles.filter((i) => !domainId || i.domainId === domainId),
+		[data.articles, domainId],
+	);
+	const actions = useMemo(
+		() => data.actions.filter((i) => !domainId || i.domainId === domainId),
+		[data.actions, domainId],
+	);
+	const cycles = useMemo(
+		() => data.cycles.filter((i) => !domainId || i.domainId === domainId),
+		[data.cycles, domainId],
+	);
+
+	const [latestCycle, prevCycle] = useMemo(() => getLatestTwoCycles(cycles), [cycles]);
 
 	const quadrantCounts = useMemo(() => {
 		const counts: Record<string, number> = {};
-		for (const kw of data.keywords) {
+		for (const kw of keywords) {
 			if (kw.quadrant) {
 				counts[kw.quadrant] = (counts[kw.quadrant] ?? 0) + 1;
 			}
 		}
 		return counts;
-	}, [data.keywords]);
+	}, [keywords]);
 
 	const pipelineSummary = useMemo(() => {
-		const published = data.articles.filter((a) => a.status === "published" || a.status === "optimizing").length;
-		const inProgress = data.articles.filter((a) => ["drafting", "review", "briefed"].includes(a.status)).length;
-		const planned = data.articles.filter((a) => ["idea", "planned"].includes(a.status)).length;
+		const published = articles.filter((a) => a.status === "published" || a.status === "optimizing").length;
+		const inProgress = articles.filter((a) => ["drafting", "review", "briefed"].includes(a.status)).length;
+		const planned = articles.filter((a) => ["idea", "planned"].includes(a.status)).length;
 		return `${published}P ${inProgress}D ${planned}Q`;
-	}, [data.articles]);
+	}, [articles]);
 
 	const impressions = latestCycle?.sitewide?.impressions ?? 0;
 	const clicks = latestCycle?.sitewide?.clicks ?? 0;
@@ -84,20 +106,30 @@ export function OverviewView({ data }: OverviewViewProps) {
 	const prevPos = prevCycle?.sitewide?.avgPosition;
 
 	const recentActions = useMemo(() => {
-		return [...data.actions]
+		return [...actions]
 			.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
 			.slice(0, 5);
-	}, [data.actions]);
+	}, [actions]);
+
+	const cycleAnalysisPrompt = useMemo(() => {
+		if (!latestCycle) return "";
+		return generateCycleAnalysisPrompt(latestCycle, prevCycle, keywords);
+	}, [latestCycle, prevCycle, keywords]);
 
 	return (
 		<div className="space-y-6">
 			{/* Header with import button */}
 			<div className="flex items-center justify-between">
 				<h2 className="text-lg font-semibold">Overview</h2>
-				<Button variant="outline" size="sm" onClick={() => setImportOpen(true)} className="gap-1.5">
-					<Upload className="h-4 w-4" />
-					Import GSC Cycle
-				</Button>
+				<div className="flex items-center gap-2">
+					{latestCycle && (
+						<CopyPromptButton prompt={cycleAnalysisPrompt} label="Cycle Analysis" variant="outline" />
+					)}
+					<Button variant="outline" size="sm" onClick={() => setImportOpen(true)} className="gap-1.5 text-foreground">
+						<Upload className="h-4 w-4" />
+						Import GSC Cycle
+					</Button>
+				</div>
 			</div>
 
 			{/* Metric Cards */}
@@ -170,7 +202,7 @@ export function OverviewView({ data }: OverviewViewProps) {
 						<CardTitle className="text-sm font-medium">Keyword Quadrants</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<QuadrantDonut counts={quadrantCounts} total={data.keywords.length} />
+						<QuadrantDonut counts={quadrantCounts} total={keywords.length} />
 					</CardContent>
 				</Card>
 			</div>
@@ -208,7 +240,7 @@ export function OverviewView({ data }: OverviewViewProps) {
 					</CardContent>
 				</Card>
 			)}
-			<ImportCycleDialog open={importOpen} onOpenChange={setImportOpen} data={data} />
+			<ImportCycleDialog open={importOpen} onOpenChange={setImportOpen} data={data} domainId={domainId} />
 		</div>
 	);
 }

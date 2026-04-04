@@ -30,6 +30,8 @@ export interface Article {
 	lastOptimized?: string;
 	phase?: "phase-1" | "phase-2" | "phase-3";
 	priority?: "high" | "medium" | "low";
+	filePath?: string;
+	domainId?: string;
 	notes?: string;
 }
 
@@ -52,6 +54,7 @@ export interface Keyword {
 	previousPosition?: number;
 	quadrant?: "star" | "quick-win" | "ctr-opportunity" | "long-term-target" | "early-signal" | "dog";
 	status?: "tracking" | "paused" | "achieved";
+	domainId?: string;
 }
 
 export interface Hub {
@@ -62,6 +65,7 @@ export interface Hub {
 	pillarArticleId?: string;
 	color?: "red" | "orange" | "yellow" | "green" | "blue" | "purple" | "pink" | "gray";
 	status?: "planning" | "active" | "complete";
+	domainId?: string;
 }
 
 export interface Cycle {
@@ -108,6 +112,7 @@ export interface Cycle {
 	notIndexedPages?: string[];
 	cannibalizationWarnings?: number;
 	notes?: string;
+	domainId?: string;
 }
 
 export interface Action {
@@ -134,6 +139,7 @@ export interface Action {
 		notes?: string;
 	} | null;
 	deferredReason?: string;
+	domainId?: string;
 }
 
 export interface Competitor {
@@ -148,6 +154,7 @@ export interface Competitor {
 	}>;
 	contentThemes?: string[];
 	notes?: string;
+	domainId?: string;
 }
 
 export interface OverviewStats {

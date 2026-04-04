@@ -1,11 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@campshell/ui-components";
 import { useMemo } from "react";
 import type { UseContentStrategyDataReturn } from "../hooks/useContentStrategyData.js";
-import type { Color } from "../types.js";
+import type { Color, Domain } from "../types.js";
 import { StatusBadge } from "./StatusBadge.js";
+import { CopyPromptButton } from "./CopyPromptButton.js";
+import { generateHubGapPrompt } from "../lib/prompt-generators.js";
 
 interface HubsViewProps {
 	data: UseContentStrategyDataReturn;
+	domainId: string | null;
 }
 
 const COLOR_BG: Record<Color, string> = {
@@ -19,9 +22,19 @@ const COLOR_BG: Record<Color, string> = {
 	gray: "border-l-gray-500",
 };
 
-export function HubsView({ data }: HubsViewProps) {
+export function HubsView({ data, domainId }: HubsViewProps) {
+	const activeDomain = useMemo(
+		() => data.domains.find((d) => d.id === domainId),
+		[data.domains, domainId],
+	);
+
+	const filteredHubs = useMemo(
+		() => data.hubs.filter((i) => !domainId || i.domainId === domainId),
+		[data.hubs, domainId],
+	);
+
 	const hubDetails = useMemo(() => {
-		return data.hubs.map((hub) => {
+		return filteredHubs.map((hub) => {
 			const hubArticles = data.articles.filter((a) => a.hubId === hub.id);
 			const pillar = hubArticles.find((a) => a.id === hub.pillarArticleId);
 			const clusters = hubArticles.filter((a) => a.id !== hub.pillarArticleId);
@@ -42,9 +55,11 @@ export function HubsView({ data }: HubsViewProps) {
 				totalSV,
 				totalImpr,
 				keywordCount: hubKeywords.length,
+				hubArticles,
+				hubKeywords,
 			};
 		});
-	}, [data.hubs, data.articles, data.keywords]);
+	}, [filteredHubs, data.articles, data.keywords]);
 
 	return (
 		<div className="space-y-4">
@@ -54,12 +69,19 @@ export function HubsView({ data }: HubsViewProps) {
 				<p className="text-sm text-muted-foreground">No hubs defined yet</p>
 			) : (
 				<div className="grid md:grid-cols-2 gap-4">
-					{hubDetails.map(({ hub, pillar, clusters, published, total, totalSV, totalImpr, keywordCount }) => (
+					{hubDetails.map(({ hub, pillar, clusters, published, total, totalSV, totalImpr, keywordCount, hubArticles, hubKeywords }) => (
 						<Card key={hub.id} className={`border-l-4 ${COLOR_BG[hub.color ?? "gray"]}`}>
 							<CardHeader className="pb-3">
 								<div className="flex items-center justify-between">
 									<CardTitle className="text-sm font-medium">{hub.name}</CardTitle>
-									{hub.status && <StatusBadge status={hub.status} />}
+									<div className="flex items-center gap-2">
+										<CopyPromptButton
+											prompt={generateHubGapPrompt(hub, hubArticles, hubKeywords, activeDomain)}
+											label="Gap Analysis"
+											variant="ghost"
+										/>
+										{hub.status && <StatusBadge status={hub.status} />}
+									</div>
 								</div>
 								{hub.description && (
 									<p className="text-xs text-muted-foreground mt-1">{hub.description}</p>

@@ -11,6 +11,7 @@ interface ImportCycleDialogProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	data: UseContentStrategyDataReturn;
+	domainId: string | null;
 }
 
 type Step = "select" | "preview" | "importing" | "done";
@@ -22,7 +23,7 @@ interface SelectedFiles {
 	filters?: File;
 }
 
-export function ImportCycleDialog({ open, onOpenChange, data }: ImportCycleDialogProps) {
+export function ImportCycleDialog({ open, onOpenChange, data, domainId }: ImportCycleDialogProps) {
 	const [step, setStep] = useState<Step>("select");
 	const [selectedFiles, setSelectedFiles] = useState<SelectedFiles>({});
 	const [parsed, setParsed] = useState<ParsedGscData | null>(null);
@@ -109,6 +110,7 @@ export function ImportCycleDialog({ open, onOpenChange, data }: ImportCycleDialo
 			quadrantCounts,
 			pageSnapshots: parsed.pageSnapshots,
 			querySnapshots: parsed.querySnapshots,
+			...(domainId ? { domainId } : {}),
 		};
 
 		data.createCycle(cycle);
@@ -144,6 +146,7 @@ export function ImportCycleDialog({ open, onOpenChange, data }: ImportCycleDialo
 					position: action.position,
 					quadrant: action.quadrant,
 					status: "tracking",
+					...(domainId ? { domainId } : {}),
 				};
 				data.createKeyword(newKeyword);
 			}
@@ -152,7 +155,7 @@ export function ImportCycleDialog({ open, onOpenChange, data }: ImportCycleDialo
 
 		setStep("done");
 		toast.success(`Imported cycle ${cycleDate} with ${keywordActions.length} keywords`);
-	}, [parsed, keywordActions, data]);
+	}, [parsed, keywordActions, data, domainId]);
 
 	const handleClose = useCallback(() => {
 		setStep("select");
@@ -192,6 +195,13 @@ export function ImportCycleDialog({ open, onOpenChange, data }: ImportCycleDialo
 
 				{step === "select" && (
 					<div className="space-y-4">
+						{/* Domain warning */}
+						{!domainId && (
+							<div className="flex items-center gap-2 rounded-md border border-orange-400 bg-orange-50 dark:bg-orange-950/30 px-3 py-2 text-sm text-orange-700 dark:text-orange-400">
+								<AlertCircle className="h-4 w-4 shrink-0" />
+								Select a domain in the header before importing so this data is tagged correctly.
+							</div>
+						)}
 						{/* Drop zone */}
 						<div
 							onDrop={handleDrop}
@@ -228,8 +238,8 @@ export function ImportCycleDialog({ open, onOpenChange, data }: ImportCycleDialo
 						)}
 
 						<div className="flex justify-end gap-2">
-							<Button variant="ghost" onClick={handleClose}>Cancel</Button>
-							<Button onClick={handleParse} disabled={!canParse}>
+							<Button variant="ghost" className="text-foreground" onClick={handleClose}>Cancel</Button>
+							<Button className="text-foreground" onClick={handleParse} disabled={!canParse || !domainId}>
 								Parse & Preview
 							</Button>
 						</div>
@@ -240,8 +250,8 @@ export function ImportCycleDialog({ open, onOpenChange, data }: ImportCycleDialo
 					<div className="space-y-4">
 						<ImportPreview parsed={parsed} keywordActions={keywordActions} previousCycle={previousCycle} />
 						<div className="flex justify-end gap-2">
-							<Button variant="ghost" onClick={() => setStep("select")}>Back</Button>
-							<Button onClick={handleImport}>Import Cycle</Button>
+							<Button variant="ghost" className="text-foreground" onClick={() => setStep("select")}>Back</Button>
+							<Button className="text-foreground" onClick={handleImport}>Import Cycle</Button>
 						</div>
 					</div>
 				)}
@@ -271,7 +281,7 @@ export function ImportCycleDialog({ open, onOpenChange, data }: ImportCycleDialo
 							{keywordActions.filter((a) => a.type === "update").length} keywords updated,{" "}
 							{keywordActions.filter((a) => a.type === "create").length} new keywords created
 						</p>
-						<Button onClick={handleClose} className="mt-2">Done</Button>
+						<Button onClick={handleClose} className="mt-2 text-foreground">Done</Button>
 					</div>
 				)}
 			</DialogContent>

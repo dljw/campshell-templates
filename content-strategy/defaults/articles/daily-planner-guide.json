@@ -12,5 +12,6 @@
   "publishDate": "2026-03-05",
   "phase": "phase-1",
   "priority": "high",
-  "notes": "Pillar page for Planning Cadence hub. Target SV 22.2K."
+  "notes": "Pillar page for Planning Cadence hub. Target SV 22.2K.",
+  "domainId": "default"
 }

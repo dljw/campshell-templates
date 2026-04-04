@@ -5,13 +5,19 @@
   "type": "meta-rewrite",
   "status": "done",
   "priority": "medium",
-  "description": "Rewrote meta description for weekly-planner-guide: generic → specific with 5 steps, 1-3-5 method, downloadable PDFs",
-  "articleIds": ["weekly-planner-guide"],
+  "description": "Rewrote meta description for weekly-planner-guide: generic \u2192 specific with 5 steps, 1-3-5 method, downloadable PDFs",
+  "articleIds": [
+    "weekly-planner-guide"
+  ],
   "expectedOutcome": {
     "metric": "ctr",
     "direction": "improve",
     "baselineValue": 0,
-    "watchQueries": ["weekly planner", "weekly planner template"]
+    "watchQueries": [
+      "weekly planner",
+      "weekly planner template"
+    ]
   },
-  "actualOutcome": null
+  "actualOutcome": null,
+  "domainId": "default"
 }

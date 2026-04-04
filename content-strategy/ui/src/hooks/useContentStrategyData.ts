@@ -8,6 +8,8 @@ import type {
 	Competitor,
 	CompetitorsCollection,
 	Cycle,
+	Domain,
+	DomainsCollection,
 	Hub,
 	HubsCollection,
 	Keyword,
@@ -21,6 +23,7 @@ export interface UseContentStrategyDataReturn {
 	cycles: Cycle[];
 	actions: Action[];
 	competitors: Competitor[];
+	domains: Domain[];
 	status: "connecting" | "connected" | "disconnected";
 	isLoading: boolean;
 	errorRecords: ValidationErrorDetail[];
@@ -37,6 +40,7 @@ export interface UseContentStrategyDataReturn {
 	updateAction: (action: Action) => boolean;
 	deleteAction: (id: string) => boolean;
 	updateCompetitors: (competitors: Competitor[]) => void;
+	updateDomains: (domains: Domain[]) => void;
 }
 
 function humanizeError(error: {
@@ -77,6 +81,7 @@ export function useContentStrategyData(apiBase = ""): UseContentStrategyDataRetu
 	const [cycles, setCycles] = useState<Cycle[]>([]);
 	const [actions, setActions] = useState<Action[]>([]);
 	const [competitors, setCompetitors] = useState<Competitor[]>([]);
+	const [domains, setDomains] = useState<Domain[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [errorRecords, setErrorRecords] = useState<ValidationErrorDetail[]>([]);
 
@@ -111,6 +116,10 @@ export function useContentStrategyData(apiBase = ""): UseContentStrategyDataRetu
 					setCompetitors(
 						((d.competitors as CompetitorsCollection)?.competitors ??
 							(d.competitors as Competitor[])) ?? [],
+					);
+					setDomains(
+						((d.domains as DomainsCollection)?.domains ??
+							(d.domains as Domain[])) ?? [],
 					);
 				}
 				setErrorRecords(errors);
@@ -189,6 +198,9 @@ export function useContentStrategyData(apiBase = ""): UseContentStrategyDataRetu
 				} else if (entity === "competitors") {
 					const data = event.data as CompetitorsCollection;
 					setCompetitors(data.competitors ?? []);
+				} else if (entity === "domains") {
+					const data = event.data as DomainsCollection;
+					setDomains(data.domains ?? []);
 				}
 			} else if (event.type === "file:deleted") {
 				const fileId = event.file.split("/").pop()?.replace(".json", "") ?? "";
@@ -292,6 +304,11 @@ export function useContentStrategyData(apiBase = ""): UseContentStrategyDataRetu
 		setCompetitors(newCompetitors);
 	}, [writeFile]);
 
+	const updateDomains = useCallback((newDomains: Domain[]): void => {
+		if (!writeFile("domains.json", { domains: newDomains })) return;
+		setDomains(newDomains);
+	}, [writeFile]);
+
 	return {
 		articles,
 		keywords,
@@ -315,5 +332,7 @@ export function useContentStrategyData(apiBase = ""): UseContentStrategyDataRetu
 		updateAction,
 		deleteAction,
 		updateCompetitors,
+		domains,
+		updateDomains,
 	};
 }

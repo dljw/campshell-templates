@@ -5,7 +5,7 @@
   "articleId": "planner-apps-adhd",
   "searchVolume": 8100,
   "keywordDifficulty": 0,
-  "cpc": 1.80,
+  "cpc": 1.8,
   "intent": "commercial",
   "targetSection": "Title & H1",
   "occurrences": 4,
@@ -14,5 +14,6 @@
   "ctr": 0,
   "position": 17.73,
   "quadrant": "ctr-opportunity",
-  "status": "tracking"
+  "status": "tracking",
+  "domainId": "default"
 }

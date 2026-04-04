@@ -9,6 +9,7 @@ import { PriorityBadge } from "./PriorityBadge.js";
 
 interface PipelineViewProps {
 	data: UseContentStrategyDataReturn;
+	domainId: string | null;
 }
 
 const PHASE_LABELS: Record<Phase, string> = {
@@ -73,12 +74,17 @@ function CalendarMonth({ articles, hubs, year, month }: {
 	);
 }
 
-export function PipelineView({ data }: PipelineViewProps) {
+export function PipelineView({ data, domainId }: PipelineViewProps) {
 	const [view, setView] = useState<"list" | "calendar">("list");
+
+	const filteredArticles = useMemo(
+		() => data.articles.filter((i) => !domainId || i.domainId === domainId),
+		[data.articles, domainId],
+	);
 
 	const grouped = useMemo(() => {
 		const groups: Record<string, Article[]> = { "phase-1": [], "phase-2": [], "phase-3": [], unassigned: [] };
-		for (const a of data.articles) {
+		for (const a of filteredArticles) {
 			const key = a.phase ?? "unassigned";
 			if (!groups[key]) groups[key] = [];
 			groups[key].push(a);
@@ -87,7 +93,7 @@ export function PipelineView({ data }: PipelineViewProps) {
 			groups[key].sort((a, b) => (a.scheduledDate ?? "").localeCompare(b.scheduledDate ?? ""));
 		}
 		return groups;
-	}, [data.articles]);
+	}, [filteredArticles]);
 
 	const now = new Date();
 
@@ -96,10 +102,10 @@ export function PipelineView({ data }: PipelineViewProps) {
 			<div className="flex items-center justify-between">
 				<h2 className="text-lg font-semibold">Content Pipeline</h2>
 				<div className="flex gap-1">
-					<Button variant={view === "list" ? "secondary" : "ghost"} size="sm" onClick={() => setView("list")}>
+					<Button variant={view === "list" ? "secondary" : "ghost"} size="sm" onClick={() => setView("list")} className="text-foreground">
 						<List className="h-4 w-4 mr-1" /> List
 					</Button>
-					<Button variant={view === "calendar" ? "secondary" : "ghost"} size="sm" onClick={() => setView("calendar")}>
+					<Button variant={view === "calendar" ? "secondary" : "ghost"} size="sm" onClick={() => setView("calendar")} className="text-foreground">
 						<CalendarDays className="h-4 w-4 mr-1" /> Calendar
 					</Button>
 				</div>
@@ -153,7 +159,7 @@ export function PipelineView({ data }: PipelineViewProps) {
 			) : (
 				<Card>
 					<CardContent className="pt-6">
-						<CalendarMonth articles={data.articles} hubs={data.hubs} year={now.getFullYear()} month={now.getMonth()} />
+						<CalendarMonth articles={filteredArticles} hubs={data.hubs} year={now.getFullYear()} month={now.getMonth()} />
 					</CardContent>
 				</Card>
 			)}

@@ -1,0 +1,11 @@
+{
+  "domains": [
+    {
+      "id": "default",
+      "createdAt": "2026-03-19T00:00:00.000Z",
+      "name": "My Site",
+      "domain": "example.com",
+      "isDefault": true
+    }
+  ]
+}

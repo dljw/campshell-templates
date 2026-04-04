@@ -2,26 +2,33 @@ import { Card, CardContent } from "@campshell/ui-components";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { UseContentStrategyDataReturn } from "../hooks/useContentStrategyData.js";
+import type { Domain } from "../types.js";
 import { StatusBadge } from "./StatusBadge.js";
 import { HubBadge } from "./HubBadge.js";
 import { QuadrantBadge } from "./QuadrantBadge.js";
+import { CopyPromptButton } from "./CopyPromptButton.js";
+import { generateArticleWritePrompt, generateArticleOptimizePrompt } from "../lib/prompt-generators.js";
 
 interface ArticlesViewProps {
 	data: UseContentStrategyDataReturn;
+	domainId: string | null;
+	activeDomain: Domain | undefined;
 }
 
-export function ArticlesView({ data }: ArticlesViewProps) {
+export function ArticlesView({ data, domainId, activeDomain }: ArticlesViewProps) {
 	const [expandedId, setExpandedId] = useState<string | null>(null);
 
 	const articles = useMemo(() => {
-		return [...data.articles].sort((a, b) => {
-			// Published first, then by date
-			const aPublished = a.status === "published" || a.status === "optimizing" ? 0 : 1;
-			const bPublished = b.status === "published" || b.status === "optimizing" ? 0 : 1;
-			if (aPublished !== bPublished) return aPublished - bPublished;
-			return (b.publishDate ?? b.scheduledDate ?? "").localeCompare(a.publishDate ?? a.scheduledDate ?? "");
-		});
-	}, [data.articles]);
+		return [...data.articles]
+			.filter((i) => !domainId || i.domainId === domainId)
+			.sort((a, b) => {
+				// Published first, then by date
+				const aPublished = a.status === "published" || a.status === "optimizing" ? 0 : 1;
+				const bPublished = b.status === "published" || b.status === "optimizing" ? 0 : 1;
+				if (aPublished !== bPublished) return aPublished - bPublished;
+				return (b.publishDate ?? b.scheduledDate ?? "").localeCompare(a.publishDate ?? a.scheduledDate ?? "");
+			});
+	}, [data.articles, domainId]);
 
 	return (
 		<div className="space-y-4">
@@ -43,6 +50,7 @@ export function ArticlesView({ data }: ArticlesViewProps) {
 									<th className="pb-2 pr-3 text-right">CTR</th>
 									<th className="pb-2 pr-3 text-right">Avg Pos</th>
 									<th className="pb-2 text-right">Keywords</th>
+									<th className="pb-2 w-8" />
 								</tr>
 							</thead>
 							<tbody>
@@ -57,6 +65,7 @@ export function ArticlesView({ data }: ArticlesViewProps) {
 										? positions.reduce((s, k) => s + (k.position ?? 0), 0) / positions.length
 										: 0;
 									const articleActions = data.actions.filter((a) => a.articleIds?.includes(article.id));
+									const hub = data.hubs.find((h) => h.id === article.hubId);
 
 									return (
 										<>
@@ -69,7 +78,7 @@ export function ArticlesView({ data }: ArticlesViewProps) {
 													{isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
 												</td>
 												<td className="py-2 pr-3 font-medium">{article.title}</td>
-												<td className="py-2 pr-3"><HubBadge hub={data.hubs.find((h) => h.id === article.hubId)} /></td>
+												<td className="py-2 pr-3"><HubBadge hub={hub} /></td>
 												<td className="py-2 pr-3"><StatusBadge status={article.status} /></td>
 												<td className="py-2 pr-3 text-muted-foreground">{article.publishDate ?? "—"}</td>
 												<td className="py-2 pr-3 text-right">{totalImpr}</td>
@@ -77,10 +86,16 @@ export function ArticlesView({ data }: ArticlesViewProps) {
 												<td className="py-2 pr-3 text-right">{ctr > 0 ? `${ctr.toFixed(1)}%` : "—"}</td>
 												<td className="py-2 pr-3 text-right">{avgPos > 0 ? avgPos.toFixed(1) : "—"}</td>
 												<td className="py-2 text-right">{articleKeywords.length}</td>
+												<td className="py-2">
+													<CopyPromptButton
+														label="Write"
+														prompt={generateArticleWritePrompt(article, data.keywords, hub, activeDomain)}
+													/>
+												</td>
 											</tr>
 											{isExpanded && (
 												<tr key={`${article.id}-detail`}>
-													<td colSpan={10} className="p-4 bg-muted/30">
+													<td colSpan={11} className="p-4 bg-muted/30">
 														<div className="space-y-4">
 															{/* Article metadata */}
 															<div className="grid grid-cols-4 gap-4 text-xs">
@@ -88,6 +103,32 @@ export function ArticlesView({ data }: ArticlesViewProps) {
 																<div><span className="text-muted-foreground">URL: </span>{article.pageUrl ?? "—"}</div>
 																<div><span className="text-muted-foreground">Type: </span>{article.contentType ?? "—"}</div>
 																<div><span className="text-muted-foreground">Words: </span>{article.wordCount ?? "—"}</div>
+															</div>
+
+															{/* File path editable field */}
+															<div className="flex items-center gap-2 text-xs">
+																<span className="text-muted-foreground shrink-0">File path:</span>
+																<input
+																	type="text"
+																	defaultValue={article.filePath ?? ""}
+																	placeholder="e.g. content/blog/my-article.mdx"
+																	className="rounded-md border border-border bg-background px-2 py-1 text-xs text-foreground w-80"
+																	onBlur={(e) => {
+																		const val = e.target.value.trim();
+																		if (val !== (article.filePath ?? "")) {
+																			data.updateArticle({ ...article, filePath: val || undefined });
+																		}
+																	}}
+																/>
+															</div>
+
+															{/* Optimize prompt button */}
+															<div className="flex items-center gap-2">
+																<CopyPromptButton
+																	label="Optimize"
+																	variant="outline"
+																	prompt={generateArticleOptimizePrompt(article, data.keywords, activeDomain)}
+																/>
 															</div>
 
 															{/* Keywords for this article */}

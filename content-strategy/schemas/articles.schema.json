@@ -83,6 +83,16 @@
       "enum": ["high", "medium", "low"],
       "description": "Publishing priority"
     },
+    "filePath": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Local file path to the article content (e.g., /Users/me/blog/posts/best-planner-apps.md)"
+    },
+    "domainId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$",
+      "description": "Reference to domain"
+    },
     "notes": {
       "type": "string",
       "maxLength": 2000,

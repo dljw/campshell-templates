@@ -2,12 +2,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@campshell/ui-componen
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { UseContentStrategyDataReturn } from "../hooks/useContentStrategyData.js";
+import type { Domain } from "../types.js";
 import type { Quadrant } from "../types.js";
 import { QuadrantBadge } from "./QuadrantBadge.js";
 import { KeywordQuadrantChart } from "./KeywordQuadrantChart.js";
+import { CopyPromptButton } from "./CopyPromptButton.js";
+import { generateKeywordActionPrompt, generateMetaRewritePrompt } from "../lib/prompt-generators.js";
 
 interface KeywordsViewProps {
 	data: UseContentStrategyDataReturn;
+	domainId: string | null;
 }
 
 const QUADRANT_OPTIONS: Array<{ value: Quadrant | ""; label: string }> = [
@@ -20,19 +24,24 @@ const QUADRANT_OPTIONS: Array<{ value: Quadrant | ""; label: string }> = [
 	{ value: "dog", label: "Dogs" },
 ];
 
-export function KeywordsView({ data }: KeywordsViewProps) {
+export function KeywordsView({ data, domainId }: KeywordsViewProps) {
 	const [filter, setFilter] = useState<Quadrant | "">("");
 	const [search, setSearch] = useState("");
 
+	const activeDomain = useMemo(
+		() => data.domains.find((d) => d.id === domainId),
+		[data.domains, domainId],
+	);
+
 	const filtered = useMemo(() => {
-		let kws = data.keywords;
+		let kws = data.keywords.filter((i) => !domainId || i.domainId === domainId);
 		if (filter) kws = kws.filter((k) => k.quadrant === filter);
 		if (search) {
 			const lower = search.toLowerCase();
 			kws = kws.filter((k) => k.term.toLowerCase().includes(lower));
 		}
 		return [...kws].sort((a, b) => (b.impressions ?? 0) - (a.impressions ?? 0));
-	}, [data.keywords, filter, search]);
+	}, [data.keywords, domainId, filter, search]);
 
 	return (
 		<div className="space-y-6">
@@ -53,18 +62,25 @@ export function KeywordsView({ data }: KeywordsViewProps) {
 				<select
 					value={filter}
 					onChange={(e) => setFilter(e.target.value as Quadrant | "")}
-					className="rounded-md border border-border bg-background px-3 py-1.5 text-sm"
+					className="rounded-md border border-border bg-background px-3 py-1.5 text-sm text-foreground"
 				>
 					{QUADRANT_OPTIONS.map((opt) => (
 						<option key={opt.value} value={opt.value}>{opt.label}</option>
 					))}
 				</select>
+				{filter && (
+					<CopyPromptButton
+						label="Action Prompt"
+						variant="outline"
+						prompt={generateKeywordActionPrompt(filter as Quadrant, data.keywords, data.articles, activeDomain)}
+					/>
+				)}
 				<input
 					type="text"
 					placeholder="Search keywords..."
 					value={search}
 					onChange={(e) => setSearch(e.target.value)}
-					className="rounded-md border border-border bg-background px-3 py-1.5 text-sm w-64"
+					className="rounded-md border border-border bg-background px-3 py-1.5 text-sm text-foreground w-64"
 				/>
 				<span className="text-xs text-muted-foreground ml-auto">{filtered.length} keywords</span>
 			</div>
@@ -87,6 +103,7 @@ export function KeywordsView({ data }: KeywordsViewProps) {
 									<th className="pb-2 pr-3 text-right">Position</th>
 									<th className="pb-2 pr-3">Delta</th>
 									<th className="pb-2">Quadrant</th>
+									<th className="pb-2 w-8" />
 								</tr>
 							</thead>
 							<tbody>
@@ -121,6 +138,14 @@ export function KeywordsView({ data }: KeywordsViewProps) {
 												)}
 											</td>
 											<td className="py-2"><QuadrantBadge quadrant={kw.quadrant} /></td>
+											<td className="py-2">
+												{kw.quadrant === "ctr-opportunity" && (
+													<CopyPromptButton
+														label="Meta"
+														prompt={generateMetaRewritePrompt(kw, article, activeDomain)}
+													/>
+												)}
+											</td>
 										</tr>
 									);
 								})}

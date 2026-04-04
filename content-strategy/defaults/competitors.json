@@ -6,11 +6,24 @@
       "domain": "todoist.com",
       "estimatedTraffic": 478000,
       "topPages": [
-        { "url": "/productivity-methods/pomodoro-technique", "traffic": 131000, "keywordsCount": 450 },
-        { "url": "/productivity-methods/eisenhower-matrix", "traffic": 30000, "keywordsCount": 200 }
+        {
+          "url": "/productivity-methods/pomodoro-technique",
+          "traffic": 131000,
+          "keywordsCount": 450
+        },
+        {
+          "url": "/productivity-methods/eisenhower-matrix",
+          "traffic": 30000,
+          "keywordsCount": 200
+        }
       ],
-      "contentThemes": ["productivity methods", "task management", "time management"],
-      "notes": "Dominates productivity methods. Pomodoro page alone drives 131K. Unbeatable on that keyword."
+      "contentThemes": [
+        "productivity methods",
+        "task management",
+        "time management"
+      ],
+      "notes": "Dominates productivity methods. Pomodoro page alone drives 131K. Unbeatable on that keyword.",
+      "domainId": "default"
     },
     {
       "id": "motion",
@@ -18,10 +31,19 @@
       "domain": "usemotion.com",
       "estimatedTraffic": 245000,
       "topPages": [
-        { "url": "/blog/best-ai-assistants", "traffic": 70000, "keywordsCount": 300 }
+        {
+          "url": "/blog/best-ai-assistants",
+          "traffic": 70000,
+          "keywordsCount": 300
+        }
       ],
-      "contentThemes": ["AI scheduling", "AI assistants", "calendar management"],
-      "notes": "Dominates AI listicles. Not ranking for 'AI planner app' specifically."
+      "contentThemes": [
+        "AI scheduling",
+        "AI assistants",
+        "calendar management"
+      ],
+      "notes": "Dominates AI listicles. Not ranking for 'AI planner app' specifically.",
+      "domainId": "default"
     },
     {
       "id": "sunsama",
@@ -29,10 +51,19 @@
       "domain": "sunsama.com",
       "estimatedTraffic": 30000,
       "topPages": [
-        { "url": "/blog/2-2-3-schedule", "traffic": 5300, "keywordsCount": 50 }
+        {
+          "url": "/blog/2-2-3-schedule",
+          "traffic": 5300,
+          "keywordsCount": 50
+        }
       ],
-      "contentThemes": ["work schedules", "productivity guides", "daily planning"],
-      "notes": "Niche productivity guides. 2-2-3 schedule page is their top performer."
+      "contentThemes": [
+        "work schedules",
+        "productivity guides",
+        "daily planning"
+      ],
+      "notes": "Niche productivity guides. 2-2-3 schedule page is their top performer.",
+      "domainId": "default"
     },
     {
       "id": "structured",
@@ -40,10 +71,18 @@
       "domain": "structured.app",
       "estimatedTraffic": 68000,
       "topPages": [
-        { "url": "/", "traffic": 64000, "keywordsCount": 100 }
+        {
+          "url": "/",
+          "traffic": 64000,
+          "keywordsCount": 100
+        }
       ],
-      "contentThemes": ["daily planner", "time blocking"],
-      "notes": "Almost entirely brand/homepage traffic. Minimal blog presence — vulnerable to content competition."
+      "contentThemes": [
+        "daily planner",
+        "time blocking"
+      ],
+      "notes": "Almost entirely brand/homepage traffic. Minimal blog presence \u2014 vulnerable to content competition.",
+      "domainId": "default"
     }
   ]
 }

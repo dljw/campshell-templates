@@ -16,12 +16,23 @@ import type { UseContentStrategyDataReturn } from "../hooks/useContentStrategyDa
 
 interface TrendsViewProps {
 	data: UseContentStrategyDataReturn;
+	domainId: string | null;
 }
 
-export function TrendsView({ data }: TrendsViewProps) {
+export function TrendsView({ data, domainId }: TrendsViewProps) {
+	const filteredCycles = useMemo(
+		() => data.cycles.filter((i) => !domainId || i.domainId === domainId || !i.domainId),
+		[data.cycles, domainId],
+	);
+
+	const filteredKeywords = useMemo(
+		() => data.keywords.filter((i) => !domainId || i.domainId === domainId || !i.domainId),
+		[data.keywords, domainId],
+	);
+
 	// Cycle-over-cycle data for line chart
 	const cycleData = useMemo(() => {
-		return [...data.cycles]
+		return [...filteredCycles]
 			.sort((a, b) => a.cycleDate.localeCompare(b.cycleDate))
 			.map((c) => ({
 				cycle: c.cycleDate,
@@ -30,12 +41,12 @@ export function TrendsView({ data }: TrendsViewProps) {
 				avgPosition: c.sitewide?.avgPosition ?? 0,
 				ctr: c.sitewide?.ctr ?? 0,
 			}));
-	}, [data.cycles]);
+	}, [filteredCycles]);
 
 	// Position distribution
 	const positionBuckets = useMemo(() => {
 		const buckets = { "1-3": 0, "4-10": 0, "11-20": 0, "21-50": 0, "50+": 0 };
-		for (const kw of data.keywords) {
+		for (const kw of filteredKeywords) {
 			const pos = kw.position;
 			if (pos == null || pos === 0) continue;
 			if (pos <= 3) buckets["1-3"]++;
@@ -45,7 +56,7 @@ export function TrendsView({ data }: TrendsViewProps) {
 			else buckets["50+"]++;
 		}
 		return Object.entries(buckets).map(([range, count]) => ({ range, count }));
-	}, [data.keywords]);
+	}, [filteredKeywords]);
 
 	// CTR by position bucket
 	const ctrByPosition = useMemo(() => {
@@ -56,7 +67,7 @@ export function TrendsView({ data }: TrendsViewProps) {
 			"21-50": { totalCtr: 0, count: 0 },
 			"50+": { totalCtr: 0, count: 0 },
 		};
-		for (const kw of data.keywords) {
+		for (const kw of filteredKeywords) {
 			const pos = kw.position;
 			if (pos == null || pos === 0 || kw.ctr == null) continue;
 			let bucket: string;
@@ -72,20 +83,20 @@ export function TrendsView({ data }: TrendsViewProps) {
 			range,
 			avgCtr: count > 0 ? Math.round((totalCtr / count) * 100) / 100 : 0,
 		}));
-	}, [data.keywords]);
+	}, [filteredKeywords]);
 
 	// Quadrant trend across cycles
 	const quadrantTrend = useMemo(() => {
-		return [...data.cycles]
+		return [...filteredCycles]
 			.sort((a, b) => a.cycleDate.localeCompare(b.cycleDate))
 			.filter((c) => c.quadrantCounts)
 			.map((c) => ({
 				cycle: c.cycleDate,
 				...c.quadrantCounts,
 			}));
-	}, [data.cycles]);
+	}, [filteredCycles]);
 
-	const hasData = data.cycles.length > 0 || data.keywords.length > 0;
+	const hasData = filteredCycles.length > 0 || filteredKeywords.length > 0;
 
 	if (!hasData) {
 		return (

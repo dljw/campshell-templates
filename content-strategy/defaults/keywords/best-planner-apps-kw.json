@@ -5,7 +5,7 @@
   "articleId": "best-planner-apps",
   "searchVolume": 3600,
   "keywordDifficulty": 22,
-  "cpc": 2.50,
+  "cpc": 2.5,
   "intent": "commercial",
   "targetSection": "Title & intro",
   "occurrences": 5,
@@ -14,5 +14,6 @@
   "ctr": 0,
   "position": 21.5,
   "quadrant": "long-term-target",
-  "status": "tracking"
+  "status": "tracking",
+  "domainId": "default"
 }

@@ -1,12 +1,16 @@
 import { Card, CardContent } from "@campshell/ui-components";
 import { useMemo, useState } from "react";
 import type { UseContentStrategyDataReturn } from "../hooks/useContentStrategyData.js";
-import type { ActionStatus, ActionType } from "../types.js";
+import type { ActionStatus, ActionType, Domain } from "../types.js";
+import { generateActionExecutePrompt } from "../lib/prompt-generators.js";
+import { CopyPromptButton } from "./CopyPromptButton.js";
 import { StatusBadge } from "./StatusBadge.js";
 import { PriorityBadge } from "./PriorityBadge.js";
 
 interface ActionsViewProps {
 	data: UseContentStrategyDataReturn;
+	domainId: string | null;
+	activeDomain: Domain | undefined;
 }
 
 const TYPE_LABELS: Record<ActionType, string> = {
@@ -20,16 +24,16 @@ const TYPE_LABELS: Record<ActionType, string> = {
 	other: "Other",
 };
 
-export function ActionsView({ data }: ActionsViewProps) {
+export function ActionsView({ data, domainId, activeDomain }: ActionsViewProps) {
 	const [statusFilter, setStatusFilter] = useState<ActionStatus | "">("");
 	const [typeFilter, setTypeFilter] = useState<ActionType | "">("");
 
 	const filtered = useMemo(() => {
-		let actions = data.actions;
+		let actions = data.actions.filter((i) => !domainId || i.domainId === domainId);
 		if (statusFilter) actions = actions.filter((a) => a.status === statusFilter);
 		if (typeFilter) actions = actions.filter((a) => a.type === typeFilter);
 		return [...actions].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-	}, [data.actions, statusFilter, typeFilter]);
+	}, [data.actions, domainId, statusFilter, typeFilter]);
 
 	return (
 		<div className="space-y-4">
@@ -40,7 +44,7 @@ export function ActionsView({ data }: ActionsViewProps) {
 				<select
 					value={statusFilter}
 					onChange={(e) => setStatusFilter(e.target.value as ActionStatus | "")}
-					className="rounded-md border border-border bg-background px-3 py-1.5 text-sm"
+					className="rounded-md border border-border bg-background px-3 py-1.5 text-sm text-foreground"
 				>
 					<option value="">All Statuses</option>
 					<option value="planned">Planned</option>
@@ -52,7 +56,7 @@ export function ActionsView({ data }: ActionsViewProps) {
 				<select
 					value={typeFilter}
 					onChange={(e) => setTypeFilter(e.target.value as ActionType | "")}
-					className="rounded-md border border-border bg-background px-3 py-1.5 text-sm"
+					className="rounded-md border border-border bg-background px-3 py-1.5 text-sm text-foreground"
 				>
 					<option value="">All Types</option>
 					{Object.entries(TYPE_LABELS).map(([value, label]) => (
@@ -77,7 +81,8 @@ export function ActionsView({ data }: ActionsViewProps) {
 										<th className="pb-2 pr-3">Description</th>
 										<th className="pb-2 pr-3">Articles</th>
 										<th className="pb-2 pr-3">Expected</th>
-										<th className="pb-2">Outcome</th>
+										<th className="pb-2 pr-3">Outcome</th>
+										<th className="pb-2" />
 									</tr>
 								</thead>
 								<tbody>
@@ -89,7 +94,7 @@ export function ActionsView({ data }: ActionsViewProps) {
 											<tr key={action.id} className="border-b border-border/20">
 												<td className="py-2 pr-3">
 													<span className="text-xs text-muted-foreground">
-														{action.type ? TYPE_LABELS[action.type] ?? action.type : "—"}
+														{action.type ? TYPE_LABELS[action.type] ?? action.type : "\u2014"}
 													</span>
 												</td>
 												<td className="py-2 pr-3"><StatusBadge status={action.status} /></td>
@@ -98,12 +103,12 @@ export function ActionsView({ data }: ActionsViewProps) {
 													<span className="line-clamp-2">{action.description}</span>
 												</td>
 												<td className="py-2 pr-3 text-xs text-muted-foreground">
-													{affectedArticles.map((a) => a.slug).join(", ") || "—"}
+													{affectedArticles.map((a) => a.slug).join(", ") || "\u2014"}
 												</td>
 												<td className="py-2 pr-3 text-xs text-muted-foreground">
 													{action.expectedOutcome?.metric
 														? `${action.expectedOutcome.metric} ${action.expectedOutcome.direction ?? ""}`
-														: "—"}
+														: "\u2014"}
 												</td>
 												<td className="py-2 text-xs">
 													{action.actualOutcome ? (
@@ -113,6 +118,11 @@ export function ActionsView({ data }: ActionsViewProps) {
 													) : (
 														<span className="text-muted-foreground">Pending</span>
 													)}
+												</td>
+												<td className="py-2 pl-2">
+													<CopyPromptButton
+														prompt={generateActionExecutePrompt(action, data.articles, data.keywords, activeDomain)}
+													/>
 												</td>
 											</tr>
 										);

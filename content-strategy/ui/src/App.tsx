@@ -5,12 +5,12 @@ import {
 	GitBranch,
 	LayoutList,
 	Search,
-	Target,
 	Zap,
 } from "lucide-react";
 import { useState } from "react";
 import type { UseContentStrategyDataReturn } from "./hooks/useContentStrategyData.js";
 import { ConnectionStatus } from "./components/ConnectionStatus.js";
+import { DomainPicker } from "./components/DomainPicker.js";
 import { OverviewView } from "./components/OverviewView.js";
 import { PipelineView } from "./components/PipelineView.js";
 import { KeywordsView } from "./components/KeywordsView.js";
@@ -37,20 +37,29 @@ const TABS: Array<{ id: Tab; label: string; icon: React.ReactNode }> = [
 
 export function App({ data }: AppProps) {
 	const [tab, setTab] = useState<Tab>("overview");
+	const [activeDomainId, setActiveDomainId] = useState<string | null>(null);
+
+	const activeDomain = data.domains.find((d) => d.id === activeDomainId);
 
 	return (
 		<div className="flex flex-col h-full bg-background text-foreground">
 			{/* Header */}
-			<header className="flex items-center px-6 py-3 border-b border-border/40 shrink-0 gap-6">
+			<header className="flex items-center px-6 py-3 border-b border-border/40 shrink-0 gap-4">
 				<h1 className="text-base font-semibold tracking-tight">Content Strategy</h1>
-				<nav className="flex items-center gap-1">
+				<DomainPicker
+					domains={data.domains}
+					activeDomainId={activeDomainId}
+					onSelect={setActiveDomainId}
+					onUpdateDomains={data.updateDomains}
+				/>
+				<nav className="flex items-center gap-1 ml-auto">
 					{TABS.map((t) => (
 						<Button
 							key={t.id}
 							variant={tab === t.id ? "secondary" : "ghost"}
 							size="sm"
 							onClick={() => setTab(t.id)}
-							className="gap-1.5"
+							className="gap-1.5 text-foreground"
 						>
 							{t.icon}
 							<span className="hidden sm:inline">{t.label}</span>
@@ -62,13 +71,13 @@ export function App({ data }: AppProps) {
 			{/* Content */}
 			<main className="flex-1 overflow-auto p-6">
 				<div className="max-w-7xl mx-auto">
-					{tab === "overview" && <OverviewView data={data} />}
-					{tab === "pipeline" && <PipelineView data={data} />}
-					{tab === "keywords" && <KeywordsView data={data} />}
-					{tab === "articles" && <ArticlesView data={data} />}
-					{tab === "trends" && <TrendsView data={data} />}
-					{tab === "actions" && <ActionsView data={data} />}
-					{tab === "hubs" && <HubsView data={data} />}
+					{tab === "overview" && <OverviewView data={data} domainId={activeDomainId} activeDomain={activeDomain} />}
+					{tab === "pipeline" && <PipelineView data={data} domainId={activeDomainId} />}
+					{tab === "keywords" && <KeywordsView data={data} domainId={activeDomainId} />}
+					{tab === "articles" && <ArticlesView data={data} domainId={activeDomainId} activeDomain={activeDomain} />}
+					{tab === "trends" && <TrendsView data={data} domainId={activeDomainId} />}
+					{tab === "actions" && <ActionsView data={data} domainId={activeDomainId} activeDomain={activeDomain} />}
+					{tab === "hubs" && <HubsView data={data} domainId={activeDomainId} />}
 				</div>
 			</main>
 

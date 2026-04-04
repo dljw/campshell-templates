@@ -25,21 +25,99 @@
     "dogs": 48
   },
   "pageSnapshots": [
-    { "pageUrl": "/blog/best-planner-apps/", "impressions": 624, "clicks": 1, "ctr": 0.16, "position": 36.29, "indexed": true },
-    { "pageUrl": "/blog/time-blocking-software/", "impressions": 99, "clicks": 0, "ctr": 0, "position": 52.98, "indexed": true },
-    { "pageUrl": "/blog/planner-apps-adhd/", "impressions": 45, "clicks": 0, "ctr": 0, "position": 17.73, "indexed": true },
-    { "pageUrl": "/", "impressions": 34, "clicks": 6, "ctr": 5.66, "position": 31.09, "indexed": true },
-    { "pageUrl": "/blog/daily-planner-guide/", "impressions": 20, "clicks": 1, "ctr": 5, "position": 33.3, "indexed": true },
-    { "pageUrl": "/blog/weekly-planner-guide/", "impressions": 17, "clicks": 0, "ctr": 0, "position": 14.59, "indexed": true }
+    {
+      "pageUrl": "/blog/best-planner-apps/",
+      "impressions": 624,
+      "clicks": 1,
+      "ctr": 0.16,
+      "position": 36.29,
+      "indexed": true
+    },
+    {
+      "pageUrl": "/blog/time-blocking-software/",
+      "impressions": 99,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 52.98,
+      "indexed": true
+    },
+    {
+      "pageUrl": "/blog/planner-apps-adhd/",
+      "impressions": 45,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 17.73,
+      "indexed": true
+    },
+    {
+      "pageUrl": "/",
+      "impressions": 34,
+      "clicks": 6,
+      "ctr": 5.66,
+      "position": 31.09,
+      "indexed": true
+    },
+    {
+      "pageUrl": "/blog/daily-planner-guide/",
+      "impressions": 20,
+      "clicks": 1,
+      "ctr": 5,
+      "position": 33.3,
+      "indexed": true
+    },
+    {
+      "pageUrl": "/blog/weekly-planner-guide/",
+      "impressions": 17,
+      "clicks": 0,
+      "ctr": 0,
+      "position": 14.59,
+      "indexed": true
+    }
   ],
   "querySnapshots": [
-    { "query": "best planner apps", "impressions": 30, "clicks": 0, "position": 21.5, "pageUrl": "/blog/best-planner-apps/" },
-    { "query": "planner app", "impressions": 25, "clicks": 0, "position": 38.2, "pageUrl": "/blog/best-planner-apps/" },
-    { "query": "adhd planner app", "impressions": 15, "clicks": 0, "position": 18.5, "pageUrl": "/blog/planner-apps-adhd/" },
-    { "query": "daily planner app", "impressions": 12, "clicks": 0, "position": 35.1, "pageUrl": "/blog/daily-planner-guide/" },
-    { "query": "weekly planner", "impressions": 10, "clicks": 0, "position": 14.59, "pageUrl": "/blog/weekly-planner-guide/" }
+    {
+      "query": "best planner apps",
+      "impressions": 30,
+      "clicks": 0,
+      "position": 21.5,
+      "pageUrl": "/blog/best-planner-apps/"
+    },
+    {
+      "query": "planner app",
+      "impressions": 25,
+      "clicks": 0,
+      "position": 38.2,
+      "pageUrl": "/blog/best-planner-apps/"
+    },
+    {
+      "query": "adhd planner app",
+      "impressions": 15,
+      "clicks": 0,
+      "position": 18.5,
+      "pageUrl": "/blog/planner-apps-adhd/"
+    },
+    {
+      "query": "daily planner app",
+      "impressions": 12,
+      "clicks": 0,
+      "position": 35.1,
+      "pageUrl": "/blog/daily-planner-guide/"
+    },
+    {
+      "query": "weekly planner",
+      "impressions": 10,
+      "clicks": 0,
+      "position": 14.59,
+      "pageUrl": "/blog/weekly-planner-guide/"
+    }
   ],
-  "notIndexedPages": ["/blog/monthly-planner-guide/", "/blog/smart-goals-time-management/", "/blog/daily-planning-routine/", "/blog/pomodoro-technique/"],
+  "notIndexedPages": [
+    "/blog/monthly-planner-guide/",
+    "/blog/smart-goals-time-management/",
+    "/blog/daily-planning-routine/",
+    "/blog/pomodoro-technique/"
+  ],
   "cannibalizationWarnings": 2,
-  "notes": "First GSC analysis cycle. Site in early growth phase — 5,283% impression growth from base. Inflection point Mar 19 when best-planner-apps indexed."
+  "notes": "First GSC analysis cycle. Site in early growth phase \u2014 5,283% impression growth from base. Inflection point Mar 19 when best-planner-apps indexed.",
+  "domainId": "default"
 }

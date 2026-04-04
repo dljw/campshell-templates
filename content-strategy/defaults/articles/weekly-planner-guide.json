@@ -11,5 +11,6 @@
   "wordCount": 2400,
   "publishDate": "2026-03-08",
   "phase": "phase-1",
-  "priority": "medium"
+  "priority": "medium",
+  "domainId": "default"
 }
