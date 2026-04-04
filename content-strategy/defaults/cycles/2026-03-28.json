@@ -1,0 +1,45 @@
+{
+  "id": "2026-03-28",
+  "createdAt": "2026-03-28T12:00:00.000Z",
+  "cycleDate": "2026-03-28",
+  "periodStart": "2026-02-26",
+  "periodEnd": "2026-03-25",
+  "sitewide": {
+    "impressions": 858,
+    "clicks": 8,
+    "ctr": 0.93,
+    "avgPosition": 35.2
+  },
+  "dailyTrend": {
+    "firstHalfAvg": 1.2,
+    "secondHalfAvg": 64.6,
+    "trajectory": "growing",
+    "last7dAvg": 64.6
+  },
+  "quadrantCounts": {
+    "stars": 0,
+    "quickWins": 0,
+    "ctrOpportunities": 2,
+    "longTermTargets": 5,
+    "earlySignals": 4,
+    "dogs": 48
+  },
+  "pageSnapshots": [
+    { "pageUrl": "/blog/best-planner-apps/", "impressions": 624, "clicks": 1, "ctr": 0.16, "position": 36.29, "indexed": true },
+    { "pageUrl": "/blog/time-blocking-software/", "impressions": 99, "clicks": 0, "ctr": 0, "position": 52.98, "indexed": true },
+    { "pageUrl": "/blog/planner-apps-adhd/", "impressions": 45, "clicks": 0, "ctr": 0, "position": 17.73, "indexed": true },
+    { "pageUrl": "/", "impressions": 34, "clicks": 6, "ctr": 5.66, "position": 31.09, "indexed": true },
+    { "pageUrl": "/blog/daily-planner-guide/", "impressions": 20, "clicks": 1, "ctr": 5, "position": 33.3, "indexed": true },
+    { "pageUrl": "/blog/weekly-planner-guide/", "impressions": 17, "clicks": 0, "ctr": 0, "position": 14.59, "indexed": true }
+  ],
+  "querySnapshots": [
+    { "query": "best planner apps", "impressions": 30, "clicks": 0, "position": 21.5, "pageUrl": "/blog/best-planner-apps/" },
+    { "query": "planner app", "impressions": 25, "clicks": 0, "position": 38.2, "pageUrl": "/blog/best-planner-apps/" },
+    { "query": "adhd planner app", "impressions": 15, "clicks": 0, "position": 18.5, "pageUrl": "/blog/planner-apps-adhd/" },
+    { "query": "daily planner app", "impressions": 12, "clicks": 0, "position": 35.1, "pageUrl": "/blog/daily-planner-guide/" },
+    { "query": "weekly planner", "impressions": 10, "clicks": 0, "position": 14.59, "pageUrl": "/blog/weekly-planner-guide/" }
+  ],
+  "notIndexedPages": ["/blog/monthly-planner-guide/", "/blog/smart-goals-time-management/", "/blog/daily-planning-routine/", "/blog/pomodoro-technique/"],
+  "cannibalizationWarnings": 2,
+  "notes": "First GSC analysis cycle. Site in early growth phase — 5,283% impression growth from base. Inflection point Mar 19 when best-planner-apps indexed."
+}

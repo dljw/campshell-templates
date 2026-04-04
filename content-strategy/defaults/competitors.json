@@ -1,0 +1,49 @@
+{
+  "competitors": [
+    {
+      "id": "todoist",
+      "createdAt": "2026-03-19T00:00:00.000Z",
+      "domain": "todoist.com",
+      "estimatedTraffic": 478000,
+      "topPages": [
+        { "url": "/productivity-methods/pomodoro-technique", "traffic": 131000, "keywordsCount": 450 },
+        { "url": "/productivity-methods/eisenhower-matrix", "traffic": 30000, "keywordsCount": 200 }
+      ],
+      "contentThemes": ["productivity methods", "task management", "time management"],
+      "notes": "Dominates productivity methods. Pomodoro page alone drives 131K. Unbeatable on that keyword."
+    },
+    {
+      "id": "motion",
+      "createdAt": "2026-03-19T00:00:00.000Z",
+      "domain": "usemotion.com",
+      "estimatedTraffic": 245000,
+      "topPages": [
+        { "url": "/blog/best-ai-assistants", "traffic": 70000, "keywordsCount": 300 }
+      ],
+      "contentThemes": ["AI scheduling", "AI assistants", "calendar management"],
+      "notes": "Dominates AI listicles. Not ranking for 'AI planner app' specifically."
+    },
+    {
+      "id": "sunsama",
+      "createdAt": "2026-03-19T00:00:00.000Z",
+      "domain": "sunsama.com",
+      "estimatedTraffic": 30000,
+      "topPages": [
+        { "url": "/blog/2-2-3-schedule", "traffic": 5300, "keywordsCount": 50 }
+      ],
+      "contentThemes": ["work schedules", "productivity guides", "daily planning"],
+      "notes": "Niche productivity guides. 2-2-3 schedule page is their top performer."
+    },
+    {
+      "id": "structured",
+      "createdAt": "2026-03-19T00:00:00.000Z",
+      "domain": "structured.app",
+      "estimatedTraffic": 68000,
+      "topPages": [
+        { "url": "/", "traffic": 64000, "keywordsCount": 100 }
+      ],
+      "contentThemes": ["daily planner", "time blocking"],
+      "notes": "Almost entirely brand/homepage traffic. Minimal blog presence — vulnerable to content competition."
+    }
+  ]
+}

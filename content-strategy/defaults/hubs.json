@@ -1,0 +1,40 @@
+{
+  "hubs": [
+    {
+      "id": "planning-cadence",
+      "createdAt": "2026-03-19T00:00:00.000Z",
+      "name": "Planning Cadence",
+      "description": "Daily, weekly, and monthly planning guides with tool recommendations",
+      "pillarArticleId": "daily-planner-guide",
+      "color": "blue",
+      "status": "active"
+    },
+    {
+      "id": "ai-planner",
+      "createdAt": "2026-03-19T00:00:00.000Z",
+      "name": "AI Planner",
+      "description": "AI-powered planning tools and comparisons — blue ocean SERP opportunity",
+      "pillarArticleId": null,
+      "color": "purple",
+      "status": "planning"
+    },
+    {
+      "id": "productivity-methods",
+      "createdAt": "2026-03-19T00:00:00.000Z",
+      "name": "Productivity Methods",
+      "description": "Time blocking, pomodoro, SMART goals, and daily routines",
+      "pillarArticleId": null,
+      "color": "green",
+      "status": "planning"
+    },
+    {
+      "id": "niche-audiences",
+      "createdAt": "2026-03-19T00:00:00.000Z",
+      "name": "Niche Audiences",
+      "description": "Targeted content for specific user segments (ADHD, executives, students)",
+      "pillarArticleId": "planner-apps-adhd",
+      "color": "orange",
+      "status": "active"
+    }
+  ]
+}

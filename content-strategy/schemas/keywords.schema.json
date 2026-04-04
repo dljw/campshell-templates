@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "content-strategy/keywords.schema.json",
+  "type": "object",
+  "required": ["id", "createdAt", "term"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "term": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Keyword phrase"
+    },
+    "articleId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$",
+      "description": "Article targeting this keyword"
+    },
+    "searchVolume": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Monthly search volume"
+    },
+    "keywordDifficulty": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Keyword difficulty score 0-100"
+    },
+    "cpc": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Cost per click in USD"
+    },
+    "intent": {
+      "type": "string",
+      "enum": ["informational", "navigational", "commercial", "transactional"],
+      "description": "Search intent classification"
+    },
+    "targetSection": {
+      "type": "string",
+      "maxLength": 300,
+      "description": "Where in the article this keyword should appear"
+    },
+    "occurrences": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Times keyword appears in content"
+    },
+    "impressions": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "GSC impressions (updated per cycle)"
+    },
+    "clicks": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "GSC clicks (updated per cycle)"
+    },
+    "ctr": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "GSC click-through rate percentage"
+    },
+    "position": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 999,
+      "description": "GSC average position"
+    },
+    "previousPosition": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 999,
+      "description": "Position from previous cycle for delta tracking"
+    },
+    "quadrant": {
+      "type": "string",
+      "enum": ["star", "quick-win", "ctr-opportunity", "long-term-target", "early-signal", "dog"],
+      "description": "Performance quadrant classification"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["tracking", "paused", "achieved"],
+      "description": "Tracking status"
+    }
+  },
+  "additionalProperties": false
+}

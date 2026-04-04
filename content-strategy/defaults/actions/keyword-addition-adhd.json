@@ -1,0 +1,17 @@
+{
+  "id": "keyword-addition-adhd",
+  "createdAt": "2026-03-28T12:00:00.000Z",
+  "cycleId": "2026-03-28",
+  "type": "keyword-addition",
+  "status": "done",
+  "priority": "high",
+  "description": "Added 8 zero-KD ADHD keywords to planner-apps-adhd article (adhd daily planner, adhd planner app, best planner for adhd, etc.)",
+  "articleIds": ["planner-apps-adhd"],
+  "expectedOutcome": {
+    "metric": "impressions",
+    "direction": "improve",
+    "baselineValue": 45,
+    "watchQueries": ["adhd planner app", "adhd daily planner", "best planner for adhd"]
+  },
+  "actualOutcome": null
+}

@@ -9,15 +9,13 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "rootDir": "src"
   },
-  "files": [],
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"],
   "references": [
-    { "path": "kanban" },
-    { "path": "brain-vault" },
-    { "path": "seo-tracker" },
-    { "path": "budget-tracker" },
-    { "path": "habit-tracker" },
-    { "path": "content-strategy" }
+    { "path": "../../camp-shell/packages/core" }
   ]
 }

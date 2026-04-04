@@ -1,0 +1,95 @@
+{
+  "name": "content-strategy",
+  "version": "1.0.0",
+  "displayName": "Content Strategy",
+  "description": "Plan content, measure GSC performance, optimize with data-driven cycles, and track outcomes",
+  "author": { "name": "campshell" },
+  "license": "MIT",
+  "category": "marketing",
+  "tags": [],
+  "emoji": "📝",
+  "dataDir": "data/content-strategy",
+  "schemas": {
+    "articles": "schemas/articles.schema.json",
+    "keywords": "schemas/keywords.schema.json",
+    "hubs": "schemas/hubs.schema.json",
+    "cycles": "schemas/cycles.schema.json",
+    "actions": "schemas/actions.schema.json",
+    "competitors": "schemas/competitors.schema.json"
+  },
+  "storage": {
+    "articles": {
+      "pattern": "one-per-file",
+      "directory": "articles",
+      "fileNamePattern": "{id}.json"
+    },
+    "keywords": {
+      "pattern": "one-per-file",
+      "directory": "keywords",
+      "fileNamePattern": "{id}.json"
+    },
+    "hubs": {
+      "pattern": "collection",
+      "file": "hubs.json"
+    },
+    "cycles": {
+      "pattern": "one-per-file",
+      "directory": "cycles",
+      "fileNamePattern": "{id}.json"
+    },
+    "actions": {
+      "pattern": "one-per-file",
+      "directory": "actions",
+      "fileNamePattern": "{id}.json"
+    },
+    "competitors": {
+      "pattern": "collection",
+      "file": "competitors.json"
+    }
+  },
+  "queries": {
+    "articles": {
+      "filterable": ["status", "contentType", "hubId", "phase", "priority"],
+      "sortable": ["title", "scheduledDate", "publishDate", "createdAt"],
+      "searchable": ["title", "slug", "primaryKeyword", "notes"],
+      "defaultSort": { "field": "scheduledDate", "order": "asc" }
+    },
+    "keywords": {
+      "filterable": ["articleId", "intent", "quadrant", "status"],
+      "sortable": ["term", "searchVolume", "keywordDifficulty", "impressions", "position", "createdAt"],
+      "searchable": ["term"],
+      "defaultSort": { "field": "impressions", "order": "desc" }
+    },
+    "cycles": {
+      "sortable": ["cycleDate", "createdAt"],
+      "defaultSort": { "field": "cycleDate", "order": "desc" }
+    },
+    "actions": {
+      "filterable": ["status", "type", "priority", "cycleId"],
+      "sortable": ["createdAt", "priority"],
+      "searchable": ["description"],
+      "defaultSort": { "field": "createdAt", "order": "desc" }
+    }
+  },
+  "relationships": {
+    "keywords.articleId": { "entity": "articles", "type": "one" },
+    "articles.hubId": { "entity": "hubs", "type": "one" },
+    "actions.cycleId": { "entity": "cycles", "type": "one" },
+    "actions.articleIds": { "entity": "articles", "type": "many" },
+    "hubs.pillarArticleId": { "entity": "articles", "type": "one" }
+  },
+  "ui": {
+    "framework": "react",
+    "entry": "ui/dist/content-strategy-ui.js",
+    "route": "/content-strategy",
+    "routes": [
+      { "id": "overview", "label": "Overview", "path": "/content-strategy" },
+      { "id": "pipeline", "label": "Pipeline", "path": "/content-strategy/pipeline" },
+      { "id": "keywords", "label": "Keywords", "path": "/content-strategy/keywords" },
+      { "id": "articles", "label": "Articles", "path": "/content-strategy/articles" },
+      { "id": "trends", "label": "Trends", "path": "/content-strategy/trends" },
+      { "id": "actions", "label": "Actions", "path": "/content-strategy/actions" },
+      { "id": "hubs", "label": "Hubs", "path": "/content-strategy/hubs" }
+    ]
+  }
+}

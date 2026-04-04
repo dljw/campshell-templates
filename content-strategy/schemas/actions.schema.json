@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "content-strategy/actions.schema.json",
+  "type": "object",
+  "required": ["id", "createdAt", "description", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cycleId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$",
+      "description": "GSC cycle that triggered this action"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["keyword-addition", "meta-rewrite", "content-expansion", "internal-linking", "cannibalization-fix", "technical", "new-content", "other"],
+      "description": "Action category"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "in-progress", "done", "deferred", "cancelled"],
+      "description": "Action status"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Action priority"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000,
+      "description": "What needs to be done"
+    },
+    "articleIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]{2,36}$"
+      },
+      "description": "Affected articles"
+    },
+    "expectedOutcome": {
+      "type": "object",
+      "properties": {
+        "metric": {
+          "type": "string",
+          "enum": ["position", "ctr", "impressions", "clicks", "new-query", "consolidation"]
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["improve", "maintain"]
+        },
+        "baselineValue": {
+          "type": "number"
+        },
+        "watchQueries": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false,
+      "description": "What we expect to happen"
+    },
+    "actualOutcome": {
+      "type": ["object", "null"],
+      "properties": {
+        "metric": { "type": "string" },
+        "beforeValue": { "type": "number" },
+        "afterValue": { "type": "number" },
+        "measuredAt": { "type": "string", "format": "date" },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "additionalProperties": false,
+      "description": "What actually happened (filled in next cycle)"
+    },
+    "deferredReason": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Why this action was deferred"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,17 @@
+{
+  "id": "meta-rewrite-weekly",
+  "createdAt": "2026-03-28T12:00:00.000Z",
+  "cycleId": "2026-03-28",
+  "type": "meta-rewrite",
+  "status": "done",
+  "priority": "medium",
+  "description": "Rewrote meta description for weekly-planner-guide: generic → specific with 5 steps, 1-3-5 method, downloadable PDFs",
+  "articleIds": ["weekly-planner-guide"],
+  "expectedOutcome": {
+    "metric": "ctr",
+    "direction": "improve",
+    "baselineValue": 0,
+    "watchQueries": ["weekly planner", "weekly planner template"]
+  },
+  "actualOutcome": null
+}
