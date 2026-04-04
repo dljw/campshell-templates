@@ -1,0 +1,73 @@
+{
+  "onboarding": {
+    "title": "Welcome to SEO Tracker",
+    "subtitle": "Track keywords, pages, backlinks, competitors, and technical issues",
+    "sampleDataDescription": "We've added 3 pages, 3 keywords, 2 backlinks, 2 competitors, and 2 technical issues as examples.",
+    "steps": [
+      {
+        "icon": "🔑",
+        "title": "Track keywords",
+        "description": "Monitor keyword positions, search volume, and difficulty. See how rankings change over time."
+      },
+      {
+        "icon": "📄",
+        "title": "Manage pages & issues",
+        "description": "Track your content pages through their lifecycle and flag technical SEO issues by priority."
+      },
+      {
+        "icon": "🤖",
+        "title": "Use your AI agent",
+        "description": "Ask your agent to add keywords, log backlinks, or report on your SEO performance."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "A comprehensive SEO monitoring tool for tracking keyword rankings, page performance, backlink profiles, competitor analysis, and technical issues.",
+    "concepts": [
+      {
+        "name": "Keywords",
+        "description": "Search terms you're targeting — track position, volume, difficulty, and search intent.",
+        "icon": "🔑"
+      },
+      {
+        "name": "Pages",
+        "description": "Your content pages with status tracking (planned, drafting, published) and performance metrics.",
+        "icon": "📄"
+      },
+      {
+        "name": "Backlinks",
+        "description": "Incoming links from external sites — track source, anchor text, link type, and domain authority.",
+        "icon": "🔗"
+      },
+      {
+        "name": "Competitors",
+        "description": "Competing domains with estimated traffic, authority scores, and top keywords.",
+        "icon": "🏁"
+      },
+      {
+        "name": "Issues",
+        "description": "Technical SEO problems (speed, mobile, indexing, security) prioritized by severity.",
+        "icon": "⚠️"
+      }
+    ],
+    "prompts": [
+      "Add a keyword: 'product management tool', search volume 2400, difficulty 45",
+      "Show all keywords with position worse than 20",
+      "Create an issue: slow page load on /blog, priority high, type speed",
+      "List all backlinks from domain authority above 50"
+    ],
+    "tips": [
+      "Keywords link to pages — set the pageId field to associate a keyword with its target page",
+      "Track position changes by updating the position field and noting the previousPosition",
+      "Issues support a status workflow: open → in-progress → resolved"
+    ]
+  },
+  "emptyStates": {
+    "keywords": {
+      "icon": "🔍",
+      "title": "No keywords tracked yet",
+      "description": "Start by adding the keywords you want to rank for. Your AI agent can help you build your keyword list.",
+      "suggestedPrompt": "Add these keywords: 'project management tool' (volume 5400), 'team collaboration software' (volume 3200)"
+    }
+  }
+}

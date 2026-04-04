@@ -1,0 +1,63 @@
+{
+  "onboarding": {
+    "title": "Welcome to Habit Tracker",
+    "subtitle": "Build and maintain daily habits with streaks and progress tracking",
+    "sampleDataDescription": "We've added 6 sample habits with completion records and 5 categories to show you how tracking works.",
+    "steps": [
+      {
+        "icon": "✅",
+        "title": "Define your habits",
+        "description": "Create habits with a name, frequency (daily or weekly), emoji, and target goals."
+      },
+      {
+        "icon": "🔥",
+        "title": "Track completions & streaks",
+        "description": "Mark habits as done each day. Your streaks and completion history are tracked automatically."
+      },
+      {
+        "icon": "🤖",
+        "title": "Use your AI agent",
+        "description": "Ask your agent to create habits, log completions, or show your streak stats."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "A habit tracking system with daily checklists, streak counting, calendar heatmaps, and progress analytics. Organize habits by category and frequency.",
+    "concepts": [
+      {
+        "name": "Habits",
+        "description": "The behaviors you want to track — each has a name, frequency, emoji, and belongs to a category.",
+        "icon": "🎯"
+      },
+      {
+        "name": "Completions",
+        "description": "Records of when you completed a habit on a specific date. These build your streaks and stats.",
+        "icon": "✅"
+      },
+      {
+        "name": "Categories",
+        "description": "Groups like Health, Mindfulness, and Learning to organize your habits.",
+        "icon": "📂"
+      }
+    ],
+    "prompts": [
+      "Create a habit: meditate for 10 minutes every morning",
+      "Mark today's meditation as complete",
+      "Show my current streaks for all habits",
+      "What's my completion rate for this week?"
+    ],
+    "tips": [
+      "Each habit is a JSON file in habits/ — completions go in completions/ with the naming pattern {habitId}-{date}.json",
+      "Categories are defined in categories.json — add your own to organize habits your way",
+      "Streaks are computed from completion records, so consistent logging is key"
+    ]
+  },
+  "emptyStates": {
+    "habits": {
+      "icon": "✅",
+      "title": "No habits yet",
+      "description": "Start by defining the habits you want to build. Your AI agent can help you set them up.",
+      "suggestedPrompt": "Create these habits: exercise 30min daily, read 20 pages daily, drink 8 glasses of water"
+    }
+  }
+}

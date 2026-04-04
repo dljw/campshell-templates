@@ -77,5 +77,6 @@
       { "id": "budgets", "label": "Budgets", "path": "/budget-tracker/budgets" },
       { "id": "categories", "label": "Categories", "path": "/budget-tracker/categories" }
     ]
-  }
+  },
+  "guide": "guide.json"
 }

@@ -42,5 +42,6 @@
       "type": "many"
     }
   },
-  "_generated": "b73f97fbb820f722"
+  "_generated": "b73f97fbb820f722",
+  "guide": "guide.json"
 }

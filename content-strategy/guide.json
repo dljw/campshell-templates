@@ -1,0 +1,75 @@
+{
+  "onboarding": {
+    "title": "Welcome to Content Strategy",
+    "subtitle": "Plan content, track performance, and optimize with data-driven cycles",
+    "sampleDataDescription": "We've set up 5 articles, 3 keywords, 4 content hubs, 1 GSC cycle, 2 actions, and 2 competitors as examples.",
+    "steps": [
+      {
+        "icon": "📝",
+        "title": "Plan your content",
+        "description": "Organize articles into hubs (pillar/cluster), track through a pipeline from idea to published, and set priorities."
+      },
+      {
+        "icon": "📊",
+        "title": "Track & optimize",
+        "description": "Import GSC data to measure keyword performance, identify quick wins, and create optimization actions."
+      },
+      {
+        "icon": "🤖",
+        "title": "Use your AI agent",
+        "description": "Ask your agent to plan articles, import GSC data, analyze performance, or suggest next actions."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "A comprehensive content planning and SEO optimization tool. Manage your content pipeline, import Google Search Console data, classify keywords by quadrant, and track optimization actions with measurable outcomes.",
+    "concepts": [
+      {
+        "name": "Articles",
+        "description": "Content pieces tracked through a pipeline: idea → planned → drafting → review → published → optimizing. Organized into hubs.",
+        "icon": "📄"
+      },
+      {
+        "name": "Keywords",
+        "description": "Search terms with GSC metrics (impressions, clicks, CTR, position). Auto-classified into quadrants: star, quick-win, CTR opportunity, or long-term target.",
+        "icon": "🔑"
+      },
+      {
+        "name": "Hubs",
+        "description": "Content clusters with a pillar article and supporting cluster articles. Think topic authority architecture.",
+        "icon": "🏛️"
+      },
+      {
+        "name": "Cycles",
+        "description": "Periodic GSC data snapshots with sitewide metrics, daily trends, and cannibalization warnings.",
+        "icon": "🔄"
+      },
+      {
+        "name": "Actions",
+        "description": "Optimization tasks (meta rewrites, content expansion, internal linking) with expected vs. actual outcomes.",
+        "icon": "⚡"
+      }
+    ],
+    "prompts": [
+      "Create a new pillar article plan for 'remote work productivity'",
+      "Show me all quick-win keywords with position between 5-15",
+      "What actions are in progress and when were they started?",
+      "List all articles in the planning hub that need to move to drafting"
+    ],
+    "tips": [
+      "Articles belong to hubs — set the hubId field to organize content into pillar/cluster architecture",
+      "Keywords are auto-classified into quadrants based on position, impressions, and CTR thresholds",
+      "Cycles capture point-in-time GSC snapshots — create a new cycle each time you import fresh data",
+      "Actions track before/after metrics so you can measure the impact of your optimizations",
+      "Multi-domain support: use domains.json and domainId fields to track content across multiple sites"
+    ]
+  },
+  "emptyStates": {
+    "articles": {
+      "icon": "📝",
+      "title": "No articles yet",
+      "description": "Start planning your content strategy. Add articles and organize them into topic hubs.",
+      "suggestedPrompt": "Plan 3 articles for a hub about 'remote work': a pillar guide and 2 cluster articles"
+    }
+  }
+}

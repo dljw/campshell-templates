@@ -15,7 +15,8 @@
     "hubs": "schemas/hubs.schema.json",
     "cycles": "schemas/cycles.schema.json",
     "actions": "schemas/actions.schema.json",
-    "competitors": "schemas/competitors.schema.json"
+    "competitors": "schemas/competitors.schema.json",
+    "domains": "schemas/domains.schema.json"
   },
   "storage": {
     "articles": {
@@ -45,17 +46,21 @@
     "competitors": {
       "pattern": "collection",
       "file": "competitors.json"
+    },
+    "domains": {
+      "pattern": "collection",
+      "file": "domains.json"
     }
   },
   "queries": {
     "articles": {
-      "filterable": ["status", "contentType", "hubId", "phase", "priority"],
+      "filterable": ["status", "contentType", "hubId", "phase", "priority", "domainId"],
       "sortable": ["title", "scheduledDate", "publishDate", "createdAt"],
       "searchable": ["title", "slug", "primaryKeyword", "notes"],
       "defaultSort": { "field": "scheduledDate", "order": "asc" }
     },
     "keywords": {
-      "filterable": ["articleId", "intent", "quadrant", "status"],
+      "filterable": ["articleId", "intent", "quadrant", "status", "domainId"],
       "sortable": ["term", "searchVolume", "keywordDifficulty", "impressions", "position", "createdAt"],
       "searchable": ["term"],
       "defaultSort": { "field": "impressions", "order": "desc" }
@@ -65,7 +70,7 @@
       "defaultSort": { "field": "cycleDate", "order": "desc" }
     },
     "actions": {
-      "filterable": ["status", "type", "priority", "cycleId"],
+      "filterable": ["status", "type", "priority", "cycleId", "domainId"],
       "sortable": ["createdAt", "priority"],
       "searchable": ["description"],
       "defaultSort": { "field": "createdAt", "order": "desc" }
@@ -76,7 +81,11 @@
     "articles.hubId": { "entity": "hubs", "type": "one" },
     "actions.cycleId": { "entity": "cycles", "type": "one" },
     "actions.articleIds": { "entity": "articles", "type": "many" },
-    "hubs.pillarArticleId": { "entity": "articles", "type": "one" }
+    "hubs.pillarArticleId": { "entity": "articles", "type": "one" },
+    "articles.domainId": { "entity": "domains", "type": "one" },
+    "keywords.domainId": { "entity": "domains", "type": "one" },
+    "cycles.domainId": { "entity": "domains", "type": "one" },
+    "actions.domainId": { "entity": "domains", "type": "one" }
   },
   "ui": {
     "framework": "react",
@@ -91,5 +100,6 @@
       { "id": "actions", "label": "Actions", "path": "/content-strategy/actions" },
       { "id": "hubs", "label": "Hubs", "path": "/content-strategy/hubs" }
     ]
-  }
+  },
+  "guide": "guide.json"
 }

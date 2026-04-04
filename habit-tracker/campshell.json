@@ -58,5 +58,6 @@
       { "id": "stats", "label": "Stats", "path": "/habit-tracker/stats" },
       { "id": "categories", "label": "Categories", "path": "/habit-tracker/categories" }
     ]
-  }
+  },
+  "guide": "guide.json"
 }

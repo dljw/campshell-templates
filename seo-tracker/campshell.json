@@ -87,5 +87,6 @@
       "type": "one"
     }
   },
-  "_generated": "77abb4326c244677"
+  "_generated": "77abb4326c244677",
+  "guide": "guide.json"
 }

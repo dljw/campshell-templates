@@ -1,0 +1,58 @@
+{
+  "onboarding": {
+    "title": "Welcome to Kanban",
+    "subtitle": "Organize tasks into workflow columns",
+    "sampleDataDescription": "We've set up 5 columns and 3 sample cards so you can see how it works.",
+    "steps": [
+      {
+        "icon": "📋",
+        "title": "Create cards",
+        "description": "Add tasks with titles, priorities, due dates, and labels. Each card is its own JSON file."
+      },
+      {
+        "icon": "🔄",
+        "title": "Move across columns",
+        "description": "Drag cards through workflow stages — Backlog, To Do, In Progress, Review, and Done."
+      },
+      {
+        "icon": "🤖",
+        "title": "Use your AI agent",
+        "description": "Ask your agent to add tasks, move cards, or show you what's due this week."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "A visual task board with customizable columns and drag-and-drop card management. Perfect for tracking projects, sprints, or personal to-dos.",
+    "concepts": [
+      {
+        "name": "Cards",
+        "description": "Individual tasks with title, priority, due date, assignee, and labels. Stored as separate JSON files in the cards/ directory.",
+        "icon": "🃏"
+      },
+      {
+        "name": "Columns",
+        "description": "Workflow stages that cards move through. Defined in a single columns.json file — add or reorder stages anytime.",
+        "icon": "📊"
+      }
+    ],
+    "prompts": [
+      "Add these tasks to my board: design homepage, write docs, set up CI",
+      "Move all high-priority cards to the In Progress column",
+      "Show me all cards due this week",
+      "Create a new column called 'Blocked' between In Progress and Review"
+    ],
+    "tips": [
+      "Cards are stored as individual JSON files in the cards/ directory — easy to create or edit directly",
+      "Columns are defined in columns.json — you can add custom workflow stages or change colors",
+      "Use labels to categorize cards across columns (e.g., 'bug', 'feature', 'docs')"
+    ]
+  },
+  "emptyStates": {
+    "card": {
+      "icon": "📋",
+      "title": "No cards yet",
+      "description": "Create your first task to get started with your Kanban board.",
+      "suggestedPrompt": "Add a task: design the homepage, high priority, due Friday"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "onboarding": {
+    "title": "Welcome to Brain Vault",
+    "subtitle": "Your personal knowledge base for capturing and connecting ideas",
+    "sampleDataDescription": "We've added 5 sample notes (journal, meeting notes, book reviews) and 4 tags to show you how it works.",
+    "steps": [
+      {
+        "icon": "📝",
+        "title": "Capture everything",
+        "description": "Create notes for journals, meetings, book reviews, research, or anything else. Write in Markdown."
+      },
+      {
+        "icon": "🔗",
+        "title": "Connect your knowledge",
+        "description": "Link related notes together and use tags to organize by topic. Build your personal knowledge graph."
+      },
+      {
+        "icon": "🤖",
+        "title": "Use your AI agent",
+        "description": "Ask your agent to create notes, summarize ideas, or find connections between your entries."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "A Markdown-native knowledge base for capturing daily journals, meeting notes, book reviews, and research. Link notes together and organize with tags and note types.",
+    "concepts": [
+      {
+        "name": "Notes",
+        "description": "Individual knowledge entries with Markdown content. Types include daily journal, meeting notes, book review, project, research, and more.",
+        "icon": "📝"
+      },
+      {
+        "name": "Tags",
+        "description": "Color-coded labels for organizing notes by topic — productivity, research, personal, work, etc.",
+        "icon": "🏷️"
+      }
+    ],
+    "prompts": [
+      "Create a book review note for 'Atomic Habits' with a 9/10 rating",
+      "Write a daily journal entry for today",
+      "Show all notes tagged 'research'",
+      "Link my meeting notes to the project plan note"
+    ],
+    "tips": [
+      "Notes support Markdown formatting — use headers, lists, and code blocks in the content field",
+      "Pin important notes by setting pinned: true so they appear at the top",
+      "Link notes together using the linkedNoteIds field to build a knowledge graph",
+      "Action items can be embedded in meeting notes with task, owner, and done fields"
+    ]
+  },
+  "emptyStates": {
+    "notes": {
+      "icon": "📓",
+      "title": "No notes yet",
+      "description": "Start capturing your ideas, meeting notes, or journal entries. Every piece of knowledge has a home here.",
+      "suggestedPrompt": "Create a daily journal entry for today — what I'm working on and key decisions"
+    }
+  }
+}

@@ -32,5 +32,6 @@
   "relationships": {
     "card.column": { "entity": "column", "type": "one" }
   },
-  "ui": { "framework": "react", "entry": "index.tsx", "route": "/kanban" }
+  "ui": { "framework": "react", "entry": "index.tsx", "route": "/kanban" },
+  "guide": "guide.json"
 }

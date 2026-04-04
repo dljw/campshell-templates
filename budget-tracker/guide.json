@@ -1,0 +1,68 @@
+{
+  "onboarding": {
+    "title": "Welcome to Budget Tracker",
+    "subtitle": "Manage your accounts, transactions, and budgets in one place",
+    "sampleDataDescription": "We've set up 6 accounts, 5 sample transactions, 3 budgets, and 8 spending categories to get you started.",
+    "steps": [
+      {
+        "icon": "🏦",
+        "title": "Set up accounts",
+        "description": "Add your bank accounts, credit cards, and cash accounts. Track balances across all of them."
+      },
+      {
+        "icon": "💳",
+        "title": "Record transactions",
+        "description": "Log deposits, withdrawals, and transfers. Categorize spending and track against your budgets."
+      },
+      {
+        "icon": "🤖",
+        "title": "Use your AI agent",
+        "description": "Ask your agent to record transactions, check balances, or see how you're doing against your budgets."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "A personal finance tracker with double-entry accounting, budget progress monitoring, and spending categorization. Supports multiple accounts and transfer tracking.",
+    "concepts": [
+      {
+        "name": "Accounts",
+        "description": "Bank accounts, credit cards, cash, and other financial accounts with real-time balances.",
+        "icon": "🏦"
+      },
+      {
+        "name": "Transactions",
+        "description": "Deposits, withdrawals, and transfers between accounts. Each is categorized and dated.",
+        "icon": "💳"
+      },
+      {
+        "name": "Budgets",
+        "description": "Monthly or weekly spending limits per category. Track how much you've spent vs. your target.",
+        "icon": "📊"
+      },
+      {
+        "name": "Categories",
+        "description": "Spending categories like Groceries, Housing, Dining, and Entertainment for organizing transactions.",
+        "icon": "🏷️"
+      }
+    ],
+    "prompts": [
+      "Record a transaction: $45.50 at Whole Foods, category Groceries, from checking account",
+      "Show my budget status for this month",
+      "Transfer $500 from checking to savings",
+      "What are my top spending categories this month?"
+    ],
+    "tips": [
+      "Accounts are stored in accounts/ — each transaction references source and destination accounts",
+      "Budgets track spending per category over a time period (monthly, weekly, or yearly)",
+      "Tags in tags.json let you add extra labels like 'recurring' or 'one-time' to transactions"
+    ]
+  },
+  "emptyStates": {
+    "accounts": {
+      "icon": "💰",
+      "title": "No accounts yet",
+      "description": "Start by setting up your accounts — checking, savings, credit cards, or cash.",
+      "suggestedPrompt": "Set up my accounts: checking account with $2,500, savings with $10,000, Visa credit card with $500 balance"
+    }
+  }
+}
