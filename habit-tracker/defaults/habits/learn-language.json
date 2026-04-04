@@ -1,0 +1,11 @@
+{
+  "id": "learn-language",
+  "createdAt": "2026-01-01T00:00:00.000Z",
+  "name": "Language Practice",
+  "description": "Practice a new language for at least 15 minutes",
+  "emoji": "\ud83c\udf0d",
+  "color": "orange",
+  "frequency": "weekly",
+  "target": 3,
+  "categoryId": "learning"
+}

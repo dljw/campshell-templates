@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "habit-tracker/habits.schema.json",
+  "type": "object",
+  "required": ["id", "createdAt", "name", "frequency"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Habit display name"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Optional details about the habit"
+    },
+    "emoji": {
+      "type": "string",
+      "maxLength": 10,
+      "description": "Emoji icon for the habit"
+    },
+    "color": {
+      "type": "string",
+      "enum": ["red", "orange", "yellow", "green", "blue", "purple", "pink", "gray"],
+      "description": "Display color"
+    },
+    "frequency": {
+      "type": "string",
+      "enum": ["daily", "weekly", "custom"],
+      "description": "How often the habit should be completed"
+    },
+    "target": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 31,
+      "description": "Target completions per period (e.g., 3 times per week)"
+    },
+    "categoryId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$",
+      "description": "Reference to a category"
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "Whether the habit is archived"
+    }
+  },
+  "additionalProperties": false
+}

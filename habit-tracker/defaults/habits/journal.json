@@ -1,0 +1,10 @@
+{
+  "id": "journal",
+  "createdAt": "2026-01-01T00:00:00.000Z",
+  "name": "Evening Journal",
+  "description": "Reflect on the day and write in your journal",
+  "emoji": "\ud83d\udcdd",
+  "color": "purple",
+  "frequency": "daily",
+  "categoryId": "mindfulness"
+}

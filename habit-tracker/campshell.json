@@ -1,0 +1,62 @@
+{
+  "name": "habit-tracker",
+  "version": "1.0.0",
+  "displayName": "Habit Tracker",
+  "description": "Track daily and weekly habits with streaks, heatmaps, and completion insights",
+  "author": { "name": "campshell" },
+  "license": "MIT",
+  "category": "productivity",
+  "tags": [],
+  "emoji": "✅",
+  "dataDir": "data/habit-tracker",
+  "schemas": {
+    "habits": "schemas/habits.schema.json",
+    "completions": "schemas/completions.schema.json",
+    "categories": "schemas/categories.schema.json"
+  },
+  "storage": {
+    "habits": {
+      "pattern": "one-per-file",
+      "directory": "habits",
+      "fileNamePattern": "{id}.json"
+    },
+    "completions": {
+      "pattern": "one-per-file",
+      "directory": "completions",
+      "fileNamePattern": "{id}.json"
+    },
+    "categories": {
+      "pattern": "collection",
+      "file": "categories.json"
+    }
+  },
+  "queries": {
+    "habits": {
+      "filterable": ["frequency", "categoryId", "archived"],
+      "sortable": ["name", "createdAt"],
+      "searchable": ["name", "description"],
+      "defaultSort": { "field": "name", "order": "asc" }
+    },
+    "completions": {
+      "filterable": ["habitId", "date"],
+      "sortable": ["date", "createdAt"],
+      "defaultSort": { "field": "date", "order": "desc" }
+    }
+  },
+  "relationships": {
+    "habits.categoryId": { "entity": "categories", "type": "one" },
+    "completions.habitId": { "entity": "habits", "type": "one" }
+  },
+  "ui": {
+    "framework": "react",
+    "entry": "ui/dist/habit-tracker-ui.js",
+    "route": "/habit-tracker",
+    "routes": [
+      { "id": "today", "label": "Today", "path": "/habit-tracker" },
+      { "id": "calendar", "label": "Calendar", "path": "/habit-tracker/calendar" },
+      { "id": "habits", "label": "Habits", "path": "/habit-tracker/habits" },
+      { "id": "stats", "label": "Stats", "path": "/habit-tracker/stats" },
+      { "id": "categories", "label": "Categories", "path": "/habit-tracker/categories" }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "read-30-min",
+  "createdAt": "2026-01-01T00:00:00.000Z",
+  "name": "Read 30 Minutes",
+  "description": "Read a book for at least 30 minutes",
+  "emoji": "\ud83d\udcd6",
+  "color": "blue",
+  "frequency": "daily",
+  "categoryId": "learning"
+}

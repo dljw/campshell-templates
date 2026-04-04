@@ -1,0 +1,9 @@
+{
+  "categories": [
+    { "id": "health", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Health & Fitness", "emoji": "\ud83d\udcaa", "color": "green" },
+    { "id": "mindfulness", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Mindfulness", "emoji": "\ud83e\uddd8", "color": "purple" },
+    { "id": "learning", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Learning", "emoji": "\ud83d\udcda", "color": "blue" },
+    { "id": "productivity", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Productivity", "emoji": "\u26a1", "color": "yellow" },
+    { "id": "self-care", "createdAt": "2026-01-01T00:00:00.000Z", "name": "Self Care", "emoji": "\ud83c\udf3f", "color": "pink" }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "exercise",
+  "createdAt": "2026-01-01T00:00:00.000Z",
+  "name": "Exercise",
+  "description": "At least 30 minutes of physical activity",
+  "emoji": "\ud83c\udfcb\ufe0f",
+  "color": "green",
+  "frequency": "daily",
+  "categoryId": "health"
+}

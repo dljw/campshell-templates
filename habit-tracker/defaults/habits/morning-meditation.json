@@ -1,0 +1,10 @@
+{
+  "id": "morning-meditation",
+  "createdAt": "2026-01-01T00:00:00.000Z",
+  "name": "Morning Meditation",
+  "description": "Start the day with 10 minutes of mindfulness",
+  "emoji": "\ud83e\uddd8",
+  "color": "purple",
+  "frequency": "daily",
+  "categoryId": "mindfulness"
+}

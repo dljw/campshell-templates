@@ -1,0 +1,10 @@
+{
+  "id": "drink-water",
+  "createdAt": "2026-01-01T00:00:00.000Z",
+  "name": "Drink 8 Glasses of Water",
+  "description": "Stay hydrated throughout the day",
+  "emoji": "\ud83d\udca7",
+  "color": "blue",
+  "frequency": "daily",
+  "categoryId": "health"
+}
