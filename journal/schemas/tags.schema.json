@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "journal/tags.schema.json",
+  "type": "object",
+  "required": [
+    "tags"
+  ],
+  "properties": {
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{2,36}$"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "Tag name"
+          },
+          "emoji": {
+            "type": "string",
+            "maxLength": 10,
+            "description": "Tag emoji"
+          },
+          "color": {
+            "type": "string",
+            "enum": [
+              "red",
+              "orange",
+              "yellow",
+              "green",
+              "blue",
+              "purple",
+              "pink",
+              "gray"
+            ],
+            "description": "Tag color"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "_generated": "6959b3d32ec51da1"
+}

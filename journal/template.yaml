@@ -1,0 +1,225 @@
+name: journal
+displayName: Journal
+emoji: "🌸"
+category: personal
+description: A cozy daily journal with mood tracking, gratitude lists, and writing prompts
+
+entities:
+  entries:
+    storage: one-per-file
+    layout: card-grid
+    fields:
+      title:
+        type: string
+        required: true
+        max: 300
+        description: Entry title
+      content:
+        type: string
+        max: 100000
+        description: Markdown body — your diary entry
+      date:
+        type: date
+        required: true
+        description: The date this entry is about
+      mood:
+        type: enum
+        values: [amazing, good, okay, meh, rough]
+        description: How you felt today
+      moodEmoji:
+        type: string
+        max: 10
+        description: A custom emoji representing your mood
+      energy:
+        type: enum
+        values: [high, medium, low]
+        description: Your energy level
+      tagIds:
+        type: ref[]
+        entity: tags
+        max_items: 10
+        description: Tags for organization
+      gratitude:
+        type: string[]
+        max_items: 10
+        description: Things you are grateful for today
+      promptUsed:
+        type: string
+        max: 500
+        description: The writing prompt that inspired this entry
+      weather:
+        type: enum
+        values: [sunny, cloudy, rainy, snowy, stormy, windy]
+        description: What the weather was like
+      highlight:
+        type: string
+        max: 500
+        description: One-sentence highlight of the day
+      pinned:
+        type: boolean
+        description: Pin your favorite entries
+
+  tags:
+    storage: collection
+    file: tags.json
+    fields:
+      name:
+        type: string
+        required: true
+        max: 50
+        description: Tag name
+      emoji:
+        type: string
+        max: 10
+        description: Tag emoji
+      color:
+        type: enum
+        values: [red, orange, yellow, green, blue, purple, pink, gray]
+        description: Tag color
+
+  prompts:
+    storage: collection
+    file: prompts.json
+    fields:
+      text:
+        type: string
+        required: true
+        max: 500
+        description: The writing prompt
+      category:
+        type: enum
+        values: [reflection, gratitude, creativity, growth, memory, dream, fun]
+        description: Prompt category
+
+defaults:
+  tags:
+    - name: personal
+      emoji: "💜"
+      color: purple
+    - name: work
+      emoji: "💼"
+      color: blue
+    - name: travel
+      emoji: "✈️"
+      color: orange
+    - name: dreams
+      emoji: "🌙"
+      color: purple
+    - name: gratitude
+      emoji: "✨"
+      color: yellow
+    - name: milestone
+      emoji: "🎉"
+      color: pink
+    - name: cozy
+      emoji: "☕"
+      color: orange
+
+  prompts:
+    - text: "What made you smile today?"
+      category: reflection
+    - text: "A small moment that felt big?"
+      category: reflection
+    - text: "Three things you are grateful for?"
+      category: gratitude
+    - text: "What would your ideal tomorrow be?"
+      category: growth
+    - text: "A memory that surfaced today?"
+      category: memory
+    - text: "If today were a color, which one?"
+      category: creativity
+    - text: "Something you learned this week?"
+      category: growth
+    - text: "Your most interesting dream lately?"
+      category: dream
+    - text: "Write a letter to your future self."
+      category: growth
+    - text: "What song matches your mood now?"
+      category: fun
+    - text: "One hour of today you would relive?"
+      category: reflection
+    - text: "A kind thing someone did for you?"
+      category: gratitude
+    - text: "Describe your happy place."
+      category: creativity
+    - text: "A challenge you are proud of?"
+      category: growth
+    - text: "What are you looking forward to?"
+      category: fun
+
+  entries:
+    - title: "Welcome to Your Journal"
+      date: "2026-04-04"
+      mood: amazing
+      moodEmoji: "🌸"
+      energy: high
+      tagIds:
+        - "$ref:tags[0]"
+      pinned: true
+      gratitude:
+        - "Starting this journaling journey"
+        - "Having a quiet moment to write"
+        - "Hot tea on a cool evening"
+      highlight: "Today I started my journal and it already feels like a good idea."
+      content: |
+        ## Hello, Journal!
+
+        This is your cozy corner for daily reflections, dreams, and everything in between.
+
+        ### How it works
+
+        - **Write freely** — each entry is your space. Use the title, mood, and content however feels natural.
+        - **Track your mood** — pick from amazing / good / okay / meh / rough, or add a custom emoji.
+        - **Gratitude list** — jot down things you appreciate. Even tiny ones count.
+        - **Writing prompts** — stuck? Grab a prompt from the Prompts tab for inspiration.
+        - **Tags** — organize entries by theme: personal, work, travel, dreams, and more.
+
+        ### Tips
+
+        - There is no right way to journal. Short entries count just as much as long ones.
+        - Try the "highlight" field for a one-sentence summary of your day.
+        - Look back at your mood calendar to notice patterns over time.
+
+    - title: "The Perfect Rainy Afternoon"
+      date: "2026-04-03"
+      mood: good
+      moodEmoji: "🌧️"
+      energy: medium
+      tagIds:
+        - "$ref:tags[0]"
+        - "$ref:tags[6]"
+      weather: rainy
+      gratitude:
+        - "The sound of rain on the window"
+        - "A good book to read"
+        - "Homemade soup for lunch"
+      highlight: "Spent the afternoon reading by the window while it rained."
+      promptUsed: "Describe your happy place in detail."
+      content: |
+        Rainy days are secretly the best days. There is something about the sound of rain that makes everything feel slower and softer.
+
+        Made tomato soup from scratch today — the kitchen smelled amazing. Then curled up by the window with my book and just... existed. No agenda, no rush.
+
+        My happy place, honestly, might just be this: a warm drink, rain outside, and nowhere to be.
+
+    - title: "Monday Reset"
+      date: "2026-04-01"
+      mood: okay
+      moodEmoji: "💪"
+      energy: medium
+      tagIds:
+        - "$ref:tags[1]"
+      weather: sunny
+      gratitude:
+        - "Fresh start to the week"
+        - "Morning coffee with a friend"
+      highlight: "Set intentions for the week and felt cautiously optimistic."
+      content: |
+        New week, new energy. Well... medium energy. But that is okay.
+
+        Set three intentions for the week:
+        1. Be more present during conversations
+        2. Take a walk every day, even a short one
+        3. Write in this journal at least three times
+
+        The morning coffee catch-up with Jamie was great. We talked about travel plans and it made me excited for summer.

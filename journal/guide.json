@@ -1,0 +1,84 @@
+{
+  "onboarding": {
+    "title": "Welcome to Your Journal 🌸",
+    "subtitle": "A cozy space for daily reflections, mood tracking, and gratitude",
+    "sampleDataDescription": "We've added 3 sample entries, 7 tags, and 15 writing prompts to help you get started.",
+    "steps": [
+      {
+        "icon": "✍️",
+        "title": "Write your first entry",
+        "description": "Capture your thoughts, mood, and gratitude. There's no wrong way to journal — even a sentence counts."
+      },
+      {
+        "icon": "✨",
+        "title": "Track your mood",
+        "description": "Pick a mood for each entry and watch patterns emerge on your Calendar and Moods pages."
+      },
+      {
+        "icon": "💡",
+        "title": "Get inspired by prompts",
+        "description": "Stuck on what to write? Visit the Prompts tab for daily writing prompts across 7 categories."
+      },
+      {
+        "icon": "🤖",
+        "title": "Use your AI journaling companion",
+        "description": "Ask your agent to create entries, suggest prompts, or summarize how your mood has been lately."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "A daily journal with mood tracking, gratitude lists, writing prompts, and tag-based organization. Track mood patterns on the Calendar and Moods views. Use the AI agent to journal conversationally.",
+    "concepts": [
+      {
+        "name": "Entries",
+        "description": "Your diary entries with mood, highlight, content, gratitude list, tags, and more.",
+        "icon": "📓"
+      },
+      {
+        "name": "Tags",
+        "description": "Color-coded labels like personal 💜, work 💼, travel ✈️, dreams 🌙 to organize entries.",
+        "icon": "🏷️"
+      },
+      {
+        "name": "Prompts",
+        "description": "Writing prompts across 7 categories — reflection, gratitude, creativity, growth, memory, dream, and fun.",
+        "icon": "💡"
+      }
+    ],
+    "prompts": [
+      "Write a journal entry about my day — how I'm feeling and what happened",
+      "How has my mood been this week?",
+      "Give me a writing prompt for tonight",
+      "I'm feeling anxious — help me journal about it",
+      "Summarize my recent gratitude entries",
+      "What was my mood streak this month?"
+    ],
+    "tips": [
+      "Short entries count — even a mood pick and one sentence is valuable over time",
+      "Use the Gratitude field to list 1–3 things each day, no matter how small",
+      "Check the Moods tab to spot patterns you might not notice day-to-day",
+      "Grab a random prompt from the Prompts tab when you don't know what to write",
+      "Pin your favorite or most meaningful entries to keep them at the top"
+    ]
+  },
+  "emptyStates": {
+    "entries": {
+      "icon": "🌸",
+      "title": "Your journal is waiting",
+      "description": "Start with today. How are you feeling? What happened? Even a few words count.",
+      "suggestedPrompt": "Write a journal entry for today — how I'm feeling and one thing I'm grateful for"
+    },
+    "tags": {
+      "icon": "🏷️",
+      "title": "No tags yet",
+      "description": "Tags help you organize entries by theme. Add some to get started.",
+      "suggestedPrompt": "Add a few journal tags like personal, work, and travel"
+    },
+    "prompts": {
+      "icon": "💡",
+      "title": "No prompts yet",
+      "description": "Writing prompts inspire your entries. Add some or ask your agent to generate a few.",
+      "suggestedPrompt": "Add 5 writing prompts for a daily journal covering reflection, gratitude, and creativity"
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "prompts": [
+    {
+      "id": "what-made-you-smile-today",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "What made you smile today?",
+      "category": "reflection"
+    },
+    {
+      "id": "a-small-moment-that-felt-big",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "A small moment that felt big?",
+      "category": "reflection"
+    },
+    {
+      "id": "three-things-you-are-grateful-for",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "Three things you are grateful for?",
+      "category": "gratitude"
+    },
+    {
+      "id": "what-would-your-ideal-tomorrow-be",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "What would your ideal tomorrow be?",
+      "category": "growth"
+    },
+    {
+      "id": "a-memory-that-surfaced-today",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "A memory that surfaced today?",
+      "category": "memory"
+    },
+    {
+      "id": "if-today-were-a-color-which-one",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "If today were a color, which one?",
+      "category": "creativity"
+    },
+    {
+      "id": "something-you-learned-this-week",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "Something you learned this week?",
+      "category": "growth"
+    },
+    {
+      "id": "your-most-interesting-dream-lately",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "Your most interesting dream lately?",
+      "category": "dream"
+    },
+    {
+      "id": "write-a-letter-to-your-future-self",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "Write a letter to your future self.",
+      "category": "growth"
+    },
+    {
+      "id": "what-song-matches-your-mood-now",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "What song matches your mood now?",
+      "category": "fun"
+    },
+    {
+      "id": "one-hour-of-today-you-would-relive",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "One hour of today you would relive?",
+      "category": "reflection"
+    },
+    {
+      "id": "a-kind-thing-someone-did-for-you",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "A kind thing someone did for you?",
+      "category": "gratitude"
+    },
+    {
+      "id": "describe-your-happy-place",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "Describe your happy place.",
+      "category": "creativity"
+    },
+    {
+      "id": "a-challenge-you-are-proud-of",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "A challenge you are proud of?",
+      "category": "growth"
+    },
+    {
+      "id": "what-are-you-looking-forward-to",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "text": "What are you looking forward to?",
+      "category": "fun"
+    }
+  ],
+  "_generated": "c269de68537b6be1"
+}

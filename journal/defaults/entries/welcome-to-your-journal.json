@@ -1,0 +1,21 @@
+{
+  "id": "welcome-to-your-journal",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Welcome to Your Journal",
+  "date": "2026-04-04",
+  "mood": "amazing",
+  "moodEmoji": "🌸",
+  "energy": "high",
+  "tagIds": [
+    "personal"
+  ],
+  "pinned": true,
+  "gratitude": [
+    "Starting this journaling journey",
+    "Having a quiet moment to write",
+    "Hot tea on a cool evening"
+  ],
+  "highlight": "Today I started my journal and it already feels like a good idea.",
+  "content": "## Hello, Journal!\n\nThis is your cozy corner for daily reflections, dreams, and everything in between.\n\n### How it works\n\n- **Write freely** — each entry is your space. Use the title, mood, and content however feels natural.\n- **Track your mood** — pick from amazing / good / okay / meh / rough, or add a custom emoji.\n- **Gratitude list** — jot down things you appreciate. Even tiny ones count.\n- **Writing prompts** — stuck? Grab a prompt from the Prompts tab for inspiration.\n- **Tags** — organize entries by theme: personal, work, travel, dreams, and more.\n\n### Tips\n\n- There is no right way to journal. Short entries count just as much as long ones.\n- Try the \"highlight\" field for a one-sentence summary of your day.\n- Look back at your mood calendar to notice patterns over time.\n",
+  "_generated": "e97c94c3ff2e3b14"
+}

@@ -1,0 +1,48 @@
+{
+  "name": "journal",
+  "version": "1.0.0",
+  "displayName": "Journal",
+  "description": "A cozy daily journal with mood tracking, gratitude lists, and writing prompts",
+  "author": {
+    "name": "campshell"
+  },
+  "license": "MIT",
+  "category": "personal",
+  "tags": [],
+  "emoji": "🌸",
+  "dataDir": "data/journal",
+  "schemas": {
+    "entries": "schemas/entries.schema.json",
+    "tags": "schemas/tags.schema.json",
+    "prompts": "schemas/prompts.schema.json"
+  },
+  "storage": {
+    "entries": {
+      "pattern": "one-per-file",
+      "directory": "entries",
+      "fileNamePattern": "{id}.json"
+    },
+    "tags": {
+      "pattern": "collection",
+      "file": "tags.json"
+    },
+    "prompts": {
+      "pattern": "collection",
+      "file": "prompts.json"
+    }
+  },
+  "queries": {},
+  "ui": {
+    "framework": "react",
+    "entry": "ui/dist/journal-ui.js",
+    "route": "/journal"
+  },
+  "guide": "guide.json",
+  "relationships": {
+    "entries.tagIds": {
+      "entity": "tags",
+      "type": "many"
+    }
+  },
+  "_generated": "30889b205ace8f58"
+}

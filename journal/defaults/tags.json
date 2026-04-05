@@ -1,0 +1,54 @@
+{
+  "tags": [
+    {
+      "id": "personal",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "personal",
+      "emoji": "💜",
+      "color": "purple"
+    },
+    {
+      "id": "work",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "work",
+      "emoji": "💼",
+      "color": "blue"
+    },
+    {
+      "id": "travel",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "travel",
+      "emoji": "✈️",
+      "color": "orange"
+    },
+    {
+      "id": "dreams",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "dreams",
+      "emoji": "🌙",
+      "color": "purple"
+    },
+    {
+      "id": "gratitude",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "gratitude",
+      "emoji": "✨",
+      "color": "yellow"
+    },
+    {
+      "id": "milestone",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "milestone",
+      "emoji": "🎉",
+      "color": "pink"
+    },
+    {
+      "id": "cozy",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "cozy",
+      "emoji": "☕",
+      "color": "orange"
+    }
+  ],
+  "_generated": "f49fbbfbe71d5843"
+}

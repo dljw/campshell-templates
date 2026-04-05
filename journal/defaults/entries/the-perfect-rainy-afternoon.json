@@ -1,0 +1,23 @@
+{
+  "id": "the-perfect-rainy-afternoon",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "The Perfect Rainy Afternoon",
+  "date": "2026-04-03",
+  "mood": "good",
+  "moodEmoji": "🌧️",
+  "energy": "medium",
+  "tagIds": [
+    "personal",
+    "cozy"
+  ],
+  "weather": "rainy",
+  "gratitude": [
+    "The sound of rain on the window",
+    "A good book to read",
+    "Homemade soup for lunch"
+  ],
+  "highlight": "Spent the afternoon reading by the window while it rained.",
+  "promptUsed": "Describe your happy place in detail.",
+  "content": "Rainy days are secretly the best days. There is something about the sound of rain that makes everything feel slower and softer.\n\nMade tomato soup from scratch today — the kitchen smelled amazing. Then curled up by the window with my book and just... existed. No agenda, no rush.\n\nMy happy place, honestly, might just be this: a warm drink, rain outside, and nowhere to be.\n",
+  "_generated": "da0668be4f8b257a"
+}

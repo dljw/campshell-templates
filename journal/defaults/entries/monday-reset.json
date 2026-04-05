@@ -1,0 +1,20 @@
+{
+  "id": "monday-reset",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Monday Reset",
+  "date": "2026-04-01",
+  "mood": "okay",
+  "moodEmoji": "💪",
+  "energy": "medium",
+  "tagIds": [
+    "work"
+  ],
+  "weather": "sunny",
+  "gratitude": [
+    "Fresh start to the week",
+    "Morning coffee with a friend"
+  ],
+  "highlight": "Set intentions for the week and felt cautiously optimistic.",
+  "content": "New week, new energy. Well... medium energy. But that is okay.\n\nSet three intentions for the week:\n1. Be more present during conversations\n2. Take a walk every day, even a short one\n3. Write in this journal at least three times\n\nThe morning coffee catch-up with Jamie was great. We talked about travel plans and it made me excited for summer.\n",
+  "_generated": "8e19dd7bdf36da0e"
+}

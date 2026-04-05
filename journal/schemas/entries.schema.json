@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "journal/entries.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "createdAt",
+    "title",
+    "date"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 300,
+      "description": "Entry title"
+    },
+    "content": {
+      "type": "string",
+      "maxLength": 100000,
+      "description": "Markdown body — your diary entry"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "The date this entry is about"
+    },
+    "mood": {
+      "type": "string",
+      "enum": [
+        "amazing",
+        "good",
+        "okay",
+        "meh",
+        "rough"
+      ],
+      "description": "How you felt today"
+    },
+    "moodEmoji": {
+      "type": "string",
+      "maxLength": 10,
+      "description": "A custom emoji representing your mood"
+    },
+    "energy": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ],
+      "description": "Your energy level"
+    },
+    "tagIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]{2,36}$"
+      },
+      "description": "Array of tags record IDs"
+    },
+    "gratitude": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 10,
+      "description": "Things you are grateful for today"
+    },
+    "promptUsed": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "The writing prompt that inspired this entry"
+    },
+    "weather": {
+      "type": "string",
+      "enum": [
+        "sunny",
+        "cloudy",
+        "rainy",
+        "snowy",
+        "stormy",
+        "windy"
+      ],
+      "description": "What the weather was like"
+    },
+    "highlight": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "One-sentence highlight of the day"
+    },
+    "pinned": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false,
+  "_generated": "2a97d6d47e2bf400"
+}

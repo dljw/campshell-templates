@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "journal/prompts.schema.json",
+  "type": "object",
+  "required": [
+    "prompts"
+  ],
+  "properties": {
+    "prompts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "text"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]{2,36}$"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "The writing prompt"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "reflection",
+              "gratitude",
+              "creativity",
+              "growth",
+              "memory",
+              "dream",
+              "fun"
+            ],
+            "description": "Prompt category"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "_generated": "5b52873abc266860"
+}
