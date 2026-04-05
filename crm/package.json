@@ -1,0 +1,36 @@
+{
+  "name": "@campshell/crm",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "campshell-crm": "./dist/bin/cli.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./ui": {
+      "import": "./ui/dist/crm-ui.js",
+      "types": "./ui/dist/index.d.ts"
+    },
+    "./ui/styles": "./ui/dist/crm-ui.css"
+  },
+  "dependencies": {
+    "@campshell/core": "file:../../camp-shell/packages/core",
+    "commander": "^13.0.0"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.0",
+    "ajv-formats": "^3.0.1",
+    "vitest": "^3.0.0"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "dev": "tsc --build --watch",
+    "test": "tsc --build && vitest run --passWithNoTests",
+    "lint": "biome check src/",
+    "clean": "rm -rf dist .tsbuildinfo tsconfig.tsbuildinfo"
+  }
+}

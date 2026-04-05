@@ -1,0 +1,10 @@
+{
+  "id": "meeting-carol-01",
+  "title": "Kickoff meeting with Carol",
+  "type": "meeting",
+  "contactId": "carol-martinez",
+  "dealId": "startupxyz-onboarding",
+  "date": "2026-03-15T10:00:00.000Z",
+  "notes": "Onboarding plan reviewed and approved",
+  "createdAt": "2026-03-15T10:30:00.000Z"
+}

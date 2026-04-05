@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://campshell.dev/schemas/crm/deals.v1.json",
+  "type": "object",
+  "required": ["id", "title", "stage", "createdAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{8,36}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "contactId": {
+      "type": "string",
+      "description": "Reference to a contact"
+    },
+    "value": {
+      "type": "number",
+      "minimum": 0
+    },
+    "stage": {
+      "type": "string",
+      "enum": ["lead", "proposal", "won", "lost"]
+    },
+    "closeDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 5000
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

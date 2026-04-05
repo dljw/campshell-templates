@@ -1,0 +1,10 @@
+{
+  "id": "call-alice-001",
+  "title": "Discovery call with Alice",
+  "type": "call",
+  "contactId": "alice-johnson",
+  "dealId": "acme-platform",
+  "date": "2026-03-10T14:00:00.000Z",
+  "notes": "Discussed platform requirements and timeline",
+  "createdAt": "2026-03-10T14:30:00.000Z"
+}

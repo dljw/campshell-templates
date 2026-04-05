@@ -1,0 +1,8 @@
+{
+  "id": "alice-johnson",
+  "name": "Alice Johnson",
+  "email": "alice@acme.example.com",
+  "phone": "+1-555-0101",
+  "company": "Acme Corp",
+  "createdAt": "2026-03-01T10:00:00.000Z"
+}

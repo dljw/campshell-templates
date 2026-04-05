@@ -1,0 +1,8 @@
+@import "@campshell/ui-components/globals.css";
+@source ".";
+
+/* No Tailwind preflight — reset native form elements for dark theme */
+input, textarea, select {
+  color: var(--foreground);
+  background-color: transparent;
+}

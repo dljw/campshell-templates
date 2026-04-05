@@ -1,0 +1,10 @@
+{
+  "id": "acme-platform",
+  "title": "Acme Platform License",
+  "contactId": "alice-johnson",
+  "value": 50000,
+  "stage": "proposal",
+  "closeDate": "2026-05-15",
+  "notes": "Discussed requirements in initial call",
+  "createdAt": "2026-03-05T10:00:00.000Z"
+}

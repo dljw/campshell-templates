@@ -1,0 +1,77 @@
+{
+  "onboarding": {
+    "title": "Welcome to CRM",
+    "subtitle": "Track your contacts, deals, and activities",
+    "sampleDataDescription": "We've added 3 contacts, 3 deals, and 3 activities so you can see how it works.",
+    "steps": [
+      {
+        "icon": "\ud83d\udc64",
+        "title": "Add contacts",
+        "description": "Add people you're working with. Just a name is enough to start."
+      },
+      {
+        "icon": "\ud83d\udcbc",
+        "title": "Track deals",
+        "description": "Create deals and move them through your pipeline \u2014 Lead, Proposal, Won, or Lost."
+      },
+      {
+        "icon": "\ud83e\udd16",
+        "title": "Use your AI agent",
+        "description": "Ask your agent to add contacts, log calls, or check your pipeline."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "A minimalist CRM for tracking contacts, deals, and activities. The pipeline board is the center of everything.",
+    "concepts": [
+      {
+        "name": "Contacts",
+        "description": "People you work with. Name, email, company \u2014 that's it.",
+        "icon": "\ud83d\udc64"
+      },
+      {
+        "name": "Deals",
+        "description": "Opportunities moving through Lead \u2192 Proposal \u2192 Won/Lost.",
+        "icon": "\ud83d\udcbc"
+      },
+      {
+        "name": "Activities",
+        "description": "Calls, emails, meetings, and notes tied to contacts and deals.",
+        "icon": "\ud83d\udcdd"
+      }
+    ],
+    "prompts": [
+      "Add a contact: Jane Smith, jane@example.com, works at Acme Corp",
+      "Create a deal: Website redesign, $15,000, contact Jane Smith",
+      "Log a call with Jane about the website deal",
+      "Show me all deals in the proposal stage",
+      "What's the total value of my pipeline?",
+      "Move the Acme deal to won"
+    ],
+    "tips": [
+      "Deals are the center \u2014 the pipeline kanban is your home screen",
+      "Activities create a timeline for each contact and deal",
+      "Company is just a text field on contacts \u2014 no separate entity to manage"
+    ]
+  },
+  "emptyStates": {
+    "deals": {
+      "icon": "\ud83d\udcbc",
+      "title": "No deals yet",
+      "description": "Create your first deal to start building your pipeline.",
+      "suggestedPrompt": "Create a deal: First opportunity, $10,000, lead stage"
+    },
+    "contacts": {
+      "icon": "\ud83d\udc64",
+      "title": "No contacts yet",
+      "description": "Add your first contact to get started.",
+      "suggestedPrompt": "Add a contact: Jane Smith, jane@example.com, Acme Corp"
+    },
+    "activities": {
+      "icon": "\ud83d\udcdd",
+      "title": "No activities yet",
+      "description": "Log your first call, email, or meeting.",
+      "suggestedPrompt": "Log a call with Jane about the website deal"
+    }
+  }
+}

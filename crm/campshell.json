@@ -1,0 +1,58 @@
+{
+  "name": "crm",
+  "version": "1.0.0",
+  "displayName": "CRM",
+  "description": "Minimalist CRM — track contacts, deals, and activities",
+  "author": { "name": "campshell" },
+  "license": "MIT",
+  "category": "business",
+  "tags": [],
+  "emoji": "\ud83e\udd1d",
+  "dataDir": "data/crm",
+  "schemas": {
+    "contacts": "schemas/contacts.schema.json",
+    "deals": "schemas/deals.schema.json",
+    "activities": "schemas/activities.schema.json"
+  },
+  "storage": {
+    "contacts": { "pattern": "one-per-file", "directory": "contacts" },
+    "deals": { "pattern": "one-per-file", "directory": "deals" },
+    "activities": { "pattern": "one-per-file", "directory": "activities" }
+  },
+  "queries": {
+    "contacts": {
+      "filterable": ["company"],
+      "sortable": ["name", "createdAt"],
+      "searchable": ["name", "email", "company"],
+      "defaultSort": { "field": "name", "order": "asc" }
+    },
+    "deals": {
+      "filterable": ["stage", "contactId"],
+      "sortable": ["createdAt", "value", "closeDate"],
+      "searchable": ["title", "notes"],
+      "defaultSort": { "field": "createdAt", "order": "desc" }
+    },
+    "activities": {
+      "filterable": ["type", "contactId", "dealId"],
+      "sortable": ["date", "createdAt"],
+      "searchable": ["title", "notes"],
+      "defaultSort": { "field": "date", "order": "desc" }
+    }
+  },
+  "relationships": {
+    "deals.contactId": { "entity": "contacts", "type": "one" },
+    "activities.contactId": { "entity": "contacts", "type": "one" },
+    "activities.dealId": { "entity": "deals", "type": "one" }
+  },
+  "ui": {
+    "framework": "react",
+    "entry": "ui/dist/crm-ui.js",
+    "route": "/crm",
+    "routes": [
+      { "id": "pipeline", "label": "Pipeline", "path": "/crm" },
+      { "id": "contacts", "label": "Contacts", "path": "/crm/contacts" },
+      { "id": "activity", "label": "Activity", "path": "/crm/activity" }
+    ]
+  },
+  "guide": "guide.json"
+}

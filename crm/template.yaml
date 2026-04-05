@@ -1,0 +1,153 @@
+name: crm
+displayName: CRM
+emoji: "\U0001F91D"
+category: business
+description: Minimalist CRM — track contacts, deals, and activities
+
+entities:
+  contacts:
+    storage: one-per-file
+    layout: card-grid
+    fields:
+      name:
+        type: string
+        required: true
+        max: 200
+        description: Full name of the contact
+      email:
+        type: email
+        description: Contact email address
+      phone:
+        type: string
+        max: 50
+        description: Phone number
+      company:
+        type: string
+        max: 200
+        description: Company or organization name
+      notes:
+        type: string
+        max: 5000
+
+  deals:
+    storage: one-per-file
+    layout: kanban
+    fields:
+      title:
+        type: string
+        required: true
+        max: 300
+        description: Deal name or opportunity title
+      contactId:
+        type: ref
+        entity: contacts
+        description: Primary contact for this deal
+      value:
+        type: number
+        min: 0
+        description: Deal value in dollars
+      stage:
+        type: enum
+        values: [lead, proposal, won, lost]
+        required: true
+        description: Current pipeline stage
+      closeDate:
+        type: date
+        description: Expected or actual close date
+      notes:
+        type: string
+        max: 5000
+
+  activities:
+    storage: one-per-file
+    layout: table-detail
+    fields:
+      title:
+        type: string
+        required: true
+        max: 500
+        description: Brief description of the activity
+      type:
+        type: enum
+        values: [call, email, meeting, note]
+        description: Type of activity
+      contactId:
+        type: ref
+        entity: contacts
+        description: Related contact
+      dealId:
+        type: ref
+        entity: deals
+        description: Related deal
+      date:
+        type: datetime
+        required: true
+        description: When this activity occurred
+      notes:
+        type: string
+        max: 5000
+
+defaults:
+  contacts:
+    - name: Alice Johnson
+      email: alice@acme.example.com
+      phone: "+1-555-0101"
+      company: Acme Corp
+    - name: Bob Chen
+      email: bob@techco.example.com
+      phone: "+1-555-0202"
+      company: TechCo
+    - name: Carol Martinez
+      email: carol@startupxyz.example.com
+      company: StartupXYZ
+
+  deals:
+    - title: Acme Platform License
+      contactId: "$ref:contacts[0]"
+      value: 50000
+      stage: proposal
+      closeDate: "2026-05-15"
+      notes: Discussed requirements in initial call
+    - title: TechCo Integration
+      contactId: "$ref:contacts[1]"
+      value: 25000
+      stage: lead
+    - title: StartupXYZ Onboarding
+      contactId: "$ref:contacts[2]"
+      value: 15000
+      stage: won
+      closeDate: "2026-03-01"
+
+  activities:
+    - title: Discovery call with Alice
+      type: call
+      contactId: "$ref:contacts[0]"
+      dealId: "$ref:deals[0]"
+      date: "2026-03-10T14:00:00.000Z"
+      notes: Discussed platform requirements and timeline
+    - title: Sent proposal to Bob
+      type: email
+      contactId: "$ref:contacts[1]"
+      dealId: "$ref:deals[1]"
+      date: "2026-03-12T09:30:00.000Z"
+      notes: Initial pricing document attached
+    - title: Kickoff meeting with Carol
+      type: meeting
+      contactId: "$ref:contacts[2]"
+      dealId: "$ref:deals[2]"
+      date: "2026-03-15T10:00:00.000Z"
+      notes: Onboarding plan reviewed and approved
+
+views:
+  - id: pipeline
+    label: Pipeline
+    path: /crm
+    entities: [deals]
+  - id: contacts
+    label: Contacts
+    path: /crm/contacts
+    entities: [contacts]
+  - id: activity
+    label: Activity
+    path: /crm/activity
+    entities: [activities]

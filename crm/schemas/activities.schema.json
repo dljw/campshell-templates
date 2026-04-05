@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://campshell.dev/schemas/crm/activities.v1.json",
+  "type": "object",
+  "required": ["id", "title", "date", "createdAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{8,36}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "type": {
+      "type": "string",
+      "enum": ["call", "email", "meeting", "note"]
+    },
+    "contactId": {
+      "type": "string",
+      "description": "Reference to a contact"
+    },
+    "dealId": {
+      "type": "string",
+      "description": "Reference to a deal"
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 5000
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}
