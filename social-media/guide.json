@@ -1,0 +1,117 @@
+{
+  "onboarding": {
+    "title": "Welcome to Social Media",
+    "subtitle": "Plan, create, and track content across Instagram, TikTok, LinkedIn, YouTube, Facebook, and Lemon8",
+    "sampleDataDescription": "We've set up 2 businesses, 5 content pillars, 9 platform accounts, 2 campaigns, 6 posts, 4 ideas, and 1 analytics record as examples.",
+    "steps": [
+      {
+        "icon": "\ud83c\udfe2",
+        "title": "Set up your businesses",
+        "description": "Add each brand or business you manage. Each business gets its own platform accounts, content calendar, and analytics."
+      },
+      {
+        "icon": "\ud83d\udcc5",
+        "title": "Plan your content",
+        "description": "Schedule posts across platforms, organize by content pillars, and plan campaigns. Use the calendar and pipeline views to stay on track."
+      },
+      {
+        "icon": "\ud83d\udca1",
+        "title": "Capture ideas",
+        "description": "Save content ideas as they come to you. Track inspiration sources, hooks, and convert winners into scheduled posts."
+      },
+      {
+        "icon": "\ud83e\udd16",
+        "title": "Use your AI agent",
+        "description": "Ask your agent to schedule posts, generate caption ideas, plan a week of content, or analyze your top-performing posts."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "A multi-business social media content calendar and strategy tracker. Plan posts across 6 platforms, organize content by pillars and campaigns, capture ideas, and track performance metrics after publishing.",
+    "concepts": [
+      {
+        "name": "Businesses",
+        "description": "Each brand or business you manage. Toggle between businesses to see their own content, platforms, and analytics.",
+        "icon": "\ud83c\udfe2"
+      },
+      {
+        "name": "Posts",
+        "description": "Individual content pieces with platform, format, caption, hashtags, and status tracking through idea \u2192 drafting \u2192 ready \u2192 scheduled \u2192 published.",
+        "icon": "\ud83d\udcf1"
+      },
+      {
+        "name": "Pillars",
+        "description": "Content themes (Educate, Entertain, Inspire, Promote, Community) with target mix percentages to maintain balance.",
+        "icon": "\ud83c\udfdb\ufe0f"
+      },
+      {
+        "name": "Campaigns",
+        "description": "Coordinated content pushes \u2014 product launches, series, seasonal content \u2014 grouping related posts together.",
+        "icon": "\ud83c\udfaf"
+      },
+      {
+        "name": "Ideas",
+        "description": "Content idea bank. Capture inspiration, evaluate, and convert the best ideas into scheduled posts.",
+        "icon": "\ud83d\udca1"
+      },
+      {
+        "name": "Analytics",
+        "description": "Post-publication performance: impressions, reach, engagement rate, saves, shares, video completion rate.",
+        "icon": "\ud83d\udcca"
+      },
+      {
+        "name": "Platforms",
+        "description": "Platform accounts per business \u2014 posting frequency targets, best times, preferred formats, and follower counts.",
+        "icon": "\u2699\ufe0f"
+      }
+    ],
+    "prompts": [
+      "Schedule an Instagram carousel for Acme Brand on Tuesday about productivity tips",
+      "Plan a full week of content for TechPulse across all active platforms",
+      "Add an idea for Acme: trending audio remix about morning routines, high priority",
+      "Show me all posts scheduled for Acme Brand this week",
+      "What is Acme Brand's content pillar mix this month? Am I balanced?",
+      "Create a campaign for TechPulse: Product Hunt Launch, starting May 1, across LinkedIn and Instagram",
+      "Log analytics for the brand launch post: 2450 impressions, 187 likes, 4.8% engagement",
+      "Generate 5 hook ideas for a LinkedIn post about developer productivity",
+      "Add a new business: FreshBites, a food delivery startup in the F&B industry",
+      "Show me the top performing posts across all businesses this week"
+    ],
+    "tips": [
+      "Each business has its own platform accounts, posts, campaigns, and ideas \u2014 use the business switcher to toggle between them",
+      "Posts link to pillars \u2014 set pillarId to track your content mix across Educate, Entertain, Inspire, Promote, and Community",
+      "Use crosspostOf to track when you adapt the same content across platforms (e.g. an Instagram carousel adapted as a TikTok video)",
+      "The Pipeline view shows posts as a kanban: idea \u2192 drafting \u2192 ready \u2192 scheduled \u2192 published",
+      "Capture ideas immediately \u2014 even a title and hook is enough. Convert to posts when ready",
+      "Set target posting frequencies per platform in the Platforms section, then track against actuals",
+      "Hero content (20%) = big campaigns. Hub (30%) = recurring series. Hygiene (50%) = evergreen",
+      "Record analytics at multiple checkpoints (day 1, day 7, day 30) for the same post to track performance over time"
+    ]
+  },
+  "emptyStates": {
+    "businesses": {
+      "icon": "\ud83c\udfe2",
+      "title": "No businesses yet",
+      "description": "Add your first business or brand to get started. Each business gets its own content calendar and platform accounts.",
+      "suggestedPrompt": "Add a business: My Brand, a lifestyle company in the wellness industry"
+    },
+    "posts": {
+      "icon": "\ud83d\udcf1",
+      "title": "No posts yet",
+      "description": "Start planning your content. Schedule your first post or let your AI agent plan a full week.",
+      "suggestedPrompt": "Plan 5 posts for this week: 2 Instagram (1 reel, 1 carousel), 2 TikTok videos, and 1 LinkedIn text post"
+    },
+    "ideas": {
+      "icon": "\ud83d\udca1",
+      "title": "No ideas captured yet",
+      "description": "Save content ideas as they come to you. Even a rough concept is worth capturing.",
+      "suggestedPrompt": "Add an idea: day-in-the-life video for TikTok, inspired by trending format, high priority"
+    },
+    "campaigns": {
+      "icon": "\ud83c\udfaf",
+      "title": "No campaigns yet",
+      "description": "Create a campaign to coordinate content around a theme, launch, or series.",
+      "suggestedPrompt": "Create a campaign: Brand Awareness Month, April 1-30, across Instagram, TikTok, and LinkedIn"
+    }
+  }
+}

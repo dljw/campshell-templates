@@ -1,0 +1,9 @@
+{
+  "id": "techpulse",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "name": "TechPulse",
+  "description": "B2B SaaS platform for developer productivity tools and workflows",
+  "industry": "B2B SaaS",
+  "website": "https://techpulse.example.com",
+  "active": true
+}

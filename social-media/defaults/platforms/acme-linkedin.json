@@ -1,0 +1,12 @@
+{
+  "id": "acme-linkedin",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "businessId": "acme-brand",
+  "platform": "linkedin",
+  "active": true,
+  "handle": "Acme Brand",
+  "postsPerWeek": 3,
+  "bestTimes": ["Tue 8:00", "Wed 10:00", "Thu 12:00"],
+  "primaryFormats": ["text-post", "carousel", "article"],
+  "followers": 0
+}

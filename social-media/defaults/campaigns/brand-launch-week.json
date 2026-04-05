@@ -1,0 +1,13 @@
+{
+  "id": "brand-launch-week",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "name": "Brand Launch Week",
+  "businessId": "acme-brand",
+  "description": "Introduce Acme Brand across all platforms with a coordinated series of posts. Focus on who we are, what we do, and why it matters.",
+  "status": "active",
+  "startDate": "2026-04-06",
+  "endDate": "2026-04-12",
+  "tier": "hero",
+  "platforms": ["instagram", "tiktok", "linkedin", "youtube", "facebook"],
+  "goal": "awareness"
+}

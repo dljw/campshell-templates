@@ -1,0 +1,12 @@
+{
+  "id": "techpulse-instagram",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "businessId": "techpulse",
+  "platform": "instagram",
+  "active": true,
+  "handle": "@techpulse",
+  "postsPerWeek": 3,
+  "bestTimes": ["Mon 10:00", "Wed 12:00", "Fri 15:00"],
+  "primaryFormats": ["carousel", "reel", "static-image"],
+  "followers": 0
+}

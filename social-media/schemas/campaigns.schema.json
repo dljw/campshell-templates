@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "social-media/campaigns.schema.json",
+  "type": "object",
+  "required": ["id", "createdAt", "name", "businessId", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "businessId": {
+      "type": "string",
+      "description": "Reference to a business"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "status": {
+      "type": "string",
+      "enum": ["planning", "active", "completed", "paused"]
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "tier": {
+      "type": "string",
+      "enum": ["hero", "hub", "hygiene"]
+    },
+    "platforms": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 6
+    },
+    "goal": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 5000
+    }
+  },
+  "additionalProperties": false
+}

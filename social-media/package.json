@@ -1,0 +1,29 @@
+{
+  "name": "@campshell/social-media",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "campshell-social-media": "./dist/bin/cli.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "dependencies": {
+    "@campshell/core": "file:../../camp-shell/packages/core",
+    "commander": "^13.0.0"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.0",
+    "ajv-formats": "^3.0.1"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "test": "tsc --build && vitest run --passWithNoTests",
+    "lint": "biome check src/",
+    "clean": "rm -rf dist .tsbuildinfo"
+  }
+}

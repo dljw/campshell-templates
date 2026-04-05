@@ -1,0 +1,14 @@
+{
+  "id": "customer-transformation-story",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Customer Transformation Story",
+  "businessId": "acme-brand",
+  "description": "Before and after story from a real customer. Combine testimonial with results.",
+  "source": "Customer email",
+  "platform": "any",
+  "format": "undecided",
+  "pillarId": "promote",
+  "priority": "high",
+  "status": "evaluating",
+  "_generated": "218f61e6f53f5e97"
+}

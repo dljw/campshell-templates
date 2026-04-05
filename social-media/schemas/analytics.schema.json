@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "social-media/analytics.schema.json",
+  "type": "object",
+  "required": ["id", "createdAt", "postId", "recordedAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "postId": {
+      "type": "string",
+      "description": "Reference to a post"
+    },
+    "recordedAt": {
+      "type": "string",
+      "format": "date"
+    },
+    "impressions": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "reach": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "likes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "comments": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "shares": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "saves": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "clicks": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Link clicks or profile visits"
+    },
+    "engagementRate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Engagement rate as a percentage"
+    },
+    "videoViews": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Video views (for video content)"
+    },
+    "videoCompletionRate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Percentage of viewers who watched to the end"
+    },
+    "followerChange": {
+      "type": "integer",
+      "description": "Net follower change attributed to this post"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 2000
+    }
+  },
+  "additionalProperties": false
+}

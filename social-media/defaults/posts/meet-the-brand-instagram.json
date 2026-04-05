@@ -1,0 +1,17 @@
+{
+  "id": "meet-the-brand-instagram",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Meet the Brand \u2014 Who We Are",
+  "businessId": "acme-brand",
+  "scheduledAt": "2026-04-07T10:00:00.000Z",
+  "platform": "instagram",
+  "format": "carousel",
+  "status": "scheduled",
+  "pillarId": "inspire",
+  "campaignId": "brand-launch-week",
+  "caption": "We have been building something special and it is time to share it with you. Swipe to learn what drives us, our mission, and how we are here to help you level up.",
+  "hook": "We have been quiet for a reason...",
+  "cta": "Follow for more \u2014 the best is coming.",
+  "hashtags": ["brandlaunch", "newbrand", "communitybuilding", "smallbusiness"],
+  "contentTier": "hero"
+}

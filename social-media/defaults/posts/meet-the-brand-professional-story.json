@@ -1,0 +1,23 @@
+{
+  "id": "meet-the-brand-professional-story",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Meet the Brand — Professional Story",
+  "businessId": "acme-brand",
+  "scheduledAt": "2026-04-07T08:00:00.000Z",
+  "platform": "linkedin",
+  "format": "text-post",
+  "status": "scheduled",
+  "pillarId": "inspire",
+  "campaignId": "brand-launch-week",
+  "caption": "Today we are officially launching. After months of building, testing, and iterating, we are ready to share our work with the world. Here is what we believe and where we are headed.",
+  "hook": "We are officially live.",
+  "cta": "What is one thing you wish more brands did? Tell us in the comments.",
+  "hashtags": [
+    "launch",
+    "startup",
+    "entrepreneurship"
+  ],
+  "contentTier": "hero",
+  "crosspostOf": "meet-the-brand-who-we-are",
+  "_generated": "1029f78addc0fc96"
+}

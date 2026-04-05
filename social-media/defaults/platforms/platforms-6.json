@@ -1,0 +1,21 @@
+{
+  "id": "platforms-6",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "businessId": "techpulse",
+  "platform": "linkedin",
+  "active": true,
+  "handle": "TechPulse",
+  "postsPerWeek": 4,
+  "bestTimes": [
+    "Tue 9:00",
+    "Wed 11:00",
+    "Thu 14:00"
+  ],
+  "primaryFormats": [
+    "text-post",
+    "carousel",
+    "article"
+  ],
+  "followers": 0,
+  "_generated": "8b104da5a547144c"
+}

@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "social-media/ideas.schema.json",
+  "type": "object",
+  "required": ["id", "createdAt", "title", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "businessId": {
+      "type": "string",
+      "description": "Reference to a business"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "source": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "sourceUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["instagram", "tiktok", "linkedin", "youtube", "facebook", "lemon8", "any"]
+    },
+    "format": {
+      "type": "string",
+      "enum": ["reel", "carousel", "story", "static-image", "short-form-video", "long-form-video", "text-post", "article", "duet", "stitch", "mini-article", "tutorial", "list-post", "undecided"]
+    },
+    "pillarId": {
+      "type": "string",
+      "description": "Reference to a content pillar"
+    },
+    "hook": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["captured", "evaluating", "approved", "rejected", "converted"]
+    },
+    "convertedPostId": {
+      "type": "string",
+      "description": "Reference to the post created from this idea"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 5000
+    }
+  },
+  "additionalProperties": false
+}

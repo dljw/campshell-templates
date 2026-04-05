@@ -1,0 +1,14 @@
+{
+  "id": "day-in-the-life-founder",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Day in the Life \u2014 Founder Edition",
+  "businessId": "acme-brand",
+  "description": "Follow-the-founder format showing a real day from morning to evening. Works great as a video series.",
+  "source": "Trending format on TikTok",
+  "platform": "tiktok",
+  "format": "short-form-video",
+  "pillarId": "inspire",
+  "hook": "5am wake up, let me show you what the rest looks like",
+  "priority": "high",
+  "status": "approved"
+}

@@ -1,0 +1,123 @@
+{
+  "name": "social-media",
+  "version": "1.0.0",
+  "displayName": "Social Media",
+  "description": "Plan, create, and track social media content across Instagram, TikTok, LinkedIn, YouTube, Facebook, and Lemon8 for multiple businesses",
+  "author": {
+    "name": "campshell"
+  },
+  "license": "MIT",
+  "category": "marketing",
+  "tags": [],
+  "emoji": "\ud83d\udcf1",
+  "dataDir": "data/social-media",
+  "schemas": {
+    "businesses": "schemas/businesses.schema.json",
+    "posts": "schemas/posts.schema.json",
+    "pillars": "schemas/pillars.schema.json",
+    "campaigns": "schemas/campaigns.schema.json",
+    "ideas": "schemas/ideas.schema.json",
+    "platforms": "schemas/platforms.schema.json",
+    "analytics": "schemas/analytics.schema.json"
+  },
+  "storage": {
+    "businesses": {
+      "pattern": "one-per-file",
+      "directory": "businesses",
+      "fileNamePattern": "{id}.json"
+    },
+    "posts": {
+      "pattern": "one-per-file",
+      "directory": "posts",
+      "fileNamePattern": "{id}.json"
+    },
+    "campaigns": {
+      "pattern": "one-per-file",
+      "directory": "campaigns",
+      "fileNamePattern": "{id}.json"
+    },
+    "ideas": {
+      "pattern": "one-per-file",
+      "directory": "ideas",
+      "fileNamePattern": "{id}.json"
+    },
+    "platforms": {
+      "pattern": "one-per-file",
+      "directory": "platforms",
+      "fileNamePattern": "{id}.json"
+    },
+    "analytics": {
+      "pattern": "one-per-file",
+      "directory": "analytics",
+      "fileNamePattern": "{id}.json"
+    },
+    "pillars": {
+      "pattern": "collection",
+      "file": "pillars.json"
+    }
+  },
+  "queries": {
+    "posts": {
+      "filterable": ["businessId", "platform", "format", "status", "contentTier", "pillarId", "campaignId"],
+      "sortable": ["scheduledAt", "publishedAt", "createdAt"],
+      "searchable": ["title", "caption", "hook", "notes"],
+      "defaultSort": { "field": "scheduledAt", "order": "asc" }
+    },
+    "ideas": {
+      "filterable": ["businessId", "platform", "format", "status", "priority", "pillarId"],
+      "sortable": ["createdAt", "priority"],
+      "searchable": ["title", "description", "hook"],
+      "defaultSort": { "field": "createdAt", "order": "desc" }
+    },
+    "campaigns": {
+      "filterable": ["businessId", "status", "tier"],
+      "sortable": ["startDate", "createdAt"],
+      "searchable": ["name", "description"],
+      "defaultSort": { "field": "startDate", "order": "desc" }
+    },
+    "analytics": {
+      "filterable": ["postId"],
+      "sortable": ["recordedAt", "engagementRate", "impressions"],
+      "defaultSort": { "field": "recordedAt", "order": "desc" }
+    },
+    "platforms": {
+      "filterable": ["businessId", "platform", "active"],
+      "sortable": ["platform", "followers"],
+      "searchable": ["handle"],
+      "defaultSort": { "field": "platform", "order": "asc" }
+    },
+    "businesses": {
+      "filterable": ["active"],
+      "sortable": ["name", "createdAt"],
+      "searchable": ["name", "description", "industry"],
+      "defaultSort": { "field": "name", "order": "asc" }
+    }
+  },
+  "relationships": {
+    "posts.businessId": { "entity": "businesses", "type": "one" },
+    "posts.pillarId": { "entity": "pillars", "type": "one" },
+    "posts.campaignId": { "entity": "campaigns", "type": "one" },
+    "posts.crosspostOf": { "entity": "posts", "type": "one" },
+    "campaigns.businessId": { "entity": "businesses", "type": "one" },
+    "ideas.businessId": { "entity": "businesses", "type": "one" },
+    "ideas.pillarId": { "entity": "pillars", "type": "one" },
+    "ideas.convertedPostId": { "entity": "posts", "type": "one" },
+    "platforms.businessId": { "entity": "businesses", "type": "one" },
+    "analytics.postId": { "entity": "posts", "type": "one" }
+  },
+  "ui": {
+    "framework": "react",
+    "entry": "index.tsx",
+    "route": "/social-media",
+    "routes": [
+      { "id": "calendar", "label": "Calendar", "path": "/social-media" },
+      { "id": "pipeline", "label": "Pipeline", "path": "/social-media/pipeline" },
+      { "id": "ideas", "label": "Ideas", "path": "/social-media/ideas" },
+      { "id": "campaigns", "label": "Campaigns", "path": "/social-media/campaigns" },
+      { "id": "analytics", "label": "Analytics", "path": "/social-media/analytics" },
+      { "id": "platforms", "label": "Platforms", "path": "/social-media/platforms" },
+      { "id": "businesses", "label": "Businesses", "path": "/social-media/businesses" }
+    ]
+  },
+  "guide": "guide.json"
+}

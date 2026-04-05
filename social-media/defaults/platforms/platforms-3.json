@@ -1,0 +1,19 @@
+{
+  "id": "platforms-3",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "businessId": "acme-brand",
+  "platform": "youtube",
+  "active": true,
+  "handle": "@acmebrand",
+  "postsPerWeek": 3,
+  "bestTimes": [
+    "Wed 14:00",
+    "Sat 10:00"
+  ],
+  "primaryFormats": [
+    "long-form-video",
+    "short-form-video"
+  ],
+  "followers": 0,
+  "_generated": "6c7ecf0f8a83866e"
+}

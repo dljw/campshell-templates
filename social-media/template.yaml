@@ -1,0 +1,637 @@
+name: social-media
+displayName: Social Media
+emoji: "\U0001F4F1"
+category: marketing
+description: Plan, create, and track social media content across Instagram, TikTok, LinkedIn, YouTube, Facebook, and Lemon8 for multiple businesses
+
+entities:
+  businesses:
+    storage: one-per-file
+    layout: card-grid
+    fields:
+      name:
+        type: string
+        required: true
+        max: 200
+        description: Business or brand name
+      description:
+        type: string
+        max: 2000
+        description: What this business does
+      industry:
+        type: string
+        max: 200
+        description: Industry or niche
+      logoUrl:
+        type: url
+        description: Brand logo URL
+      website:
+        type: url
+        description: Business website
+      active:
+        type: boolean
+        description: Whether this business is actively managed
+      notes:
+        type: string
+        max: 5000
+
+  posts:
+    storage: one-per-file
+    layout: kanban
+    fields:
+      title:
+        type: string
+        required: true
+        max: 300
+        description: Working title or headline for this post
+      businessId:
+        type: ref
+        entity: businesses
+        required: true
+        description: Which business this post belongs to
+      scheduledAt:
+        type: datetime
+        description: Date and time the post is scheduled to go live
+      publishedAt:
+        type: datetime
+        description: Actual publication datetime
+      platform:
+        type: enum
+        required: true
+        values: [instagram, tiktok, linkedin, youtube, facebook, lemon8]
+        description: Target platform
+      format:
+        type: enum
+        required: true
+        values: [reel, carousel, story, static-image, short-form-video, long-form-video, text-post, article, duet, stitch, mini-article, tutorial, list-post]
+        description: Content format
+      status:
+        type: enum
+        required: true
+        values: [idea, drafting, ready, scheduled, published, archived]
+        description: Pipeline status
+      pillarId:
+        type: ref
+        entity: pillars
+        description: Content pillar this post belongs to
+      campaignId:
+        type: ref
+        entity: campaigns
+        description: Campaign this post is part of
+      caption:
+        type: string
+        max: 5000
+        description: Post copy or caption text
+      hook:
+        type: string
+        max: 500
+        description: Opening hook or first line to grab attention
+      cta:
+        type: string
+        max: 500
+        description: Call to action
+      hashtags:
+        type: string[]
+        max_items: 30
+        description: Hashtags for the post
+      contentTier:
+        type: enum
+        values: [hero, hub, hygiene]
+        description: Hero-Hub-Hygiene framework tier
+      assetUrl:
+        type: url
+        description: Link to visual asset (Canva, Google Drive, etc.)
+      crosspostOf:
+        type: ref
+        entity: posts
+        description: If this is an adaptation, reference the original post
+      notes:
+        type: string
+        max: 5000
+
+  pillars:
+    storage: collection
+    file: pillars.json
+    fields:
+      name:
+        type: string
+        required: true
+        max: 100
+        description: Pillar name (e.g. Educate, Entertain, Inspire)
+      description:
+        type: string
+        max: 1000
+        description: What kind of content falls under this pillar
+      color:
+        type: enum
+        values: [red, orange, yellow, green, blue, purple, pink, gray]
+        description: Color coding for visual identification
+      emoji:
+        type: string
+        max: 10
+        description: Emoji for this pillar
+      targetMix:
+        type: integer
+        min: 0
+        max: 100
+        description: Target percentage of content from this pillar
+
+  campaigns:
+    storage: one-per-file
+    layout: card-grid
+    fields:
+      name:
+        type: string
+        required: true
+        max: 300
+        description: Campaign name
+      businessId:
+        type: ref
+        entity: businesses
+        required: true
+        description: Which business this campaign belongs to
+      description:
+        type: string
+        max: 2000
+        description: Campaign brief or objective
+      status:
+        type: enum
+        required: true
+        values: [planning, active, completed, paused]
+        description: Campaign status
+      startDate:
+        type: date
+        description: Campaign start date
+      endDate:
+        type: date
+        description: Campaign end date
+      tier:
+        type: enum
+        values: [hero, hub, hygiene]
+        description: Hero-Hub-Hygiene tier
+      platforms:
+        type: string[]
+        max_items: 6
+        description: Target platforms for this campaign
+      goal:
+        type: string
+        max: 500
+        description: Primary goal (awareness, engagement, conversions, etc.)
+      notes:
+        type: string
+        max: 5000
+
+  ideas:
+    storage: one-per-file
+    layout: table-detail
+    fields:
+      title:
+        type: string
+        required: true
+        max: 300
+        description: Idea title or concept
+      businessId:
+        type: ref
+        entity: businesses
+        description: Which business this idea is for (optional for general ideas)
+      description:
+        type: string
+        max: 2000
+        description: Expanded description of the idea
+      source:
+        type: string
+        max: 500
+        description: Where the idea came from (trending audio, competitor, comment, etc.)
+      sourceUrl:
+        type: url
+        description: Link to inspiration source
+      platform:
+        type: enum
+        values: [instagram, tiktok, linkedin, youtube, facebook, lemon8, any]
+        description: Best platform for this idea
+      format:
+        type: enum
+        values: [reel, carousel, story, static-image, short-form-video, long-form-video, text-post, article, duet, stitch, mini-article, tutorial, list-post, undecided]
+        description: Suggested format
+      pillarId:
+        type: ref
+        entity: pillars
+        description: Which content pillar this idea fits
+      hook:
+        type: string
+        max: 500
+        description: Potential hook or opening line
+      priority:
+        type: enum
+        values: [high, medium, low]
+        description: How urgently to produce this idea
+      status:
+        type: enum
+        required: true
+        values: [captured, evaluating, approved, rejected, converted]
+        description: Idea pipeline status
+      convertedPostId:
+        type: ref
+        entity: posts
+        description: Reference to the post created from this idea
+      notes:
+        type: string
+        max: 5000
+
+  platforms:
+    storage: one-per-file
+    layout: table-detail
+    fields:
+      businessId:
+        type: ref
+        entity: businesses
+        required: true
+        description: Which business this platform account belongs to
+      platform:
+        type: enum
+        required: true
+        values: [instagram, tiktok, linkedin, youtube, facebook, lemon8]
+        description: Platform name
+      active:
+        type: boolean
+        description: Whether you are currently active on this platform
+      handle:
+        type: string
+        max: 100
+        description: Your username or handle
+      profileUrl:
+        type: url
+        description: Link to your profile
+      postsPerWeek:
+        type: integer
+        min: 0
+        max: 50
+        description: Target number of posts per week
+      bestTimes:
+        type: string[]
+        max_items: 7
+        description: Best posting times (e.g. "Mon 9:00", "Wed 18:00")
+      primaryFormats:
+        type: string[]
+        max_items: 10
+        description: Preferred content formats for this platform
+      followers:
+        type: integer
+        min: 0
+        description: Current follower count
+      notes:
+        type: string
+        max: 2000
+
+  analytics:
+    storage: one-per-file
+    layout: table-detail
+    fields:
+      postId:
+        type: ref
+        required: true
+        entity: posts
+        description: The post these metrics belong to
+      recordedAt:
+        type: date
+        required: true
+        description: Date these metrics were recorded
+      impressions:
+        type: integer
+        min: 0
+        description: Number of impressions
+      reach:
+        type: integer
+        min: 0
+        description: Number of unique accounts reached
+      likes:
+        type: integer
+        min: 0
+      comments:
+        type: integer
+        min: 0
+      shares:
+        type: integer
+        min: 0
+      saves:
+        type: integer
+        min: 0
+      clicks:
+        type: integer
+        min: 0
+        description: Link clicks or profile visits
+      engagementRate:
+        type: number
+        min: 0
+        max: 100
+        description: Engagement rate as a percentage
+      videoViews:
+        type: integer
+        min: 0
+        description: Video views (for video content)
+      videoCompletionRate:
+        type: number
+        min: 0
+        max: 100
+        description: Percentage of viewers who watched to the end
+      followerChange:
+        type: integer
+        description: Net follower change attributed to this post
+      notes:
+        type: string
+        max: 2000
+
+views:
+  - id: calendar
+    label: Calendar
+    path: /social-media
+    entities: [posts]
+  - id: pipeline
+    label: Pipeline
+    path: /social-media/pipeline
+    entities: [posts]
+  - id: ideas
+    label: Ideas
+    path: /social-media/ideas
+    entities: [ideas]
+  - id: campaigns
+    label: Campaigns
+    path: /social-media/campaigns
+    entities: [campaigns]
+  - id: analytics
+    label: Analytics
+    path: /social-media/analytics
+    entities: [analytics]
+  - id: platforms
+    label: Platforms
+    path: /social-media/platforms
+    entities: [platforms]
+  - id: businesses
+    label: Businesses
+    path: /social-media/businesses
+    entities: [businesses]
+
+defaults:
+  pillars:
+    - name: Educate
+      description: Tips, tutorials, how-tos, and informative content that teaches your audience something valuable
+      color: blue
+      emoji: "\U0001F4DA"
+      targetMix: 30
+    - name: Entertain
+      description: Fun, relatable, trending content that captures attention and encourages sharing
+      color: pink
+      emoji: "\U0001F3AD"
+      targetMix: 25
+    - name: Inspire
+      description: Motivational stories, transformations, behind-the-scenes, and aspirational content
+      color: purple
+      emoji: "\u2728"
+      targetMix: 20
+    - name: Promote
+      description: Product features, offers, testimonials, and direct calls to action
+      color: orange
+      emoji: "\U0001F4E3"
+      targetMix: 15
+    - name: Community
+      description: User-generated content, Q&As, polls, reposts, and audience engagement content
+      color: green
+      emoji: "\U0001F91D"
+      targetMix: 10
+
+  businesses:
+    - name: Acme Brand
+      description: Lifestyle and wellness brand focused on helping people build better daily habits through products and content
+      industry: Lifestyle & Wellness
+      website: https://acme-brand.example.com
+      active: true
+    - name: TechPulse
+      description: B2B SaaS platform for developer productivity tools and workflows
+      industry: B2B SaaS
+      website: https://techpulse.example.com
+      active: true
+
+  platforms:
+    - businessId: "$ref:businesses[0]"
+      platform: instagram
+      active: true
+      handle: "@acmebrand"
+      postsPerWeek: 5
+      bestTimes: ["Mon 10:00", "Wed 12:00", "Fri 17:00"]
+      primaryFormats: ["reel", "carousel", "story"]
+      followers: 0
+    - businessId: "$ref:businesses[0]"
+      platform: tiktok
+      active: true
+      handle: "@acmebrand"
+      postsPerWeek: 4
+      bestTimes: ["Tue 11:00", "Thu 19:00", "Sat 10:00"]
+      primaryFormats: ["short-form-video", "duet", "stitch"]
+      followers: 0
+    - businessId: "$ref:businesses[0]"
+      platform: linkedin
+      active: true
+      handle: "Acme Brand"
+      postsPerWeek: 3
+      bestTimes: ["Tue 8:00", "Wed 10:00", "Thu 12:00"]
+      primaryFormats: ["text-post", "carousel", "article"]
+      followers: 0
+    - businessId: "$ref:businesses[0]"
+      platform: youtube
+      active: true
+      handle: "@acmebrand"
+      postsPerWeek: 3
+      bestTimes: ["Wed 14:00", "Sat 10:00"]
+      primaryFormats: ["long-form-video", "short-form-video"]
+      followers: 0
+    - businessId: "$ref:businesses[0]"
+      platform: facebook
+      active: true
+      handle: "Acme Brand"
+      postsPerWeek: 4
+      bestTimes: ["Mon 9:00", "Wed 13:00", "Fri 11:00"]
+      primaryFormats: ["static-image", "carousel", "short-form-video"]
+      followers: 0
+    - businessId: "$ref:businesses[0]"
+      platform: lemon8
+      active: false
+      handle: "@acmebrand"
+      postsPerWeek: 3
+      bestTimes: ["Tue 10:00", "Thu 15:00"]
+      primaryFormats: ["mini-article", "tutorial", "list-post"]
+      followers: 0
+    - businessId: "$ref:businesses[1]"
+      platform: linkedin
+      active: true
+      handle: "TechPulse"
+      postsPerWeek: 4
+      bestTimes: ["Tue 9:00", "Wed 11:00", "Thu 14:00"]
+      primaryFormats: ["text-post", "carousel", "article"]
+      followers: 0
+    - businessId: "$ref:businesses[1]"
+      platform: youtube
+      active: true
+      handle: "@techpulse"
+      postsPerWeek: 2
+      bestTimes: ["Wed 14:00", "Fri 10:00"]
+      primaryFormats: ["long-form-video", "short-form-video"]
+      followers: 0
+    - businessId: "$ref:businesses[1]"
+      platform: instagram
+      active: true
+      handle: "@techpulse"
+      postsPerWeek: 3
+      bestTimes: ["Mon 10:00", "Wed 12:00", "Fri 15:00"]
+      primaryFormats: ["carousel", "reel", "static-image"]
+      followers: 0
+
+  campaigns:
+    - name: Brand Launch Week
+      businessId: "$ref:businesses[0]"
+      description: Introduce Acme Brand across all platforms with a coordinated series of posts. Focus on who we are, what we do, and why it matters.
+      status: active
+      startDate: "2026-04-06"
+      endDate: "2026-04-12"
+      tier: hero
+      platforms: ["instagram", "tiktok", "linkedin", "youtube", "facebook"]
+      goal: awareness
+    - name: Weekly Tips Series
+      businessId: "$ref:businesses[0]"
+      description: Recurring Tuesday tips series sharing actionable advice. One topic per week, adapted across platforms.
+      status: active
+      startDate: "2026-04-06"
+      tier: hub
+      platforms: ["instagram", "linkedin", "tiktok"]
+      goal: engagement
+
+  posts:
+    - title: "Meet the Brand — Who We Are"
+      businessId: "$ref:businesses[0]"
+      scheduledAt: "2026-04-07T10:00:00.000Z"
+      platform: instagram
+      format: carousel
+      status: scheduled
+      pillarId: "$ref:pillars[2]"
+      campaignId: "$ref:campaigns[0]"
+      caption: "We have been building something special and it is time to share it with you. Swipe to learn what drives us, our mission, and how we are here to help you level up."
+      hook: "We have been quiet for a reason..."
+      cta: "Follow for more — the best is coming."
+      hashtags: ["brandlaunch", "newbrand", "communitybuilding", "smallbusiness"]
+      contentTier: hero
+    - title: "Meet the Brand — Who We Are (TikTok)"
+      businessId: "$ref:businesses[0]"
+      scheduledAt: "2026-04-07T11:00:00.000Z"
+      platform: tiktok
+      format: short-form-video
+      status: scheduled
+      pillarId: "$ref:pillars[2]"
+      campaignId: "$ref:campaigns[0]"
+      caption: "The brand origin story in 30 seconds. We started with one simple idea..."
+      hook: "POV: You just discovered a brand that actually gets you"
+      cta: "Follow to see what happens next"
+      hashtags: ["brandlaunch", "storytime", "smallbusiness"]
+      contentTier: hero
+      crosspostOf: "$ref:posts[0]"
+    - title: "Meet the Brand — Professional Story"
+      businessId: "$ref:businesses[0]"
+      scheduledAt: "2026-04-07T08:00:00.000Z"
+      platform: linkedin
+      format: text-post
+      status: scheduled
+      pillarId: "$ref:pillars[2]"
+      campaignId: "$ref:campaigns[0]"
+      caption: "Today we are officially launching. After months of building, testing, and iterating, we are ready to share our work with the world. Here is what we believe and where we are headed."
+      hook: "We are officially live."
+      cta: "What is one thing you wish more brands did? Tell us in the comments."
+      hashtags: ["launch", "startup", "entrepreneurship"]
+      contentTier: hero
+      crosspostOf: "$ref:posts[0]"
+    - title: "5 Tips to Boost Your Morning"
+      businessId: "$ref:businesses[0]"
+      scheduledAt: "2026-04-08T10:00:00.000Z"
+      platform: instagram
+      format: reel
+      status: drafting
+      pillarId: "$ref:pillars[0]"
+      campaignId: "$ref:campaigns[1]"
+      caption: "Your morning sets the tone for your entire day. Here are 5 things that changed everything for us."
+      hook: "Stop scrolling and try this tomorrow morning"
+      cta: "Save this for tomorrow morning"
+      hashtags: ["morningroutine", "productivitytips", "selfimprovement", "dailyhabits"]
+      contentTier: hub
+    - title: "Behind the Scenes — Office Tour"
+      businessId: "$ref:businesses[0]"
+      scheduledAt: "2026-04-09T17:00:00.000Z"
+      platform: tiktok
+      format: short-form-video
+      status: idea
+      pillarId: "$ref:pillars[2]"
+      caption: "A peek inside where the magic happens. Our workspace, our tools, and the snack drawer."
+      hook: "Come to work with me"
+      hashtags: ["behindthescenes", "officetour", "dayinthelife"]
+      contentTier: hygiene
+    - title: "Poll: What content do you want to see?"
+      businessId: "$ref:businesses[0]"
+      scheduledAt: "2026-04-10T12:00:00.000Z"
+      platform: instagram
+      format: story
+      status: ready
+      pillarId: "$ref:pillars[4]"
+      caption: "We want to hear from YOU. What kind of content should we make more of?"
+      cta: "Vote now"
+      contentTier: hygiene
+
+  ideas:
+    - title: "Day in the Life — Founder Edition"
+      businessId: "$ref:businesses[0]"
+      description: "Follow-the-founder format showing a real day from morning to evening. Works great as a video series."
+      source: "Trending format on TikTok"
+      platform: tiktok
+      format: short-form-video
+      pillarId: "$ref:pillars[2]"
+      hook: "5am wake up, let me show you what the rest looks like"
+      priority: high
+      status: approved
+    - title: "Myth vs Fact Carousel"
+      businessId: "$ref:businesses[0]"
+      description: "Common misconceptions in our industry, debunked one slide at a time. High save potential."
+      source: "Competitor analysis"
+      platform: instagram
+      format: carousel
+      pillarId: "$ref:pillars[0]"
+      hook: "You have been lied to about..."
+      priority: medium
+      status: captured
+    - title: "Customer Transformation Story"
+      businessId: "$ref:businesses[0]"
+      description: "Before and after story from a real customer. Combine testimonial with results."
+      source: "Customer email"
+      platform: any
+      format: undecided
+      pillarId: "$ref:pillars[3]"
+      priority: high
+      status: evaluating
+    - title: "Dev Productivity Hacks Thread"
+      businessId: "$ref:businesses[1]"
+      description: "Thread-style LinkedIn post sharing 7 developer productivity hacks. Each hack gets a carousel slide."
+      source: "Internal team brainstorm"
+      platform: linkedin
+      format: carousel
+      pillarId: "$ref:pillars[0]"
+      hook: "I spent 10 years writing code. These 7 habits saved me 10 hours a week."
+      priority: high
+      status: approved
+
+  analytics:
+    - postId: "$ref:posts[0]"
+      recordedAt: "2026-04-08"
+      impressions: 2450
+      reach: 1820
+      likes: 187
+      comments: 24
+      shares: 15
+      saves: 42
+      clicks: 38
+      engagementRate: 4.8
+      followerChange: 28
+      notes: "Carousel performed well. Slide 3 had highest dwell time."

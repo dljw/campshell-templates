@@ -1,0 +1,14 @@
+{
+  "id": "myth-vs-fact-carousel",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Myth vs Fact Carousel",
+  "businessId": "acme-brand",
+  "description": "Common misconceptions in our industry, debunked one slide at a time. High save potential.",
+  "source": "Competitor analysis",
+  "platform": "instagram",
+  "format": "carousel",
+  "pillarId": "educate",
+  "hook": "You have been lied to about...",
+  "priority": "medium",
+  "status": "captured"
+}

@@ -1,0 +1,9 @@
+{
+  "id": "acme-brand",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "name": "Acme Brand",
+  "description": "Lifestyle and wellness brand focused on helping people build better daily habits through products and content",
+  "industry": "Lifestyle & Wellness",
+  "website": "https://acme-brand.example.com",
+  "active": true
+}

@@ -1,0 +1,18 @@
+{
+  "id": "meet-the-brand-tiktok",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Meet the Brand \u2014 Who We Are (TikTok)",
+  "businessId": "acme-brand",
+  "scheduledAt": "2026-04-07T11:00:00.000Z",
+  "platform": "tiktok",
+  "format": "short-form-video",
+  "status": "scheduled",
+  "pillarId": "inspire",
+  "campaignId": "brand-launch-week",
+  "caption": "The brand origin story in 30 seconds. We started with one simple idea...",
+  "hook": "POV: You just discovered a brand that actually gets you",
+  "cta": "Follow to see what happens next",
+  "hashtags": ["brandlaunch", "storytime", "smallbusiness"],
+  "contentTier": "hero",
+  "crosspostOf": "meet-the-brand-instagram"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "dev-productivity-hacks-thread",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "title": "Dev Productivity Hacks Thread",
+  "businessId": "techpulse",
+  "description": "Thread-style LinkedIn post sharing 7 developer productivity hacks. Each hack gets a carousel slide.",
+  "source": "Internal team brainstorm",
+  "platform": "linkedin",
+  "format": "carousel",
+  "pillarId": "educate",
+  "hook": "I spent 10 years writing code. These 7 habits saved me 10 hours a week.",
+  "priority": "high",
+  "status": "approved",
+  "_generated": "57385c29050355d2"
+}

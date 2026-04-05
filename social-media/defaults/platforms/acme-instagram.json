@@ -1,0 +1,12 @@
+{
+  "id": "acme-instagram",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "businessId": "acme-brand",
+  "platform": "instagram",
+  "active": true,
+  "handle": "@acmebrand",
+  "postsPerWeek": 5,
+  "bestTimes": ["Mon 10:00", "Wed 12:00", "Fri 17:00"],
+  "primaryFormats": ["reel", "carousel", "story"],
+  "followers": 0
+}
