@@ -72,6 +72,7 @@ export function ArticlesView({ data, domainId, activeDomain }: ArticlesViewProps
 											<tr
 												key={article.id}
 												className="border-b border-border/20 cursor-pointer hover:bg-muted/50"
+												data-campshell-entity={`content-strategy/article/articles/${article.id}.json`}
 												onClick={() => setExpandedId(isExpanded ? null : article.id)}
 											>
 												<td className="py-2">

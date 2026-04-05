@@ -54,7 +54,7 @@ export function KanbanCard({
     .join(" ");
 
   return (
-    <div ref={dndRef} className={className} style={style} {...dndAttributes} {...dndListeners}>
+    <div ref={dndRef} className={className} style={style} data-campshell-entity={`kanban/card/cards/${card.id}.json`} {...dndAttributes} {...dndListeners}>
       {card.priority && (
         <span className={`kb-priority-badge ${PRIORITY_CLASS[card.priority]}`}>
           <span className="kb-priority-dot" />

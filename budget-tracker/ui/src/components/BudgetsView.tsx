@@ -103,6 +103,7 @@ export function BudgetsView({
               <Card
                 key={budget.id}
                 className="cursor-pointer hover:bg-muted/20 transition-colors relative group"
+                data-campshell-entity={`budget-tracker/budget/budgets/${budget.id}.json`}
                 onClick={() => openEdit(budget)}
               >
                 <CardHeader className="pb-2">

@@ -113,7 +113,7 @@ export function KeywordsView({ data, domainId }: KeywordsViewProps) {
 										? kw.previousPosition - kw.position
 										: null;
 									return (
-										<tr key={kw.id} className="border-b border-border/20">
+										<tr key={kw.id} className="border-b border-border/20" data-campshell-entity={`content-strategy/keyword/keywords/${kw.id}.json`}>
 											<td className="py-2 pr-3 font-medium">{kw.term}</td>
 											<td className="py-2 pr-3 text-muted-foreground truncate max-w-[120px]">
 												{article?.slug ?? "—"}

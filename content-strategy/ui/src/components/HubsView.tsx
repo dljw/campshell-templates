@@ -70,7 +70,7 @@ export function HubsView({ data, domainId }: HubsViewProps) {
 			) : (
 				<div className="grid md:grid-cols-2 gap-4">
 					{hubDetails.map(({ hub, pillar, clusters, published, total, totalSV, totalImpr, keywordCount, hubArticles, hubKeywords }) => (
-						<Card key={hub.id} className={`border-l-4 ${COLOR_BG[hub.color ?? "gray"]}`}>
+						<Card key={hub.id} className={`border-l-4 ${COLOR_BG[hub.color ?? "gray"]}`} data-campshell-entity={`content-strategy/hub/hubs/${hub.id}.json`}>
 							<CardHeader className="pb-3">
 								<div className="flex items-center justify-between">
 									<CardTitle className="text-sm font-medium">{hub.name}</CardTitle>

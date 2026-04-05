@@ -82,6 +82,7 @@ export function PlatformsView({ data }: { data: UseTemplateDataReturn }) {
                 <TableRow
                   key={platform.id}
                   className={cn("cursor-pointer", selectedId === platform.id && "bg-muted")}
+                  data-campshell-entity={`social-media/platform/platforms/${platform.id}.json`}
                   onClick={() => setSelectedId(platform.id)}
                 >
                   <TableCell className="font-medium">

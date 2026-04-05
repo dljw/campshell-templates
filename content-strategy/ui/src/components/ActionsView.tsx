@@ -91,7 +91,7 @@ export function ActionsView({ data, domainId, activeDomain }: ActionsViewProps) 
 											(a) => action.articleIds?.includes(a.id),
 										);
 										return (
-											<tr key={action.id} className="border-b border-border/20">
+											<tr key={action.id} className="border-b border-border/20" data-campshell-entity={`content-strategy/action/actions/${action.id}.json`}>
 												<td className="py-2 pr-3">
 													<span className="text-xs text-muted-foreground">
 														{action.type ? TYPE_LABELS[action.type] ?? action.type : "\u2014"}

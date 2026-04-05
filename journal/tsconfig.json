@@ -20,7 +20,7 @@
   ],
   "references": [
     {
-      "path": "../../packages/core"
+      "path": "../../camp-shell/packages/core"
     }
   ]
 }

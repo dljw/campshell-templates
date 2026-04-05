@@ -55,7 +55,7 @@ export function HabitCard({
 	}, [completions, habit]);
 
 	return (
-		<Card className="relative group hover:bg-muted/20 transition-colors">
+		<Card className="relative group hover:bg-muted/20 transition-colors" data-campshell-entity={`habit-tracker/habit/habits/${habit.id}.json`}>
 			<CardContent className="p-4 space-y-3">
 				<div className="flex items-start justify-between">
 					<div className="flex items-center gap-2.5 min-w-0">

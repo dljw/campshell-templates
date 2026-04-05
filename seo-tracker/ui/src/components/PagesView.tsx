@@ -72,6 +72,7 @@ export function PagesView({ pages, onCreatePage, onUpdatePage, onDeletePage }: P
             <Card
               key={page.id}
               className="group cursor-pointer transition-colors hover:border-border"
+              data-campshell-entity={`seo-tracker/page/pages/${page.id}.json`}
               onClick={() => {
                 setEditingPage(page);
                 setFormOpen(true);

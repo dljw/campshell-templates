@@ -76,7 +76,7 @@ export function CampaignsView({ data }: { data: UseTemplateDataReturn }) {
       <div className="flex-1 overflow-auto p-4">
         <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4">
           {filtered.map((campaign) => (
-            <Card key={campaign.id} className="hover:bg-surface-raised transition-colors">
+            <Card key={campaign.id} className="hover:bg-surface-raised transition-colors" data-campshell-entity={`social-media/campaign/campaigns/${campaign.id}.json`}>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium">{campaign.name}</CardTitle>

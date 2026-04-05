@@ -103,6 +103,7 @@ export function BacklinksView({
                 <TableRow
                   key={bl.id}
                   className="cursor-pointer"
+                  data-campshell-entity={`seo-tracker/backlink/backlinks/${bl.id}.json`}
                   onClick={() => {
                     setEditingBacklink(bl);
                     setFormOpen(true);

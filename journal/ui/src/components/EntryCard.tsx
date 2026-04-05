@@ -36,6 +36,7 @@ export function EntryCard({ entry, tags, onClick }: EntryCardProps) {
     <button
       type="button"
       onClick={onClick}
+      data-campshell-entity={`journal/entry/entries/${entry.id}.json`}
       className={cn(
         "w-full text-left rounded-2xl border border-border/60 bg-transparent bg-card",
         "hover:border-border hover:shadow-md hover:scale-[1.01] transition-all duration-150",

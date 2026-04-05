@@ -107,6 +107,7 @@ export function NotesView({
   const NoteCard = ({ note }: { note: Note }) => (
     <div
       onClick={() => onSelectNote(note.id)}
+      data-campshell-entity={`brain-vault/note/notes/${note.id}.json`}
       className="group flex flex-col gap-3 p-5 rounded-xl border border-border/50 bg-card hover:bg-muted/30 hover:border-border/80 transition-all cursor-pointer overflow-hidden"
     >
       <div className="flex items-start justify-between gap-4">

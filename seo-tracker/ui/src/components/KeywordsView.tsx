@@ -106,6 +106,7 @@ export function KeywordsView({
                 <TableRow
                   key={kw.id}
                   className="cursor-pointer"
+                  data-campshell-entity={`seo-tracker/keyword/keywords/${kw.id}.json`}
                   onClick={() => {
                     setEditingKeyword(kw);
                     setFormOpen(true);
