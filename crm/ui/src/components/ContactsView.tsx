@@ -103,7 +103,7 @@ export function ContactsView({ contacts, deals, activities, createContact, updat
                 <Card
                   key={contact.id}
                   className="cursor-pointer hover:bg-surface-raised transition-colors"
-                  data-campshell-entity={`crm/contact/contacts/${contact.id}.json`}
+                  data-campshell-entity={`crm/contacts/contacts/${contact.id}.json`}
                   onClick={() => handleEdit(contact)}
                 >
                   <CardHeader className="pb-2">

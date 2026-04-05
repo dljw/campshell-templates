@@ -139,7 +139,7 @@ export function PromptsView({ prompts, entries, tags, isLoading, onCreateEntry }
               <div
                 key={prompt.id}
                 className="group rounded-xl border border-border/60 bg-card px-4 py-3 flex items-start gap-3 hover:border-border transition-all"
-                data-campshell-entity="journal/prompt/prompts.json"
+                data-campshell-entity="journal/prompts/prompts.json"
               >
                 <span className="text-lg shrink-0 mt-0.5">{catConfig?.emoji ?? "💬"}</span>
                 <p className="flex-1 text-sm text-foreground leading-relaxed">{prompt.text}</p>

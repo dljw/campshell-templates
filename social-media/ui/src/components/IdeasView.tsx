@@ -104,7 +104,7 @@ export function IdeasView({ data }: { data: UseTemplateDataReturn }) {
                 <TableRow
                   key={idea.id}
                   className={cn("cursor-pointer", selectedId === idea.id && "bg-muted")}
-                  data-campshell-entity={`social-media/idea/ideas/${idea.id}.json`}
+                  data-campshell-entity={`social-media/ideas/ideas/${idea.id}.json`}
                   onClick={() => setSelectedId(idea.id)}
                 >
                   <TableCell className="font-medium">{idea.title}</TableCell>

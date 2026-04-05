@@ -66,7 +66,7 @@ export function CompetitorsView({ competitors, onUpdateCompetitors }: Competitor
     <>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {competitors.map((comp) => (
-          <Card key={comp.id} className="group" data-campshell-entity="seo-tracker/competitor/competitors.json">
+          <Card key={comp.id} className="group" data-campshell-entity="seo-tracker/competitors/competitors.json">
             <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-3">
               <div>
                 <h3 className="font-semibold text-base">{comp.domain}</h3>

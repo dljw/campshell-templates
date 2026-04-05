@@ -48,7 +48,7 @@ export function BusinessesView({ data }: { data: UseTemplateDataReturn }) {
     <div className="p-4">
       <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4">
         {data.businesses.map((business) => (
-          <Card key={business.id} className="hover:bg-surface-raised transition-colors" data-campshell-entity={`social-media/business/businesses/${business.id}.json`}>
+          <Card key={business.id} className="hover:bg-surface-raised transition-colors" data-campshell-entity={`social-media/businesses/businesses/${business.id}.json`}>
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm font-medium">{business.name}</CardTitle>

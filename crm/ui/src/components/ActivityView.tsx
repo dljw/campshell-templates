@@ -108,7 +108,7 @@ export function ActivityView({
                   <TableRow
                     key={activity.id}
                     className="cursor-pointer"
-                    data-campshell-entity={`crm/activity/activities/${activity.id}.json`}
+                    data-campshell-entity={`crm/activities/activities/${activity.id}.json`}
                     onClick={() => handleEdit(activity)}
                   >
                     <TableCell>

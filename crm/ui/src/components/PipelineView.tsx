@@ -130,7 +130,7 @@ export function PipelineView({ deals, contacts, activities, createDeal, updateDe
                           "cursor-pointer hover:bg-surface-raised transition-colors",
                           cardBorderClass(deal),
                         )}
-                        data-campshell-entity={`crm/deal/deals/${deal.id}.json`}
+                        data-campshell-entity={`crm/deals/deals/${deal.id}.json`}
                         onClick={() => handleEditDeal(deal)}
                       >
                         <CardContent className="p-3 text-sm text-white space-y-1.5">

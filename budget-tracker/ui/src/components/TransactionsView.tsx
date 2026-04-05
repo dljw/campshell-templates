@@ -167,7 +167,7 @@ export function TransactionsView({
                   <TableRow
                     key={tx.id}
                     className="cursor-pointer hover:bg-muted/30"
-                    data-campshell-entity={`budget-tracker/transaction/transactions/${tx.id}.json`}
+                    data-campshell-entity={`budget-tracker/transactions/transactions/${tx.id}.json`}
                     onClick={() => openEdit(tx)}
                   >
                     <TableCell className="text-sm text-muted-foreground">{tx.date}</TableCell>

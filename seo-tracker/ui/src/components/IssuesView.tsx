@@ -117,7 +117,7 @@ export function IssuesView({ issues, onCreateIssue, onUpdateIssue, onDeleteIssue
                     <div
                       key={issue.id}
                       className="group flex items-center gap-4 px-4 py-3 rounded-lg border border-border/40 hover:border-border transition-colors cursor-pointer"
-                      data-campshell-entity={`seo-tracker/issue/issues/${issue.id}.json`}
+                      data-campshell-entity={`seo-tracker/issues/issues/${issue.id}.json`}
                       onClick={() => {
                         setEditingIssue(issue);
                         setFormOpen(true);
