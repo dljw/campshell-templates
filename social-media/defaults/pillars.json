@@ -1,47 +1,49 @@
-[
-  {
-    "id": "educate",
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "name": "Educate",
-    "description": "Tips, tutorials, how-tos, and informative content that teaches your audience something valuable",
-    "color": "blue",
-    "emoji": "\ud83d\udcda",
-    "targetMix": 30
-  },
-  {
-    "id": "entertain",
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "name": "Entertain",
-    "description": "Fun, relatable, trending content that captures attention and encourages sharing",
-    "color": "pink",
-    "emoji": "\ud83c\udfad",
-    "targetMix": 25
-  },
-  {
-    "id": "inspire",
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "name": "Inspire",
-    "description": "Motivational stories, transformations, behind-the-scenes, and aspirational content",
-    "color": "purple",
-    "emoji": "\u2728",
-    "targetMix": 20
-  },
-  {
-    "id": "promote",
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "name": "Promote",
-    "description": "Product features, offers, testimonials, and direct calls to action",
-    "color": "orange",
-    "emoji": "\ud83d\udce3",
-    "targetMix": 15
-  },
-  {
-    "id": "community",
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "name": "Community",
-    "description": "User-generated content, Q&As, polls, reposts, and audience engagement content",
-    "color": "green",
-    "emoji": "\ud83e\udd1d",
-    "targetMix": 10
-  }
-]
+{
+  "pillars": [
+    {
+      "id": "educate",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "Educate",
+      "description": "Tips, tutorials, how-tos, and informative content that teaches your audience something valuable",
+      "color": "blue",
+      "emoji": "\ud83d\udcda",
+      "targetMix": 30
+    },
+    {
+      "id": "entertain",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "Entertain",
+      "description": "Fun, relatable, trending content that captures attention and encourages sharing",
+      "color": "pink",
+      "emoji": "\ud83c\udfad",
+      "targetMix": 25
+    },
+    {
+      "id": "inspire",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "Inspire",
+      "description": "Motivational stories, transformations, behind-the-scenes, and aspirational content",
+      "color": "purple",
+      "emoji": "\u2728",
+      "targetMix": 20
+    },
+    {
+      "id": "promote",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "Promote",
+      "description": "Product features, offers, testimonials, and direct calls to action",
+      "color": "orange",
+      "emoji": "\ud83d\udce3",
+      "targetMix": 15
+    },
+    {
+      "id": "community",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "name": "Community",
+      "description": "User-generated content, Q&As, polls, reposts, and audience engagement content",
+      "color": "green",
+      "emoji": "\ud83e\udd1d",
+      "targetMix": 10
+    }
+  ]
+}
