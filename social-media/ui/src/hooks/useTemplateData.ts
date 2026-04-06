@@ -116,7 +116,7 @@ export function useTemplateData(apiBase = ""): UseTemplateDataReturn {
         const d = response.data;
         setBusinesses((d.businesses as Business[]) ?? []);
         setPosts((d.posts as Post[]) ?? []);
-        setPillars((d.pillars as Pillar[]) ?? []);
+        setPillars((d.pillars as { pillars: Pillar[] })?.pillars ?? []);
         setCampaigns((d.campaigns as Campaign[]) ?? []);
         setIdeas((d.ideas as Idea[]) ?? []);
         setPlatforms((d.platforms as PlatformAccount[]) ?? []);
@@ -149,7 +149,7 @@ export function useTemplateData(apiBase = ""): UseTemplateDataReturn {
         setErrorRecords((prev) => prev.filter((er) => er.file !== event.file));
         if (entity === "businesses") setBusinesses((prev) => upsert(prev, event.data as Business));
         else if (entity === "posts") setPosts((prev) => upsert(prev, event.data as Post));
-        else if (entity === "pillars") setPillars((event.data as Pillar[]) ?? []);
+        else if (entity === "pillars") setPillars((event.data as { pillars: Pillar[] }).pillars ?? []);
         else if (entity === "campaigns") setCampaigns((prev) => upsert(prev, event.data as Campaign));
         else if (entity === "ideas") setIdeas((prev) => upsert(prev, event.data as Idea));
         else if (entity === "platforms") setPlatforms((prev) => upsert(prev, event.data as PlatformAccount));
@@ -200,7 +200,7 @@ export function useTemplateData(apiBase = ""): UseTemplateDataReturn {
   }, [deleteFile]);
 
   const updatePillars = useCallback((items: Pillar[]): boolean => {
-    if (!writeFile("pillars.json", items)) { toast.error("Failed to update pillars"); return false; }
+    if (!writeFile("pillars.json", { pillars: items })) { toast.error("Failed to update pillars"); return false; }
     setPillars(items); return true;
   }, [writeFile]);
 
