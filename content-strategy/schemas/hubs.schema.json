@@ -30,7 +30,7 @@
             "description": "Hub purpose and scope"
           },
           "pillarArticleId": {
-            "type": "string",
+            "type": ["string", "null"],
             "pattern": "^[a-z0-9-]{2,36}$",
             "description": "Pillar article for this hub"
           },
