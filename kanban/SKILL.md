@@ -6,7 +6,7 @@ version: 1.0.0
 
 # Campshell Kanban Board
 
-A file-based kanban board. Each card is a JSON file. Write a file to create a card, edit it to update, delete it to remove. A dashboard UI reflects changes in real time.
+A file-based kanban board. Each card is a JSON file. Use MCP tools to create, update, and delete cards. A dashboard UI reflects changes in real time.
 
 ## Dashboard UI
 
@@ -18,9 +18,11 @@ A real-time dashboard visualizes this board. Changes appear instantly via WebSoc
 
 ## Data location
 
-- Cards: `~/.campshell/data/kanban/cards/{id}.json` (one file per card)
-- Columns: `~/.campshell/data/kanban/columns.json` (read this for current columns)
-- Validation errors: `~/.campshell/data/.campshell/validation-errors/kanban/`
+Data is managed through MCP tools (`campshell-create-entity`, `campshell-get-entity`, `campshell-update-entity`, `campshell-delete-entity`, `campshell-list-entities`). The data directory is resolved automatically at runtime.
+
+Entity types:
+- Cards: one file per card
+- Columns: collection
 
 ## Card fields
 
@@ -59,28 +61,23 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create a card
 
-1. Generate a unique ID: 8–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/kanban/cards/{id}.json` with at least `id`, `title`, `column`, and `createdAt`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"kanban"` and entity `"cards"`. Provide at least `id`, `title`, `column`, and `createdAt`. The tool validates and returns the created entity or validation errors.
 
 ## How to update a card
 
-1. Read the existing file at `~/.campshell/data/kanban/cards/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"kanban"`, entity `"cards"`, and the card ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a card
 
-Delete the file at `~/.campshell/data/kanban/cards/{id}.json`.
+Use `campshell-delete-entity` with template `"kanban"`, entity `"cards"`, and the card ID.
 
 ## How to move a card
 
-Update the `column` field to the target column ID and write the file back.
+Use `campshell-update-entity` with template `"kanban"`, entity `"cards"`, the card ID, and `{ "column": "<target-column-id>" }`.
 
 ## Columns
 
-Read `~/.campshell/data/kanban/columns.json` for the current board columns. The default initial set is:
+Use `campshell-list-entities` with template `"kanban"` and entity `"columns"` to get the current board columns. The default initial set is:
 
 | ID | Name |
 |----|------|
@@ -92,7 +89,7 @@ Read `~/.campshell/data/kanban/columns.json` for the current board columns. The 
 
 ## Query commands
 
-Run queries with `npx @campshell/kanban query <command>`. All output is JSON. Every subcommand accepts `--data-dir <dir>` to override the default `~/.campshell/data/kanban` location.
+Run queries with `npx @campshell/kanban query <command>`. All output is JSON. Every subcommand accepts `--data-dir <dir>` to override the default data location.
 
 The `--column` flag accepts a column ID or display name (case-insensitive). For example, `--column "In Progress"` and `--column in-progress` are equivalent.
 
@@ -128,6 +125,4 @@ Returns: array of `{ id, title, description, column, matchedIn }` where `matched
 
 ## Checking for errors
 
-After every write, check `~/.campshell/data/.campshell/validation-errors/kanban/` for a file matching your card's filename.
-
-**Important:** Invalid files are automatically deleted. If validation fails, your written file will no longer exist. The error record at `~/.campshell/data/.campshell/validation-errors/kanban/{id}.json` contains the rejected data and the exact errors. Read it, fix the issue, and write a new file.
+MCP tools validate data automatically. If validation fails, the tool response contains the exact errors. Fix the issue and retry the operation.

@@ -4,7 +4,7 @@ A data-driven content strategy tracker built on Campshell. Plan content, measure
 
 ## Data Model
 
-All data is stored as JSON files in `~/.campshell/data/content-strategy/`.
+All data is managed through MCP tools. The data directory is resolved automatically at runtime.
 
 ### Articles (`articles/{id}.json`)
 
@@ -276,7 +276,7 @@ The user will provide GSC CSV export files. The standard GSC export format is:
 - `Chart.csv`: `"Date,Clicks,Impressions,CTR,Position"` — e.g. `"2026-02-27,0,1,0%,6"` (CTR/Position may be empty when Impressions=0)
 - `Filters.csv`: `"Filter,Value"` — e.g. `"Search type,Web"` and `"Date,Last 28 days"`
 
-Users can place CSV files in `~/.campshell/data/content-strategy/imports/` for the AI agent to find.
+Users can place CSV files in the content-strategy imports directory for the AI agent to find.
 
 #### Step 2: Create a new cycle
 

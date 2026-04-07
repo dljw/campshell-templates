@@ -35,7 +35,7 @@ export async function start(config: LifecycleConfig): Promise<void> {
         if (skillCopied) {
           process.stderr.write("\u2713 SKILL.md installed at skills/campshell-crm/SKILL.md\n");
         }
-        process.stderr.write("\u2713 Data directory: ~/.campshell/data/crm/\n");
+        process.stderr.write(`\u2713 Data directory: ${path.join(config.home, "data", "crm")}\n`);
         if (!config.skipDashboard) {
           process.stderr.write(`\u2713 Dashboard: http://localhost:${port}\n`);
         }
@@ -59,7 +59,7 @@ export async function stop(config: LifecycleConfig): Promise<void> {
     },
     {
       onStopped: () => {
-        process.stderr.write("\u2713 CRM stopped. Data preserved at ~/.campshell/data/crm/\n");
+        process.stderr.write(`\u2713 CRM stopped. Data preserved at ${path.join(config.home, "data", "crm")}\n`);
       },
     },
   );

@@ -6,7 +6,7 @@ import { resetTemplate, startTemplate, stopTemplate } from "@campshell/core";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export interface LifecycleConfig {
-  /** Campshell home directory (~/.campshell/). */
+  /** Campshell home directory. */
   home: string;
   /** Dashboard port (default 4000) */
   port?: number;
@@ -46,7 +46,7 @@ export async function start(config: LifecycleConfig): Promise<void> {
         if (skillCopied) {
           process.stderr.write("✓ SKILL.md installed at skills/campshell-kanban/SKILL.md\n");
         }
-        process.stderr.write("✓ Data directory: ~/.campshell/data/kanban/\n");
+        process.stderr.write(`✓ Data directory: ${path.join(config.home, "data", "kanban")}\n`);
         if (!config.skipDashboard) {
           process.stderr.write(`✓ Dashboard: http://localhost:${port}\n`);
         }
@@ -74,7 +74,7 @@ export async function stop(config: LifecycleConfig): Promise<void> {
     },
     {
       onStopped: () => {
-        process.stderr.write("✓ Kanban stopped. Data preserved at ~/.campshell/data/kanban/\n");
+        process.stderr.write(`✓ Kanban stopped. Data preserved at ${path.join(config.home, "data", "kanban")}\n`);
       },
     },
   );

@@ -60,7 +60,7 @@ query
   .command("list accounts")
   .description("List all accounts")
   .option("--type <type>", "Filter by account type (asset, expense, revenue, liability)")
-  .option("--data-dir <dir>", "Data directory (default: ~/.campshell/data/budget-tracker)")
+  .option("--data-dir <dir>", "Data directory (default: auto-detected from Campshell home)")
   .action(async (opts) => {
     try {
       const options: QueryOptions = {

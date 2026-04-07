@@ -18,12 +18,14 @@ A real-time dashboard visualizes your finances. Changes appear instantly via Web
 
 ## Data location
 
-- Accounts: `~/.campshell/data/budget-tracker/accounts/{id}.json` (one file per account)
-- Transactions: `~/.campshell/data/budget-tracker/transactions/{id}.json` (one file per transaction)
-- Budgets: `~/.campshell/data/budget-tracker/budgets/{id}.json` (one file per budget)
-- Categories: `~/.campshell/data/budget-tracker/categories.json` (all categories in one file)
-- Tags: `~/.campshell/data/budget-tracker/tags.json` (all tags in one file)
-- Validation errors: `~/.campshell/data/.campshell/validation-errors/budget-tracker/`
+Data is managed through MCP tools (`campshell-create-entity`, `campshell-get-entity`, `campshell-update-entity`, `campshell-delete-entity`, `campshell-list-entities`). The data directory is resolved automatically at runtime.
+
+Entity types:
+- Accounts: one file per account
+- Transactions: one file per transaction
+- Budgets: one file per budget
+- Categories: collection
+- Tags: collection
 
 ## Account fields
 
@@ -92,9 +94,7 @@ No extra fields allowed.
 
 ## How to record an expense (withdrawal)
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/budget-tracker/transactions/{id}.json` with at least `id`, `type: "withdrawal"`, `description`, `amount`, `date`, `sourceAccountId`, and `createdAt`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"budget-tracker"` and entity `"transactions"`. Provide at least `id`, `type: "withdrawal"`, `description`, `amount`, `date`, `sourceAccountId`, and `createdAt`. The tool validates and returns the created entity or validation errors.
 
 ## How to record income (deposit)
 
@@ -106,14 +106,11 @@ Set `type: "transfer"`, provide both `sourceAccountId` (money leaves) and `desti
 
 ## How to update a transaction
 
-1. Read the existing file at `~/.campshell/data/budget-tracker/transactions/{id}.json`.
-2. Modify fields as needed. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"budget-tracker"`, entity `"transactions"`, and the transaction ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a transaction
 
-Delete the file at `~/.campshell/data/budget-tracker/transactions/{id}.json`.
+Use `campshell-delete-entity` with template `"budget-tracker"`, entity `"transactions"`, and the transaction ID.
 
 ## Accounts
 
@@ -187,6 +184,4 @@ Returns matching transactions with `matchedIn` indicating which fields matched.
 
 ## Checking for errors
 
-After every write, check `~/.campshell/data/.campshell/validation-errors/budget-tracker/` for a file matching your record's filename.
-
-**Important:** Invalid files are automatically deleted. If validation fails, your written file will no longer exist. The error record contains the rejected data and exact errors. Read it, fix the issue, and write a new file.
+MCP tools validate data automatically. If validation fails, the tool response contains the exact errors. Fix the issue and retry the operation.

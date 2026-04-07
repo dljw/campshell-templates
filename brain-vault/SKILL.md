@@ -18,9 +18,11 @@ A real-time dashboard visualizes this brain vault. Changes appear instantly via 
 
 ## Data location
 
-- Notes: `~/.campshell/data/brain-vault/notes/{id}.json` (one file per notes)
-- Tags: `~/.campshell/data/brain-vault/tags.json`
-- Validation errors: `~/.campshell/data/.campshell/validation-errors/brain-vault/`
+Data is managed through MCP tools (`campshell-create-entity`, `campshell-get-entity`, `campshell-update-entity`, `campshell-delete-entity`, `campshell-list-entities`). The data directory is resolved automatically at runtime.
+
+Entity types:
+- Notes: one file per note
+- Tags: collection
 
 ## Notes fields
 
@@ -56,20 +58,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create a notes
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/brain-vault/notes/{id}.json` with at least `id`, `createdAt`, `title`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"brain-vault"` and entity `"notes"`. Provide at least `id`, `createdAt`, `title`. The tool validates and returns the created entity or validation errors.
 
 ## How to update a notes
 
-1. Read the existing file at `~/.campshell/data/brain-vault/notes/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"brain-vault"`, entity `"notes"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a notes
 
-Delete the file at `~/.campshell/data/brain-vault/notes/{id}.json`.
+Use `campshell-delete-entity` with template `"brain-vault"`, entity `"notes"`, and the entity ID.
 
 > **Warning:** Before deleting a notes, check for notes records that reference it via `linkedNoteIds`.
 
@@ -105,9 +102,7 @@ Returns: a Notes object, or `{ "error": "not_found" }` if missing.
 
 ## Checking for errors
 
-After every write, check `~/.campshell/data/.campshell/validation-errors/brain-vault/` for a file matching your record's filename.
-
-**Important:** Invalid files are automatically deleted. If validation fails, your written file will no longer exist. The error record contains the rejected data and the exact errors. Read it, fix the issue, and write a new file.
+MCP tools validate data automatically. If validation fails, the tool response contains the exact errors. Fix the issue and retry the operation.
 
 ## Building the UI
 

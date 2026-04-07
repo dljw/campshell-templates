@@ -6,7 +6,7 @@ version: 1.0.0
 
 # Campshell Habit Tracker
 
-A file-based habit tracker. Each habit and completion is a JSON file in `~/.campshell/data/habit-tracker/`. Habits define what to track, completions record when a habit was done on a given date. Streaks and stats are computed from completions.
+A file-based habit tracker. Each habit and completion is a JSON file. Habits define what to track, completions record when a habit was done on a given date. Streaks and stats are computed from completions.
 
 ## Dashboard UI
 
@@ -16,10 +16,12 @@ A file-based habit tracker. Each habit and completion is a JSON file in `~/.camp
 
 ## Data location
 
-- Habits: `~/.campshell/data/habit-tracker/habits/{id}.json`
-- Completions: `~/.campshell/data/habit-tracker/completions/{id}.json`
-- Categories: `~/.campshell/data/habit-tracker/categories.json`
-- Validation errors: `~/.campshell/data/.campshell/validation-errors/habit-tracker/`
+Data is managed through MCP tools (`campshell-create-entity`, `campshell-get-entity`, `campshell-update-entity`, `campshell-delete-entity`, `campshell-list-entities`). The data directory is resolved automatically at runtime.
+
+Entity types:
+- Habits: one file per habit
+- Completions: one file per completion
+- Categories: collection
 
 ## Habit fields
 
@@ -85,11 +87,11 @@ A file-based habit tracker. Each habit and completion is a JSON file in `~/.camp
 
 ## How to create a habit
 
-Write a JSON file to `~/.campshell/data/habit-tracker/habits/{id}.json` with at least `id`, `createdAt`, `name`, and `frequency`.
+Use `campshell-create-entity` with template `"habit-tracker"` and entity `"habits"`. Provide at least `id`, `createdAt`, `name`, and `frequency`.
 
 ## How to record a completion (mark habit done)
 
-Write a JSON file to `~/.campshell/data/habit-tracker/completions/{habitId}-{YYYY-MM-DD}.json`:
+Use `campshell-create-entity` with template `"habit-tracker"` and entity `"completions"`. Use the ID convention `{habitId}-{YYYY-MM-DD}`:
 
 ```json
 {
@@ -102,7 +104,7 @@ Write a JSON file to `~/.campshell/data/habit-tracker/completions/{habitId}-{YYY
 
 ## How to remove a completion (unmark)
 
-Delete the completion file: `~/.campshell/data/habit-tracker/completions/{id}.json`
+Use `campshell-delete-entity` with template `"habit-tracker"`, entity `"completions"`, and the completion ID.
 
 ## How to archive a habit
 
@@ -141,4 +143,4 @@ campshell-habit-tracker query categories
 
 ## Checking for errors
 
-If a file fails validation, the error details appear in `~/.campshell/data/.campshell/validation-errors/habit-tracker/`. The dashboard will also show a toast notification. Fix the file to clear the error.
+MCP tools validate data automatically. If validation fails, the tool response contains the exact errors. Fix the issue and retry the operation.

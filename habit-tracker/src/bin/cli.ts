@@ -60,7 +60,7 @@ query
 	.option("--frequency <frequency>", "Filter by frequency (daily, weekly, custom)")
 	.option("--category <id>", "Filter by category ID")
 	.option("--archived", "Show only archived habits")
-	.option("--data-dir <dir>", "Data directory (default: ~/.campshell/data/habit-tracker)")
+	.option("--data-dir <dir>", "Data directory (default: auto-detected from Campshell home)")
 	.action(async (opts) => {
 		try {
 			const options: QueryOptions = {

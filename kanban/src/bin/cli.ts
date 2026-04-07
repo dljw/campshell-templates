@@ -53,7 +53,7 @@ query
   .description("List all cards")
   .option("--column <column>", "Filter by column name or ID")
   .option("--priority <priority>", "Filter by priority (low, medium, high, urgent)")
-  .option("--data-dir <dir>", "Data directory (default: ~/.campshell/data/kanban)")
+  .option("--data-dir <dir>", "Data directory (default: auto-detected from Campshell home)")
   .action(async (opts) => {
     try {
       const options: QueryOptions = {
@@ -71,7 +71,7 @@ query
 query
   .command("get <id>")
   .description("Get a single card by ID")
-  .option("--data-dir <dir>", "Data directory (default: ~/.campshell/data/kanban)")
+  .option("--data-dir <dir>", "Data directory (default: auto-detected from Campshell home)")
   .action(async (id: string, opts) => {
     try {
       const options: QueryOptions = {
@@ -87,7 +87,7 @@ query
 query
   .command("columns")
   .description("List all columns")
-  .option("--data-dir <dir>", "Data directory (default: ~/.campshell/data/kanban)")
+  .option("--data-dir <dir>", "Data directory (default: auto-detected from Campshell home)")
   .action(async (opts) => {
     try {
       const options: QueryOptions = {
@@ -104,7 +104,7 @@ query
   .command("overdue")
   .description("List cards past their due date")
   .option("--column <column>", "Filter by column name or ID")
-  .option("--data-dir <dir>", "Data directory (default: ~/.campshell/data/kanban)")
+  .option("--data-dir <dir>", "Data directory (default: auto-detected from Campshell home)")
   .action(async (opts) => {
     try {
       const options: QueryOptions = {
@@ -122,7 +122,7 @@ query
   .command("search <term>")
   .description("Full-text search across cards")
   .option("--column <column>", "Filter by column name or ID")
-  .option("--data-dir <dir>", "Data directory (default: ~/.campshell/data/kanban)")
+  .option("--data-dir <dir>", "Data directory (default: auto-detected from Campshell home)")
   .action(async (term: string, opts) => {
     try {
       const options: QueryOptions = {

@@ -67,7 +67,7 @@ query
 	.option("--phase <phase>", "Filter by phase")
 	.option("--priority <priority>", "Filter by priority")
 	.option("--type <type>", "Filter by content type")
-	.option("--data-dir <dir>", "Data directory (default: ~/.campshell/data/content-strategy)")
+	.option("--data-dir <dir>", "Data directory (default: auto-detected from Campshell home)")
 	.action(async (opts) => {
 		try {
 			const options: QueryOptions = {

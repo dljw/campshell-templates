@@ -6,7 +6,7 @@ import { resetTemplate, startTemplate, stopTemplate } from "@campshell/core";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export interface LifecycleConfig {
-  /** Campshell home directory (~/.campshell/). */
+  /** Campshell home directory. */
   home: string;
   port?: number;
   skipBrowser?: boolean;
@@ -38,7 +38,7 @@ export async function start(config: LifecycleConfig): Promise<void> {
             `✓ SKILL.md installed at skills/campshell-${templateName}/SKILL.md\n`,
           );
         }
-        process.stderr.write(`✓ Data directory: ~/.campshell/data/${templateName}/\n`);
+        process.stderr.write(`✓ Data directory: ${path.join(config.home, "data", templateName)}\n`);
         if (!config.skipDashboard) {
           process.stderr.write(`✓ Dashboard: http://localhost:${port}\n`);
         }
@@ -57,7 +57,7 @@ export async function stop(config: LifecycleConfig): Promise<void> {
     {
       onStopped: ({ templateName }) => {
         process.stderr.write(
-          `✓ Brain Vault stopped. Data preserved at ~/.campshell/data/${templateName}/\n`,
+          `✓ Brain Vault stopped. Data preserved at ${path.join(config.home, "data", templateName)}\n`,
         );
       },
     },

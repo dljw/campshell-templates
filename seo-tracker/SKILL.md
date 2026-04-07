@@ -18,12 +18,14 @@ A real-time dashboard visualizes this seo tracker. Changes appear instantly via 
 
 ## Data location
 
-- Keywords: `~/.campshell/data/seo-tracker/keywords/{id}.json` (one file per keywords)
-- Pages: `~/.campshell/data/seo-tracker/pages/{id}.json` (one file per pages)
-- Backlinks: `~/.campshell/data/seo-tracker/backlinks/{id}.json` (one file per backlinks)
-- Competitors: `~/.campshell/data/seo-tracker/competitors.json`
-- Issues: `~/.campshell/data/seo-tracker/issues/{id}.json` (one file per issues)
-- Validation errors: `~/.campshell/data/.campshell/validation-errors/seo-tracker/`
+Data is managed through MCP tools (`campshell-create-entity`, `campshell-get-entity`, `campshell-update-entity`, `campshell-delete-entity`, `campshell-list-entities`). The data directory is resolved automatically at runtime.
+
+Entity types:
+- Keywords: one file per keyword
+- Pages: one file per page
+- Backlinks: one file per backlink
+- Competitors: collection
+- Issues: one file per issue
 
 ## Keywords fields
 
@@ -46,20 +48,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create a keywords
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/seo-tracker/keywords/{id}.json` with at least `id`, `createdAt`, `term`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"seo-tracker"` and entity `"keywords"`. Provide at least `id`, `createdAt`, `term`. The tool validates and returns the created entity or validation errors.
 
 ## How to update a keywords
 
-1. Read the existing file at `~/.campshell/data/seo-tracker/keywords/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"seo-tracker"`, entity `"keywords"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a keywords
 
-Delete the file at `~/.campshell/data/seo-tracker/keywords/{id}.json`.
+Use `campshell-delete-entity` with template `"seo-tracker"`, entity `"keywords"`, and the entity ID.
 
 ## Pages fields
 
@@ -84,20 +81,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create a pages
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/seo-tracker/pages/{id}.json` with at least `id`, `createdAt`, `title`, `pageUrl`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"seo-tracker"` and entity `"pages"`. Provide at least `id`, `createdAt`, `title`, `pageUrl`. The tool validates and returns the created entity or validation errors.
 
 ## How to update a pages
 
-1. Read the existing file at `~/.campshell/data/seo-tracker/pages/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"seo-tracker"`, entity `"pages"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a pages
 
-Delete the file at `~/.campshell/data/seo-tracker/pages/{id}.json`.
+Use `campshell-delete-entity` with template `"seo-tracker"`, entity `"pages"`, and the entity ID.
 
 > **Warning:** Before deleting a pages, check for keywords records that reference it via `pageId`.
 > **Warning:** Before deleting a pages, check for backlinks records that reference it via `targetPageId`.
@@ -122,20 +114,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create a backlinks
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/seo-tracker/backlinks/{id}.json` with at least `id`, `createdAt`, `sourceDomain`, `sourceUrl`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"seo-tracker"` and entity `"backlinks"`. Provide at least `id`, `createdAt`, `sourceDomain`, `sourceUrl`. The tool validates and returns the created entity or validation errors.
 
 ## How to update a backlinks
 
-1. Read the existing file at `~/.campshell/data/seo-tracker/backlinks/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"seo-tracker"`, entity `"backlinks"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a backlinks
 
-Delete the file at `~/.campshell/data/seo-tracker/backlinks/{id}.json`.
+Use `campshell-delete-entity` with template `"seo-tracker"`, entity `"backlinks"`, and the entity ID.
 
 ## Competitors fields
 
@@ -171,20 +158,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create a issues
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/seo-tracker/issues/{id}.json` with at least `id`, `createdAt`, `title`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"seo-tracker"` and entity `"issues"`. Provide at least `id`, `createdAt`, `title`. The tool validates and returns the created entity or validation errors.
 
 ## How to update a issues
 
-1. Read the existing file at `~/.campshell/data/seo-tracker/issues/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"seo-tracker"`, entity `"issues"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a issues
 
-Delete the file at `~/.campshell/data/seo-tracker/issues/{id}.json`.
+Use `campshell-delete-entity` with template `"seo-tracker"`, entity `"issues"`, and the entity ID.
 
 ## Query commands
 
@@ -240,9 +222,7 @@ Returns: a Issues object, or `{ "error": "not_found" }` if missing.
 
 ## Checking for errors
 
-After every write, check `~/.campshell/data/.campshell/validation-errors/seo-tracker/` for a file matching your record's filename.
-
-**Important:** Invalid files are automatically deleted. If validation fails, your written file will no longer exist. The error record contains the rejected data and the exact errors. Read it, fix the issue, and write a new file.
+MCP tools validate data automatically. If validation fails, the tool response contains the exact errors. Fix the issue and retry the operation.
 
 ## Building the UI
 

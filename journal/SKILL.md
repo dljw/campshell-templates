@@ -18,10 +18,12 @@ A real-time dashboard visualizes this journal. Changes appear instantly via WebS
 
 ## Data location
 
-- Entries: `~/.campshell/data/journal/entries/{id}.json` (one file per entries)
-- Tags: `~/.campshell/data/journal/tags.json`
-- Prompts: `~/.campshell/data/journal/prompts.json`
-- Validation errors: `~/.campshell/data/.campshell/validation-errors/journal/`
+Data is managed through MCP tools (`campshell-create-entity`, `campshell-get-entity`, `campshell-update-entity`, `campshell-delete-entity`, `campshell-list-entities`). The data directory is resolved automatically at runtime.
+
+Entity types:
+- Entries: one file per entry
+- Tags: collection
+- Prompts: collection
 
 ## Entries fields
 
@@ -47,20 +49,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create a entries
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/journal/entries/{id}.json` with at least `id`, `createdAt`, `title`, `date`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"journal"` and entity `"entries"`. Provide at least `id`, `createdAt`, `title`, `date`. The tool validates and returns the created entity or validation errors.
 
 ## How to update a entries
 
-1. Read the existing file at `~/.campshell/data/journal/entries/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"journal"`, entity `"entries"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a entries
 
-Delete the file at `~/.campshell/data/journal/entries/{id}.json`.
+Use `campshell-delete-entity` with template `"journal"`, entity `"entries"`, and the entity ID.
 
 ## Tags fields
 
@@ -107,9 +104,7 @@ Returns: a Entries object, or `{ "error": "not_found" }` if missing.
 
 ## Checking for errors
 
-After every write, check `~/.campshell/data/.campshell/validation-errors/journal/` for a file matching your record's filename.
-
-**Important:** Invalid files are automatically deleted. If validation fails, your written file will no longer exist. The error record contains the rejected data and the exact errors. Read it, fix the issue, and write a new file.
+MCP tools validate data automatically. If validation fails, the tool response contains the exact errors. Fix the issue and retry the operation.
 
 ## Building the UI
 

@@ -61,18 +61,16 @@ campshell-crm query search "acme"
 
 ## Data Location
 
-All data is stored as JSON files in `~/.campshell/data/crm/`:
+Data is managed through MCP tools (`campshell-create-entity`, `campshell-get-entity`, `campshell-update-entity`, `campshell-delete-entity`, `campshell-list-entities`). The data directory is resolved automatically at runtime.
 
-```
-~/.campshell/data/crm/
-  contacts/{id}.json
-  deals/{id}.json
-  activities/{id}.json
-```
+Entity types:
+- Contacts: one file per contact
+- Deals: one file per deal
+- Activities: one file per activity
 
 ## Writing Data
 
-To create or update an entity, write a JSON file with all required fields plus `id` and `createdAt`. The `id` must match the pattern `^[a-z0-9-]{8,36}$`.
+To create or update an entity, use the `campshell-create-entity` or `campshell-update-entity` MCP tools. Each entity requires all required fields plus `id` and `createdAt`. The `id` must match the pattern `^[a-z0-9-]{8,36}$`.
 
 Example — create a contact:
 ```json

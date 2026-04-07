@@ -17,14 +17,16 @@ A real-time dashboard visualizes this social media tracker. Changes appear insta
 
 ## Data location
 
-- Businesses: `~/.campshell/data/social-media/businesses/{id}.json` (one file per business)
-- Posts: `~/.campshell/data/social-media/posts/{id}.json` (one file per post)
-- Pillars: `~/.campshell/data/social-media/pillars.json`
-- Campaigns: `~/.campshell/data/social-media/campaigns/{id}.json` (one file per campaign)
-- Ideas: `~/.campshell/data/social-media/ideas/{id}.json` (one file per idea)
-- Platforms: `~/.campshell/data/social-media/platforms/{id}.json` (one file per platform account)
-- Analytics: `~/.campshell/data/social-media/analytics/{id}.json` (one file per analytics record)
-- Validation errors: `~/.campshell/data/.campshell/validation-errors/social-media/`
+Data is managed through MCP tools (`campshell-create-entity`, `campshell-get-entity`, `campshell-update-entity`, `campshell-delete-entity`, `campshell-list-entities`). The data directory is resolved automatically at runtime.
+
+Entity types:
+- Businesses: one file per business
+- Posts: one file per post
+- Pillars: collection
+- Campaigns: one file per campaign
+- Ideas: one file per idea
+- Platforms: one file per platform account
+- Analytics: one file per analytics record
 
 ## Businesses fields
 
@@ -45,20 +47,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create a business
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/social-media/businesses/{id}.json` with at least `id`, `createdAt`, `name`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"social-media"` and entity `"businesses"`. Provide at least `id`, `createdAt`, `name`. The tool validates and returns the created entity or validation errors.
 
 ## How to update a business
 
-1. Read the existing file at `~/.campshell/data/social-media/businesses/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"social-media"`, entity `"businesses"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a business
 
-Delete the file at `~/.campshell/data/social-media/businesses/{id}.json`.
+Use `campshell-delete-entity` with template `"social-media"`, entity `"businesses"`, and the entity ID.
 
 > **Warning:** Before deleting a business, check for posts, campaigns, ideas, and platforms records that reference it via `businessId`.
 
@@ -91,20 +88,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create a post
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/social-media/posts/{id}.json` with at least `id`, `createdAt`, `title`, `businessId`, `platform`, `format`, `status`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"social-media"` and entity `"posts"`. Provide at least `id`, `createdAt`, `title`, `businessId`, `platform`, `format`, `status`. The tool validates and returns the created entity or validation errors.
 
 ## How to update a post
 
-1. Read the existing file at `~/.campshell/data/social-media/posts/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"social-media"`, entity `"posts"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a post
 
-Delete the file at `~/.campshell/data/social-media/posts/{id}.json`.
+Use `campshell-delete-entity` with template `"social-media"`, entity `"posts"`, and the entity ID.
 
 > **Warning:** Before deleting a post, check for analytics records that reference it via `postId`.
 > **Warning:** Before deleting a post, check for other posts that reference it via `crosspostOf`.
@@ -147,20 +139,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create a campaign
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/social-media/campaigns/{id}.json` with at least `id`, `createdAt`, `name`, `businessId`, `status`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"social-media"` and entity `"campaigns"`. Provide at least `id`, `createdAt`, `name`, `businessId`, `status`. The tool validates and returns the created entity or validation errors.
 
 ## How to update a campaign
 
-1. Read the existing file at `~/.campshell/data/social-media/campaigns/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"social-media"`, entity `"campaigns"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a campaign
 
-Delete the file at `~/.campshell/data/social-media/campaigns/{id}.json`.
+Use `campshell-delete-entity` with template `"social-media"`, entity `"campaigns"`, and the entity ID.
 
 > **Warning:** Before deleting a campaign, check for posts that reference it via `campaignId`.
 
@@ -189,20 +176,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create an idea
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only.
-2. Write a JSON file to `~/.campshell/data/social-media/ideas/{id}.json` with at least `id`, `createdAt`, `title`, `status`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"social-media"` and entity `"ideas"`. Provide at least `id`, `createdAt`, `title`, `status`. The tool validates and returns the created entity or validation errors.
 
 ## How to update an idea
 
-1. Read the existing file at `~/.campshell/data/social-media/ideas/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"social-media"`, entity `"ideas"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete an idea
 
-Delete the file at `~/.campshell/data/social-media/ideas/{id}.json`.
+Use `campshell-delete-entity` with template `"social-media"`, entity `"ideas"`, and the entity ID.
 
 ## Platforms fields
 
@@ -226,20 +208,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create a platform account
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only (e.g. `acme-instagram`).
-2. Write a JSON file to `~/.campshell/data/social-media/platforms/{id}.json` with at least `id`, `createdAt`, `businessId`, `platform`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"social-media"` and entity `"platforms"`. Provide at least `id`, `createdAt`, `businessId`, `platform`. The tool validates and returns the created entity or validation errors.
 
 ## How to update a platform account
 
-1. Read the existing file at `~/.campshell/data/social-media/platforms/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"social-media"`, entity `"platforms"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete a platform account
 
-Delete the file at `~/.campshell/data/social-media/platforms/{id}.json`.
+Use `campshell-delete-entity` with template `"social-media"`, entity `"platforms"`, and the entity ID.
 
 ## Analytics fields
 
@@ -267,20 +244,15 @@ No extra fields allowed — any unknown property will fail validation.
 
 ## How to create an analytics record
 
-1. Generate a unique ID: 2–36 characters, lowercase letters, digits, and hyphens only (e.g. `brand-launch-ig-day1`).
-2. Write a JSON file to `~/.campshell/data/social-media/analytics/{id}.json` with at least `id`, `createdAt`, `postId`, `recordedAt`.
-3. Check for validation errors (see **Checking for errors** below).
+Use `campshell-create-entity` with template `"social-media"` and entity `"analytics"`. Provide at least `id`, `createdAt`, `postId`, `recordedAt`. The tool validates and returns the created entity or validation errors.
 
 ## How to update an analytics record
 
-1. Read the existing file at `~/.campshell/data/social-media/analytics/{id}.json`.
-2. Modify the fields you need. Set `updatedAt` to the current ISO 8601 datetime.
-3. Write the full JSON back to the same path.
-4. Check for validation errors.
+Use `campshell-update-entity` with template `"social-media"`, entity `"analytics"`, and the entity ID. Provide only the fields to change. `updatedAt` is set automatically.
 
 ## How to delete an analytics record
 
-Delete the file at `~/.campshell/data/social-media/analytics/{id}.json`.
+Use `campshell-delete-entity` with template `"social-media"`, entity `"analytics"`, and the entity ID.
 
 ## Query commands
 
@@ -348,9 +320,7 @@ Returns: array of Analytics objects.
 
 ## Checking for errors
 
-After every write, check `~/.campshell/data/.campshell/validation-errors/social-media/` for a file matching your record's filename.
-
-**Important:** Invalid files are automatically deleted. If validation fails, your written file will no longer exist. The error record contains the rejected data and the exact errors. Read it, fix the issue, and write a new file.
+MCP tools validate data automatically. If validation fails, the tool response contains the exact errors. Fix the issue and retry the operation.
 
 ## Building the UI
 
