@@ -1,0 +1,24 @@
+{
+  "name": "@campshell/dataforseo",
+  "version": "1.0.0",
+  "description": "DataForSEO API integration for Campshell — search volume, SERP analysis, and keyword research",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rm -rf dist .tsbuildinfo"
+  },
+  "dependencies": {
+    "@campshell/core": "file:../../camp-shell/packages/core"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

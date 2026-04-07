@@ -1,0 +1,73 @@
+{
+  "name": "dataforseo",
+  "type": "service",
+  "version": "1.0.0",
+  "displayName": "DataForSEO",
+  "description": "Search volume, SERP analysis, and keyword research via DataForSEO API",
+  "author": { "name": "campshell" },
+  "license": "MIT",
+  "category": "marketing",
+  "tags": ["seo", "keywords", "serp", "marketing"],
+  "emoji": "\uD83D\uDD0D",
+  "dataDir": "data/dataforseo",
+  "schemas": {
+    "search-volume.input": "schemas/search-volume.input.schema.json",
+    "search-volume.output": "schemas/search-volume.output.schema.json",
+    "serp-analysis.input": "schemas/serp-analysis.input.schema.json",
+    "serp-analysis.output": "schemas/serp-analysis.output.schema.json",
+    "keyword-suggestions.input": "schemas/keyword-suggestions.input.schema.json",
+    "keyword-suggestions.output": "schemas/keyword-suggestions.output.schema.json"
+  },
+  "storage": {
+    "runs": {
+      "pattern": "one-per-file",
+      "directory": "runs",
+      "fileNamePattern": "{id}.json"
+    }
+  },
+  "operations": {
+    "search-volume": {
+      "description": "Get monthly search volume and CPC data for keywords",
+      "inputSchema": "schemas/search-volume.input.schema.json",
+      "outputSchema": "schemas/search-volume.output.schema.json",
+      "handler": "handlers/search-volume",
+      "timeout": 30000,
+      "rateLimit": { "maxPerMinute": 10 }
+    },
+    "serp-analysis": {
+      "description": "Analyze top SERP results for a keyword",
+      "inputSchema": "schemas/serp-analysis.input.schema.json",
+      "outputSchema": "schemas/serp-analysis.output.schema.json",
+      "handler": "handlers/serp-analysis",
+      "timeout": 60000
+    },
+    "keyword-suggestions": {
+      "description": "Get related keyword suggestions based on a seed keyword",
+      "inputSchema": "schemas/keyword-suggestions.input.schema.json",
+      "outputSchema": "schemas/keyword-suggestions.output.schema.json",
+      "handler": "handlers/keyword-suggestions",
+      "timeout": 30000
+    }
+  },
+  "secrets": [
+    {
+      "key": "DATAFORSEO_LOGIN",
+      "label": "DataForSEO Login Email",
+      "description": "Your DataForSEO account email address",
+      "required": true
+    },
+    {
+      "key": "DATAFORSEO_PASSWORD",
+      "label": "DataForSEO API Password",
+      "description": "API password from your DataForSEO dashboard (not your account password)",
+      "required": true,
+      "sensitive": true
+    }
+  ],
+  "ui": {
+    "framework": "react",
+    "entry": "index.tsx",
+    "route": "/dataforseo"
+  },
+  "guide": "guide.json"
+}

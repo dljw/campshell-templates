@@ -1,0 +1,110 @@
+name: dataforseo
+displayName: DataForSEO
+emoji: "\U0001F50D"
+category: marketing
+type: service
+description: Search volume, SERP analysis, and keyword research via DataForSEO API
+
+secrets:
+  DATAFORSEO_LOGIN:
+    label: DataForSEO Login Email
+    description: Your DataForSEO account email address
+    required: true
+  DATAFORSEO_PASSWORD:
+    label: DataForSEO API Password
+    description: API password from your DataForSEO dashboard (not your account password)
+    required: true
+    sensitive: true
+
+operations:
+  search-volume:
+    description: Get monthly search volume and CPC data for keywords
+    timeout: 30000
+    rateLimit:
+      maxPerMinute: 10
+    input:
+      keywords:
+        type: string[]
+        required: true
+        max_items: 50
+        description: Keywords to look up (max 50 per request)
+      locationCode:
+        type: integer
+        required: false
+        default: 2840
+        description: DataForSEO location code (2840 = United States)
+      languageCode:
+        type: string
+        required: false
+        default: en
+        description: Language code for results
+    output:
+      results:
+        type: object[]
+        items:
+          keyword: { type: string }
+          searchVolume: { type: integer }
+          cpc: { type: number }
+          competition: { type: number }
+          competitionLevel: { type: string }
+
+  serp-analysis:
+    description: Analyze top SERP results for a keyword
+    timeout: 60000
+    input:
+      keyword:
+        type: string
+        required: true
+        max: 200
+        description: Keyword to analyze SERP for
+      locationCode:
+        type: integer
+        required: false
+        default: 2840
+        description: DataForSEO location code
+      depth:
+        type: integer
+        required: false
+        default: 10
+        min: 1
+        max: 100
+        description: Number of SERP results to return
+    output:
+      results:
+        type: object[]
+        items:
+          position: { type: integer }
+          url: { type: string }
+          title: { type: string }
+          description: { type: string }
+          domain: { type: string }
+
+  keyword-suggestions:
+    description: Get related keyword suggestions based on a seed keyword
+    timeout: 30000
+    input:
+      seed:
+        type: string
+        required: true
+        description: Seed keyword to get suggestions for
+      locationCode:
+        type: integer
+        required: false
+        default: 2840
+        description: DataForSEO location code
+      limit:
+        type: integer
+        min: 1
+        max: 100
+        default: 20
+        description: Maximum number of suggestions to return
+    output:
+      suggestions:
+        type: object[]
+        items:
+          keyword: { type: string }
+          searchVolume: { type: integer }
+          cpc: { type: number }
+          competition: { type: number }
+
+entities: {}

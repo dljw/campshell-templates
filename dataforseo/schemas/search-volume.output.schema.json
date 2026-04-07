@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "dataforseo/search-volume.output.schema.json",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "keyword": { "type": "string" },
+          "searchVolume": { "type": "integer" },
+          "cpc": { "type": "number" },
+          "competition": { "type": "number" },
+          "competitionLevel": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

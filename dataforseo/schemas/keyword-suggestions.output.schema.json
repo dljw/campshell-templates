@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "dataforseo/keyword-suggestions.output.schema.json",
+  "type": "object",
+  "properties": {
+    "suggestions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "keyword": { "type": "string" },
+          "searchVolume": { "type": "integer" },
+          "cpc": { "type": "number" },
+          "competition": { "type": "number" }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

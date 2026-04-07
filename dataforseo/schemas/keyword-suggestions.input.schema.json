@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "dataforseo/keyword-suggestions.input.schema.json",
+  "type": "object",
+  "required": ["seed"],
+  "properties": {
+    "seed": {
+      "type": "string",
+      "description": "Seed keyword to get suggestions for"
+    },
+    "locationCode": {
+      "type": "integer",
+      "default": 2840,
+      "description": "DataForSEO location code"
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 20,
+      "description": "Maximum number of suggestions to return"
+    }
+  },
+  "additionalProperties": false
+}
