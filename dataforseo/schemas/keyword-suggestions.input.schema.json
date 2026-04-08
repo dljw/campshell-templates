@@ -6,12 +6,19 @@
   "properties": {
     "seed": {
       "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
       "description": "Seed keyword to get suggestions for"
     },
     "locationCode": {
       "type": "integer",
       "default": 2840,
       "description": "DataForSEO location code"
+    },
+    "languageCode": {
+      "type": "string",
+      "default": "en",
+      "description": "Language code for results"
     },
     "limit": {
       "type": "integer",

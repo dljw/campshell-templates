@@ -6,6 +6,7 @@
   "properties": {
     "keyword": {
       "type": "string",
+      "minLength": 1,
       "maxLength": 200,
       "description": "Keyword to analyze SERP for"
     },
@@ -13,6 +14,11 @@
       "type": "integer",
       "default": 2840,
       "description": "DataForSEO location code"
+    },
+    "languageCode": {
+      "type": "string",
+      "default": "en",
+      "description": "Language code for results"
     },
     "depth": {
       "type": "integer",

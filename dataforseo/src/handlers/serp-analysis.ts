@@ -11,6 +11,7 @@ interface ServiceContext {
 interface SerpAnalysisInput {
   keyword: string;
   locationCode?: number;
+  languageCode?: string;
   depth?: number;
 }
 
@@ -32,47 +33,60 @@ export default async function serpAnalysis(
 ): Promise<SerpAnalysisOutput> {
   const { DATAFORSEO_LOGIN, DATAFORSEO_PASSWORD } = context.secrets;
   const locationCode = input.locationCode ?? 2840;
+  const languageCode = input.languageCode ?? "en";
   const depth = input.depth ?? 10;
 
-  const response = await fetch(
-    "https://api.dataforseo.com/v3/serp/google/organic/live/regular",
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${btoa(`${DATAFORSEO_LOGIN}:${DATAFORSEO_PASSWORD}`)}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify([
-        {
-          keyword: input.keyword,
-          location_code: locationCode,
-          language_code: "en",
-          depth,
+  let response: Response;
+  try {
+    response = await fetch(
+      "https://api.dataforseo.com/v3/serp/google/organic/live/regular",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${btoa(`${DATAFORSEO_LOGIN}:${DATAFORSEO_PASSWORD}`)}`,
+          "Content-Type": "application/json",
         },
-      ]),
-    },
-  );
+        body: JSON.stringify([
+          {
+            keyword: input.keyword,
+            location_code: locationCode,
+            language_code: languageCode,
+            depth,
+          },
+        ]),
+      },
+    );
+  } catch (err) {
+    throw new Error(`Network error calling DataForSEO: ${err instanceof Error ? err.message : err}`);
+  }
 
   if (!response.ok) {
     throw new Error(`DataForSEO API error: ${response.status} ${response.statusText}`);
   }
 
-  const data = await response.json();
+  let data: Record<string, unknown>;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("DataForSEO returned invalid JSON");
+  }
 
   if (data.status_code !== 20000) {
     throw new Error(`DataForSEO error: ${data.status_message ?? "Unknown error"}`);
   }
 
-  const task = data.tasks?.[0];
+  const tasks = data.tasks as Array<Record<string, unknown>> | undefined;
+  const task = tasks?.[0];
   if (!task || task.status_code !== 20000) {
     throw new Error(`DataForSEO task error: ${task?.status_message ?? "No results"}`);
   }
 
-  const items = task.result?.[0]?.items ?? [];
+  const taskResult = task.result as Array<Record<string, unknown>> | undefined;
+  const items = (taskResult?.[0]?.items as Array<Record<string, unknown>>) ?? [];
 
   const results: SerpResult[] = items
-    .filter((item: Record<string, unknown>) => item.type === "organic")
-    .map((item: Record<string, unknown>) => ({
+    .filter((item) => item.type === "organic")
+    .map((item) => ({
       position: (item.rank_absolute as number) ?? 0,
       url: (item.url as string) ?? "",
       title: (item.title as string) ?? "",

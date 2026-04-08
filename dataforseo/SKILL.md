@@ -26,13 +26,9 @@ Configure these before running any operations:
 | `DATAFORSEO_LOGIN` | DataForSEO Login Email | Yes | Your DataForSEO account email |
 | `DATAFORSEO_PASSWORD` | DataForSEO API Password | Yes | API password from DataForSEO dashboard |
 
-Set secrets via MCP:
-```
-campshell-set-secret template="dataforseo" key="DATAFORSEO_LOGIN" value="user@example.com"
-campshell-set-secret template="dataforseo" key="DATAFORSEO_PASSWORD" value="your-api-password"
-```
+Configure secrets via the **Campshell dashboard UI** — open the dashboard and navigate to the DataForSEO template settings. Secrets must never be shared in the AI conversation.
 
-Check status: `campshell-secrets-status template="dataforseo"`
+Check configuration status: `campshell-secrets-status template="dataforseo"`
 
 ## Operations
 
@@ -74,6 +70,7 @@ Analyze top Google search results for a keyword. Returns current live SERP data.
 |-------|------|----------|-------------|
 | `keyword` | string | Yes | Keyword to analyze SERP for |
 | `locationCode` | integer | No | DataForSEO location code (default: 2840 = US) |
+| `languageCode` | string | No | Language code (default: en) |
 | `depth` | integer | No | Number of results to return (default: 10, max: 100) |
 
 **Output:**
@@ -99,6 +96,7 @@ Get related keyword ideas based on a seed keyword.
 |-------|------|----------|-------------|
 | `seed` | string | Yes | Seed keyword to get suggestions for |
 | `locationCode` | integer | No | DataForSEO location code (default: 2840 = US) |
+| `languageCode` | string | No | Language code (default: en) |
 | `limit` | integer | No | Max suggestions to return (default: 20, max: 100) |
 
 **Output:**
