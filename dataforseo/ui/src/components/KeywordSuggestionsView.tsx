@@ -31,7 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "@campshell/ui-components";
-import { Lightbulb } from "lucide-react";
+import { Lightbulb, ChevronUp } from "lucide-react";
 import { COUNTRY_OPTIONS } from "../constants/geo.js";
 
 const LIMIT_OPTIONS = [
@@ -54,6 +54,7 @@ export function KeywordSuggestionsView({ onExecute, isExecuting, runs }: Keyword
   const [results, setResults] = useState<any[] | null>(null);
   const [searchedSeed, setSearchedSeed] = useState("");
   const [currentRunId, setCurrentRunId] = useState<string | null>(null);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   const handleExecute = async () => {
     if (!seed.trim()) return;
@@ -162,14 +163,14 @@ export function KeywordSuggestionsView({ onExecute, isExecuting, runs }: Keyword
       </div>
 
       {/* Right panel — results */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden relative">
         <div className="p-6 border-b border-border/40">
           <h2 className="font-semibold text-sm">
             {searchedSeed ? `Suggestions for "${searchedSeed}"` : "Results"}
           </h2>
         </div>
         <div className="flex-1 overflow-auto">
-          {results === null && historyRows.length === 0 ? (
+          {results === null ? (
             <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
               <Lightbulb className="w-10 h-10 opacity-25" />
               <p className="font-medium text-sm">Keyword ideas will appear here</p>
@@ -179,108 +180,114 @@ export function KeywordSuggestionsView({ onExecute, isExecuting, runs }: Keyword
                 discover related search terms.
               </p>
             </div>
+          ) : results.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
+              <p className="text-sm">No suggestions found.</p>
+              <p className="text-xs">Try a broader topic or different country.</p>
+            </div>
           ) : (
-            <>
-              {results !== null && (
-                results.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center text-center gap-3 py-16 text-muted-foreground">
-                    <p className="text-sm">No suggestions found.</p>
-                    <p className="text-xs">Try a broader topic or different country.</p>
-                  </div>
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Keyword</TableHead>
-                        <TableHead className="text-right">Monthly Searches</TableHead>
-                        <TableHead className="text-right">CPC ($)</TableHead>
-                        <TableHead className="text-right">Competition</TableHead>
-                        <TableHead className="text-right">Comp. Index</TableHead>
-                        <TableHead className="text-right">Bid Range ($)</TableHead>
-                        <TableHead>Trend</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {results.map((row, i) => (
-                        <TableRow key={i}>
-                          <TableCell className="font-medium">
-                            <div>{row.keyword}</div>
-                            {row.keyword_annotations?.concepts?.map((c: any, ci: number) => (
-                              <span key={ci} className="text-xs bg-muted text-muted-foreground rounded px-1 mr-1">
-                                {c.concept_group?.name ?? c.name}
-                              </span>
-                            ))}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {(row.search_volume ?? row.searchVolume)?.toLocaleString() ?? "—"}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {row.cpc != null ? `$${Number(row.cpc).toFixed(2)}` : "—"}
-                          </TableCell>
-                          <TableCell className="text-right">{row.competition ?? "—"}</TableCell>
-                          <TableCell className="text-right">{row.competition_index ?? "—"}</TableCell>
-                          <TableCell className="text-right">
-                            {row.low_top_of_page_bid != null && row.high_top_of_page_bid != null
-                              ? `$${Number(row.low_top_of_page_bid).toFixed(2)} – $${Number(row.high_top_of_page_bid).toFixed(2)}`
-                              : "—"}
-                          </TableCell>
-                          <TableCell>
-                            <Sparkline data={row.monthly_searches} />
-                          </TableCell>
-                        </TableRow>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Keyword</TableHead>
+                  <TableHead className="text-right">Monthly Searches</TableHead>
+                  <TableHead className="text-right">CPC ($)</TableHead>
+                  <TableHead className="text-right">Competition</TableHead>
+                  <TableHead className="text-right">Comp. Index</TableHead>
+                  <TableHead className="text-right">Bid Range ($)</TableHead>
+                  <TableHead>Trend</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {results.map((row, i) => (
+                  <TableRow key={i}>
+                    <TableCell className="font-medium">
+                      <div>{row.keyword}</div>
+                      {row.keyword_annotations?.concepts?.map((c: any, ci: number) => (
+                        <span key={ci} className="text-xs bg-muted text-muted-foreground rounded px-1 mr-1">
+                          {c.concept_group?.name ?? c.name}
+                        </span>
                       ))}
-                    </TableBody>
-                  </Table>
-                )
-              )}
-
-              {historyRows.length > 0 && (
-                <>
-                  <div className="px-4 py-3 border-t border-border/40 flex items-center justify-between">
-                    <h3 className="font-semibold text-sm">Search History</h3>
-                    <span className="text-xs text-muted-foreground">{historyRows.length} result{historyRows.length !== 1 ? "s" : ""}</span>
-                  </div>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Keyword</TableHead>
-                        <TableHead>Searched At</TableHead>
-                        <TableHead className="text-right">Monthly Searches</TableHead>
-                        <TableHead className="text-right">CPC ($)</TableHead>
-                        <TableHead className="text-right">Competition</TableHead>
-                        <TableHead className="text-right">Comp. Index</TableHead>
-                        <TableHead className="text-right">Bid Range ($)</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {historyRows.map((row, i) => (
-                        <TableRow key={i}>
-                          <TableCell className="font-medium">{row.keyword}</TableCell>
-                          <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
-                            {new Date(row.searchedAt).toLocaleString()}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {(row.search_volume ?? row.searchVolume)?.toLocaleString() ?? "—"}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {row.cpc != null ? `$${Number(row.cpc).toFixed(2)}` : "—"}
-                          </TableCell>
-                          <TableCell className="text-right">{row.competition ?? "—"}</TableCell>
-                          <TableCell className="text-right">{row.competition_index ?? "—"}</TableCell>
-                          <TableCell className="text-right">
-                            {row.low_top_of_page_bid != null && row.high_top_of_page_bid != null
-                              ? `$${Number(row.low_top_of_page_bid).toFixed(2)} – $${Number(row.high_top_of_page_bid).toFixed(2)}`
-                              : "—"}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </>
-              )}
-            </>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {(row.search_volume ?? row.searchVolume)?.toLocaleString() ?? "—"}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {row.cpc != null ? `$${Number(row.cpc).toFixed(2)}` : "—"}
+                    </TableCell>
+                    <TableCell className="text-right">{row.competition ?? "—"}</TableCell>
+                    <TableCell className="text-right">{row.competition_index ?? "—"}</TableCell>
+                    <TableCell className="text-right">
+                      {row.low_top_of_page_bid != null && row.high_top_of_page_bid != null
+                        ? `$${Number(row.low_top_of_page_bid).toFixed(2)} – $${Number(row.high_top_of_page_bid).toFixed(2)}`
+                        : "—"}
+                    </TableCell>
+                    <TableCell>
+                      <Sparkline data={row.monthly_searches} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           )}
         </div>
+
+        {historyRows.length > 0 && (
+          <div className="border-t border-border/40 bg-background flex flex-col mt-auto">
+            <button
+              onClick={() => setIsHistoryOpen(!isHistoryOpen)}
+              className="px-4 py-3 flex items-center justify-between hover:bg-muted/50 transition-colors w-full text-left"
+            >
+              <div className="flex items-center gap-2">
+                <ChevronUp className={`w-4 h-4 transition-transform ${isHistoryOpen ? "rotate-180" : ""}`} />
+                <h3 className="font-semibold text-sm">Search History</h3>
+              </div>
+              <span className="text-xs text-muted-foreground">
+                {historyRows.length} result{historyRows.length !== 1 ? "s" : ""}
+              </span>
+            </button>
+            {isHistoryOpen && (
+              <div className="overflow-auto max-h-64 border-t border-border/40">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Keyword</TableHead>
+                      <TableHead>Searched At</TableHead>
+                      <TableHead className="text-right">Monthly Searches</TableHead>
+                      <TableHead className="text-right">CPC ($)</TableHead>
+                      <TableHead className="text-right">Competition</TableHead>
+                      <TableHead className="text-right">Comp. Index</TableHead>
+                      <TableHead className="text-right">Bid Range ($)</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {historyRows.map((row, i) => (
+                      <TableRow key={i}>
+                        <TableCell className="font-medium">{row.keyword}</TableCell>
+                        <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                          {new Date(row.searchedAt).toLocaleString()}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {(row.search_volume ?? row.searchVolume)?.toLocaleString() ?? "—"}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {row.cpc != null ? `$${Number(row.cpc).toFixed(2)}` : "—"}
+                        </TableCell>
+                        <TableCell className="text-right">{row.competition ?? "—"}</TableCell>
+                        <TableCell className="text-right">{row.competition_index ?? "—"}</TableCell>
+                        <TableCell className="text-right">
+                          {row.low_top_of_page_bid != null && row.high_top_of_page_bid != null
+                            ? `$${Number(row.low_top_of_page_bid).toFixed(2)} – $${Number(row.high_top_of_page_bid).toFixed(2)}`
+                            : "—"}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
