@@ -8,15 +8,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["keyword", "searchVolume", "cpc", "competition", "competitionLevel"],
-        "properties": {
-          "keyword": { "type": "string" },
-          "searchVolume": { "type": "integer" },
-          "cpc": { "type": "number" },
-          "competition": { "type": "number" },
-          "competitionLevel": { "type": "string" }
-        },
-        "additionalProperties": false
+        "additionalProperties": true
       }
     }
   },

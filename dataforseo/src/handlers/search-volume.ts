@@ -14,22 +14,10 @@ interface SearchVolumeInput {
   languageCode?: string;
 }
 
-interface KeywordResult {
-  keyword: string;
-  searchVolume: number;
-  cpc: number;
-  competition: number;
-  competitionLevel: string;
-}
-
-interface SearchVolumeOutput {
-  results: KeywordResult[];
-}
-
 export default async function searchVolume(
   input: SearchVolumeInput,
   context: ServiceContext,
-): Promise<SearchVolumeOutput> {
+): Promise<{ results: Array<Record<string, unknown>> }> {
   const { DATAFORSEO_LOGIN, DATAFORSEO_PASSWORD } = context.secrets;
   const locationCode = input.locationCode ?? 2840;
   const languageCode = input.languageCode ?? "en";
@@ -78,13 +66,7 @@ export default async function searchVolume(
     throw new Error(`DataForSEO task error: ${task?.status_message ?? "No results"}`);
   }
 
-  const results: KeywordResult[] = ((task.result as Array<Record<string, unknown>>) ?? []).map((item) => ({
-    keyword: (item.keyword as string) ?? "",
-    searchVolume: (item.search_volume as number) ?? 0,
-    cpc: (item.cpc as number) ?? 0,
-    competition: (item.competition as number) ?? 0,
-    competitionLevel: (item.competition_level as string) ?? "unknown",
-  }));
+  const results = (task.result as Array<Record<string, unknown>>) ?? [];
 
   return { results };
 }

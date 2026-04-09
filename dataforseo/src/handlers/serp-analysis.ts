@@ -15,22 +15,10 @@ interface SerpAnalysisInput {
   depth?: number;
 }
 
-interface SerpResult {
-  position: number;
-  url: string;
-  title: string;
-  description: string;
-  domain: string;
-}
-
-interface SerpAnalysisOutput {
-  results: SerpResult[];
-}
-
 export default async function serpAnalysis(
   input: SerpAnalysisInput,
   context: ServiceContext,
-): Promise<SerpAnalysisOutput> {
+): Promise<{ results: Array<Record<string, unknown>> }> {
   const { DATAFORSEO_LOGIN, DATAFORSEO_PASSWORD } = context.secrets;
   const locationCode = input.locationCode ?? 2840;
   const languageCode = input.languageCode ?? "en";
@@ -84,15 +72,7 @@ export default async function serpAnalysis(
   const taskResult = task.result as Array<Record<string, unknown>> | undefined;
   const items = (taskResult?.[0]?.items as Array<Record<string, unknown>>) ?? [];
 
-  const results: SerpResult[] = items
-    .filter((item) => item.type === "organic")
-    .map((item) => ({
-      position: (item.rank_absolute as number) ?? 0,
-      url: (item.url as string) ?? "",
-      title: (item.title as string) ?? "",
-      description: (item.description as string) ?? "",
-      domain: (item.domain as string) ?? "",
-    }));
+  const results = items.filter((item) => item.type === "organic");
 
   return { results };
 }

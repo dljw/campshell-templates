@@ -8,15 +8,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["position", "url", "title", "description", "domain"],
-        "properties": {
-          "position": { "type": "integer" },
-          "url": { "type": "string" },
-          "title": { "type": "string" },
-          "description": { "type": "string" },
-          "domain": { "type": "string" }
-        },
-        "additionalProperties": false
+        "additionalProperties": true
       }
     }
   },

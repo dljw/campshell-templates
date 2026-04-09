@@ -73,6 +73,7 @@ export function App({ data }: AppProps) {
             <SearchVolumeView
               onExecute={data.executeOperation}
               isExecuting={data.isExecuting}
+              runs={data.runs}
             />
           </div>
         )}
@@ -82,6 +83,7 @@ export function App({ data }: AppProps) {
             <SerpAnalysisView
               onExecute={data.executeOperation}
               isExecuting={data.isExecuting}
+              runs={data.runs}
             />
           </div>
         )}
@@ -91,6 +93,7 @@ export function App({ data }: AppProps) {
             <KeywordSuggestionsView
               onExecute={data.executeOperation}
               isExecuting={data.isExecuting}
+              runs={data.runs}
             />
           </div>
         )}

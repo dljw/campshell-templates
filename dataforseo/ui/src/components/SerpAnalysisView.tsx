@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import type { RunHistoryItem } from "../hooks/useDataForSeo.js";
 import {
   Button,
   Card,
@@ -30,14 +31,16 @@ const DEPTH_OPTIONS = [
 export interface SerpAnalysisViewProps {
   onExecute: (operation: string, input: unknown) => Promise<unknown>;
   isExecuting: boolean;
+  runs: RunHistoryItem[];
 }
 
-export function SerpAnalysisView({ onExecute, isExecuting }: SerpAnalysisViewProps) {
+export function SerpAnalysisView({ onExecute, isExecuting, runs }: SerpAnalysisViewProps) {
   const [keyword, setKeyword] = useState("");
   const [locationCode, setLocationCode] = useState(2840);
   const [depth, setDepth] = useState(10);
   const [results, setResults] = useState<any[] | null>(null);
   const [searchedKeyword, setSearchedKeyword] = useState("");
+  const [currentRunId, setCurrentRunId] = useState<string | null>(null);
 
   const handleExecute = async () => {
     if (!keyword.trim()) return;
@@ -49,11 +52,25 @@ export function SerpAnalysisView({ onExecute, isExecuting }: SerpAnalysisViewPro
         depth,
       });
       setSearchedKeyword(keyword.trim());
+      setCurrentRunId(data.runId);
       setResults(data.output?.results || []);
     } catch (err) {
       // Error is handled by hook
     }
   };
+
+  const historyRows = useMemo(() =>
+    runs
+      .filter((r) => r.operation === "serp-analysis" && r.status === "success" && r.runId !== currentRunId)
+      .flatMap((r) =>
+        ((r.output as any)?.results ?? []).map((item: any) => ({
+          ...item,
+          searchedAt: r.startedAt,
+          searchedKeyword: (r.input as any)?.keyword ?? "",
+        }))
+      ),
+    [runs, currentRunId]
+  );
 
   return (
     <div className="flex h-full gap-0">
@@ -140,7 +157,7 @@ export function SerpAnalysisView({ onExecute, isExecuting }: SerpAnalysisViewPro
           </h2>
         </div>
         <div className="flex-1 overflow-auto">
-          {results === null ? (
+          {results === null && historyRows.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
               <Search className="w-10 h-10 opacity-25" />
               <p className="font-medium text-sm">Your results will appear here</p>
@@ -150,49 +167,102 @@ export function SerpAnalysisView({ onExecute, isExecuting }: SerpAnalysisViewPro
                 who's ranking on Google.
               </p>
             </div>
-          ) : results.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
-              <p className="text-sm">No ranking pages found.</p>
-              <p className="text-xs">Try a different keyword or country.</p>
-            </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-14 text-center">Rank</TableHead>
-                  <TableHead className="w-40">Website</TableHead>
-                  <TableHead>Page</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {results.map((row, i) => (
-                  <TableRow key={i}>
-                    <TableCell className="font-bold text-center text-muted-foreground">
-                      #{row.position ?? i + 1}
-                    </TableCell>
-                    <TableCell className="text-sm font-medium">{row.domain}</TableCell>
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div className="font-medium text-sm leading-snug">{row.title}</div>
-                        <a
-                          href={row.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-blue-500 hover:underline break-all"
-                        >
-                          {row.url}
-                        </a>
-                        {row.description && (
-                          <p className="text-xs text-muted-foreground line-clamp-2">
-                            {row.description}
-                          </p>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <>
+              {results !== null && (
+                results.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center text-center gap-3 py-16 text-muted-foreground">
+                    <p className="text-sm">No ranking pages found.</p>
+                    <p className="text-xs">Try a different keyword or country.</p>
+                  </div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-14 text-center">Rank</TableHead>
+                        <TableHead className="w-40">Website</TableHead>
+                        <TableHead>Page</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {results.map((row, i) => (
+                        <TableRow key={i}>
+                          <TableCell className="font-bold text-center text-muted-foreground">
+                            #{row.rank_absolute ?? row.position ?? i + 1}
+                          </TableCell>
+                          <TableCell className="text-sm font-medium">{row.domain}</TableCell>
+                          <TableCell>
+                            <div className="space-y-1">
+                              <div className="font-medium text-sm leading-snug">{row.title}</div>
+                              <a
+                                href={row.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-blue-500 hover:underline break-all"
+                              >
+                                {row.breadcrumb ?? row.url}
+                              </a>
+                              {row.description && (
+                                <p className="text-xs text-muted-foreground line-clamp-2">
+                                  {row.description}
+                                </p>
+                              )}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )
+              )}
+
+              {historyRows.length > 0 && (
+                <>
+                  <div className="px-4 py-3 border-t border-border/40 flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">Search History</h3>
+                    <span className="text-xs text-muted-foreground">{historyRows.length} result{historyRows.length !== 1 ? "s" : ""}</span>
+                  </div>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-14 text-center">Rank</TableHead>
+                        <TableHead>Searched At</TableHead>
+                        <TableHead>Keyword</TableHead>
+                        <TableHead className="w-40">Website</TableHead>
+                        <TableHead>Title</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {historyRows.map((row, i) => (
+                        <TableRow key={i}>
+                          <TableCell className="font-bold text-center text-muted-foreground">
+                            #{row.rank_absolute ?? row.position ?? i + 1}
+                          </TableCell>
+                          <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                            {new Date(row.searchedAt).toLocaleString()}
+                          </TableCell>
+                          <TableCell className="text-xs font-medium">{row.searchedKeyword}</TableCell>
+                          <TableCell className="text-sm font-medium">{row.domain}</TableCell>
+                          <TableCell>
+                            <div className="space-y-1">
+                              <div className="font-medium text-sm leading-snug">{row.title}</div>
+                              <a
+                                href={row.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-blue-500 hover:underline break-all"
+                              >
+                                {row.breadcrumb ?? row.url}
+                              </a>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </>
+              )}
+            </>
           )}
         </div>
       </div>

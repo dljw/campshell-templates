@@ -15,22 +15,10 @@ interface KeywordSuggestionsInput {
   limit?: number;
 }
 
-interface KeywordSuggestion {
-  keyword: string;
-  searchVolume: number;
-  cpc: number;
-  competition: number;
-  competitionLevel: string;
-}
-
-interface KeywordSuggestionsOutput {
-  suggestions: KeywordSuggestion[];
-}
-
 export default async function keywordSuggestions(
   input: KeywordSuggestionsInput,
   context: ServiceContext,
-): Promise<KeywordSuggestionsOutput> {
+): Promise<{ suggestions: Array<Record<string, unknown>> }> {
   const { DATAFORSEO_LOGIN, DATAFORSEO_PASSWORD } = context.secrets;
   const locationCode = input.locationCode ?? 2840;
   const languageCode = input.languageCode ?? "en";
@@ -81,16 +69,7 @@ export default async function keywordSuggestions(
   }
 
   const items = (task.result as Array<Record<string, unknown>>) ?? [];
-
-  const suggestions: KeywordSuggestion[] = items
-    .slice(0, limit)
-    .map((item) => ({
-      keyword: (item.keyword as string) ?? "",
-      searchVolume: (item.search_volume as number) ?? 0,
-      cpc: (item.cpc as number) ?? 0,
-      competition: (item.competition as number) ?? 0,
-      competitionLevel: (item.competition_level as string) ?? "unknown",
-    }));
+  const suggestions = items.slice(0, limit);
 
   return { suggestions };
 }
