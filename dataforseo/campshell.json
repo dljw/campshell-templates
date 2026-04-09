@@ -16,7 +16,15 @@
     "serp-analysis.input": "schemas/serp-analysis.input.schema.json",
     "serp-analysis.output": "schemas/serp-analysis.output.schema.json",
     "keyword-suggestions.input": "schemas/keyword-suggestions.input.schema.json",
-    "keyword-suggestions.output": "schemas/keyword-suggestions.output.schema.json"
+    "keyword-suggestions.output": "schemas/keyword-suggestions.output.schema.json",
+    "ranked-keywords.input": "schemas/ranked-keywords.input.schema.json",
+    "ranked-keywords.output": "schemas/ranked-keywords.output.schema.json",
+    "serp-ai-summary.input": "schemas/serp-ai-summary.input.schema.json",
+    "serp-ai-summary.output": "schemas/serp-ai-summary.output.schema.json",
+    "llm-mentions.input": "schemas/llm-mentions.input.schema.json",
+    "llm-mentions.output": "schemas/llm-mentions.output.schema.json",
+    "ai-search-volume.input": "schemas/ai-search-volume.input.schema.json",
+    "ai-search-volume.output": "schemas/ai-search-volume.output.schema.json"
   },
   "storage": {
     "runs": {
@@ -47,6 +55,38 @@
       "inputSchema": "schemas/keyword-suggestions.input.schema.json",
       "outputSchema": "schemas/keyword-suggestions.output.schema.json",
       "handler": "handlers/keyword-suggestions",
+      "timeout": 30000,
+      "rateLimit": { "maxPerMinute": 10 }
+    },
+    "ranked-keywords": {
+      "description": "Get all keywords a domain or URL ranks for in Google search results",
+      "inputSchema": "schemas/ranked-keywords.input.schema.json",
+      "outputSchema": "schemas/ranked-keywords.output.schema.json",
+      "handler": "handlers/ranked-keywords",
+      "timeout": 30000,
+      "rateLimit": { "maxPerMinute": 10 }
+    },
+    "serp-ai-summary": {
+      "description": "Fetch Google SERP results including AI Overview/Summary for a keyword",
+      "inputSchema": "schemas/serp-ai-summary.input.schema.json",
+      "outputSchema": "schemas/serp-ai-summary.output.schema.json",
+      "handler": "handlers/serp-ai-summary",
+      "timeout": 60000,
+      "rateLimit": { "maxPerMinute": 10 }
+    },
+    "llm-mentions": {
+      "description": "Track how often a brand or keyword is mentioned in AI platforms like ChatGPT and Google AI",
+      "inputSchema": "schemas/llm-mentions.input.schema.json",
+      "outputSchema": "schemas/llm-mentions.output.schema.json",
+      "handler": "handlers/llm-mentions",
+      "timeout": 120000,
+      "rateLimit": { "maxPerMinute": 5 }
+    },
+    "ai-search-volume": {
+      "description": "Get estimated search volume for keywords on AI platforms (ChatGPT, Google AI)",
+      "inputSchema": "schemas/ai-search-volume.input.schema.json",
+      "outputSchema": "schemas/ai-search-volume.output.schema.json",
+      "handler": "handlers/ai-search-volume",
       "timeout": 30000,
       "rateLimit": { "maxPerMinute": 10 }
     }

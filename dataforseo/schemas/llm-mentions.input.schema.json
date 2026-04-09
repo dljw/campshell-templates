@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["targets"],
+  "properties": {
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "description": "Array of domains or keywords to track LLM mentions for",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["domain", "keyword"],
+            "description": "Whether this target is a domain or a keyword"
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 250,
+            "description": "Domain (e.g. example.com, max 63 chars) or keyword (max 250 chars)"
+          },
+          "searchFilter": {
+            "type": "string",
+            "enum": ["include", "exclude"],
+            "description": "Whether to include or exclude this target. Default: include"
+          }
+        },
+        "required": ["type", "value"],
+        "additionalProperties": false
+      }
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["chat_gpt", "google"],
+      "description": "AI platform to search mentions on. Default: google",
+      "default": "google"
+    },
+    "locationCode": {
+      "type": "integer",
+      "description": "Location code. Default: 2840 (United States)",
+      "default": 2840
+    },
+    "languageCode": {
+      "type": "string",
+      "description": "Language code. Default: en (ChatGPT only supports English)",
+      "default": "en"
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000,
+      "description": "Maximum number of mention items to return. Default: 100",
+      "default": 100
+    }
+  },
+  "additionalProperties": false
+}

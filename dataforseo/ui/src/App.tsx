@@ -2,10 +2,14 @@ import { useState } from "react";
 import { Button } from "@campshell/ui-components";
 import {
   BarChart,
+  BrainCircuit,
+  Globe,
   History,
   Lightbulb,
+  MessageSquare,
   Search,
   Settings,
+  Sparkles,
 } from "lucide-react";
 import type { UseDataForSeoReturn } from "./hooks/useDataForSeo.js";
 import { SettingsView } from "./components/SettingsView.js";
@@ -13,8 +17,21 @@ import { SearchVolumeView } from "./components/SearchVolumeView.js";
 import { SerpAnalysisView } from "./components/SerpAnalysisView.js";
 import { KeywordSuggestionsView } from "./components/KeywordSuggestionsView.js";
 import { HistoryView } from "./components/HistoryView.js";
+import { RankedKeywordsView } from "./components/RankedKeywordsView.js";
+import { SerpAiSummaryView } from "./components/SerpAiSummaryView.js";
+import { LlmMentionsView } from "./components/LlmMentionsView.js";
+import { AiSearchVolumeView } from "./components/AiSearchVolumeView.js";
 
-type View = "search-volume" | "serp-analysis" | "keyword-suggestions" | "history" | "settings";
+type View =
+  | "search-volume"
+  | "serp-analysis"
+  | "keyword-suggestions"
+  | "ranked-keywords"
+  | "serp-ai-summary"
+  | "llm-mentions"
+  | "ai-search-volume"
+  | "history"
+  | "settings";
 
 interface AppProps {
   data: UseDataForSeoReturn;
@@ -24,6 +41,10 @@ const navItems: { id: View; label: string; icon: typeof Search }[] = [
   { id: "search-volume", label: "Search Volume", icon: BarChart },
   { id: "serp-analysis", label: "SERP Analysis", icon: Search },
   { id: "keyword-suggestions", label: "Suggestions", icon: Lightbulb },
+  { id: "ranked-keywords", label: "Ranked Keywords", icon: Globe },
+  { id: "serp-ai-summary", label: "AI Summary", icon: Sparkles },
+  { id: "llm-mentions", label: "LLM Mentions", icon: MessageSquare },
+  { id: "ai-search-volume", label: "AI Search Vol.", icon: BrainCircuit },
   { id: "history", label: "History", icon: History },
   { id: "settings", label: "Settings", icon: Settings },
 ];
@@ -91,6 +112,46 @@ export function App({ data }: AppProps) {
         {currentView === "keyword-suggestions" && (
           <div className="flex-1 overflow-hidden">
             <KeywordSuggestionsView
+              onExecute={data.executeOperation}
+              isExecuting={data.isExecuting}
+              runs={data.runs}
+            />
+          </div>
+        )}
+
+        {currentView === "ranked-keywords" && (
+          <div className="flex-1 overflow-hidden">
+            <RankedKeywordsView
+              onExecute={data.executeOperation}
+              isExecuting={data.isExecuting}
+              runs={data.runs}
+            />
+          </div>
+        )}
+
+        {currentView === "serp-ai-summary" && (
+          <div className="flex-1 overflow-hidden">
+            <SerpAiSummaryView
+              onExecute={data.executeOperation}
+              isExecuting={data.isExecuting}
+              runs={data.runs}
+            />
+          </div>
+        )}
+
+        {currentView === "llm-mentions" && (
+          <div className="flex-1 overflow-hidden">
+            <LlmMentionsView
+              onExecute={data.executeOperation}
+              isExecuting={data.isExecuting}
+              runs={data.runs}
+            />
+          </div>
+        )}
+
+        {currentView === "ai-search-volume" && (
+          <div className="flex-1 overflow-hidden">
+            <AiSearchVolumeView
               onExecute={data.executeOperation}
               isExecuting={data.isExecuting}
               runs={data.runs}
