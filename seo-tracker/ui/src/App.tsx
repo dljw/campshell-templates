@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import type { UseSeoTrackerDataReturn } from "./hooks/useSeoTrackerData.js";
 import { ConnectionStatus } from "./components/ConnectionStatus.js";
+import { DomainPicker } from "./components/DomainPicker.js";
 import { MetricCard } from "./components/MetricCard.js";
 import { KeywordsView } from "./components/KeywordsView.js";
 import { PagesView } from "./components/PagesView.js";
@@ -42,15 +43,23 @@ const ctaLabels: Record<View, string> = {
 export function App({ data }: AppProps) {
   const [activeView, setActiveView] = useState<View>("keywords");
   const [formTrigger, setFormTrigger] = useState(0);
+  const [activeDomainId, setActiveDomainId] = useState<string | null>(null);
 
-  // Compute summary metrics
-  const trackingKeywords = data.keywords.filter((k) => k.status !== "paused").length;
+  // Filter data by active domain
+  const filteredKeywords = data.keywords.filter((k) => !activeDomainId || k.domainId === activeDomainId);
+  const filteredPages = data.pages.filter((p) => !activeDomainId || p.domainId === activeDomainId);
+  const filteredBacklinks = data.backlinks.filter((b) => !activeDomainId || b.domainId === activeDomainId);
+  const filteredCompetitors = data.competitors.filter((c) => !activeDomainId || c.domainId === activeDomainId);
+  const filteredIssues = data.issues.filter((i) => !activeDomainId || i.domainId === activeDomainId);
+
+  // Compute summary metrics from filtered data
+  const trackingKeywords = filteredKeywords.filter((k) => k.status !== "paused").length;
   const avgPosition =
-    data.keywords.length > 0
-      ? data.keywords.reduce((sum, k) => sum + (k.position ?? 0), 0) / data.keywords.length
+    filteredKeywords.length > 0
+      ? filteredKeywords.reduce((sum, k) => sum + (k.position ?? 0), 0) / filteredKeywords.length
       : 0;
-  const activeBacklinks = data.backlinks.filter((b) => b.status === "active" || !b.status).length;
-  const openIssues = data.issues.filter((i) => i.status !== "resolved").length;
+  const activeBacklinks = filteredBacklinks.filter((b) => b.status === "active" || !b.status).length;
+  const openIssues = filteredIssues.filter((i) => i.status !== "resolved").length;
 
   return (
     <div className="flex flex-col h-full bg-background text-foreground">
@@ -58,6 +67,12 @@ export function App({ data }: AppProps) {
       <header className="flex items-center justify-between px-8 py-4 border-b border-border/40 shrink-0">
         <div className="flex items-center gap-8">
           <h1 className="text-lg font-semibold tracking-tight">SEO Tracker</h1>
+          <DomainPicker
+            domains={data.domains}
+            activeDomainId={activeDomainId}
+            onSelect={setActiveDomainId}
+            onUpdateDomains={data.updateDomains}
+          />
           <nav className="flex items-center gap-1">
             {navItems.map(({ id, label, icon: Icon }) => (
               <Button
@@ -91,7 +106,7 @@ export function App({ data }: AppProps) {
             <MetricCard
               label="Tracked Keywords"
               value={trackingKeywords}
-              subtitle={`${data.keywords.length} total`}
+              subtitle={`${filteredKeywords.length} total`}
             />
             <MetricCard
               label="Avg Position"
@@ -101,12 +116,12 @@ export function App({ data }: AppProps) {
             <MetricCard
               label="Active Backlinks"
               value={activeBacklinks}
-              subtitle={`${data.backlinks.length} total`}
+              subtitle={`${filteredBacklinks.length} total`}
             />
             <MetricCard
               label="Open Issues"
               value={openIssues}
-              subtitle={`${data.issues.length} total`}
+              subtitle={`${filteredIssues.length} total`}
             />
           </div>
 
@@ -114,8 +129,9 @@ export function App({ data }: AppProps) {
           {activeView === "keywords" && (
             <KeywordsView
               key={formTrigger}
-              keywords={data.keywords}
-              pages={data.pages}
+              keywords={filteredKeywords}
+              pages={filteredPages}
+              domainId={activeDomainId}
               onCreateKeyword={data.createKeyword}
               onUpdateKeyword={data.updateKeyword}
               onDeleteKeyword={data.deleteKeyword}
@@ -125,7 +141,8 @@ export function App({ data }: AppProps) {
           {activeView === "pages" && (
             <PagesView
               key={formTrigger}
-              pages={data.pages}
+              pages={filteredPages}
+              domainId={activeDomainId}
               onCreatePage={data.createPage}
               onUpdatePage={data.updatePage}
               onDeletePage={data.deletePage}
@@ -135,8 +152,9 @@ export function App({ data }: AppProps) {
           {activeView === "backlinks" && (
             <BacklinksView
               key={formTrigger}
-              backlinks={data.backlinks}
-              pages={data.pages}
+              backlinks={filteredBacklinks}
+              pages={filteredPages}
+              domainId={activeDomainId}
               onCreateBacklink={data.createBacklink}
               onUpdateBacklink={data.updateBacklink}
               onDeleteBacklink={data.deleteBacklink}
@@ -146,7 +164,8 @@ export function App({ data }: AppProps) {
           {activeView === "competitors" && (
             <CompetitorsView
               key={formTrigger}
-              competitors={data.competitors}
+              competitors={filteredCompetitors}
+              domainId={activeDomainId}
               onUpdateCompetitors={data.updateCompetitors}
             />
           )}
@@ -154,7 +173,8 @@ export function App({ data }: AppProps) {
           {activeView === "issues" && (
             <IssuesView
               key={formTrigger}
-              issues={data.issues}
+              issues={filteredIssues}
+              domainId={activeDomainId}
               onCreateIssue={data.createIssue}
               onUpdateIssue={data.updateIssue}
               onDeleteIssue={data.deleteIssue}

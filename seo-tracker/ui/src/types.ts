@@ -24,6 +24,7 @@ export interface Keyword {
   intent?: KeywordIntent;
   status?: KeywordStatus;
   notes?: string;
+  domainId?: string;
 }
 
 export interface Page {
@@ -41,6 +42,7 @@ export interface Page {
   avgPosition?: number;
   assignedTo?: string;
   notes?: string;
+  domainId?: string;
 }
 
 export interface Backlink {
@@ -55,6 +57,7 @@ export interface Backlink {
   domainAuthority?: number;
   dateDiscovered?: string;
   status?: BacklinkStatus;
+  domainId?: string;
 }
 
 export interface Competitor {
@@ -67,6 +70,7 @@ export interface Competitor {
   topKeywords?: string[];
   backlinkCount?: number;
   notes?: string;
+  domainId?: string;
 }
 
 export interface CompetitorsCollection {
@@ -83,6 +87,20 @@ export interface Issue {
   description?: string;
   priority?: IssuePriority;
   status?: IssueStatus;
+  domainId?: string;
+}
+
+export interface Domain {
+  id: string;
+  createdAt: string;
+  name: string;
+  domain?: string;
+  basePath?: string;
+  isDefault?: boolean;
+}
+
+export interface DomainsCollection {
+  domains: Domain[];
 }
 
 export interface ValidationErrorDetail {

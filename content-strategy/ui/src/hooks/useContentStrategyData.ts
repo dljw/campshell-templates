@@ -222,11 +222,18 @@ export function useContentStrategyData(apiBase = ""): UseContentStrategyDataRetu
 	// --- CRUD helpers ---
 
 	const createArticle = useCallback((article: Article): boolean => {
+		// Auto-derive filePath from slug if domain has articlesDir
+		if (!article.filePath && article.slug && article.domainId) {
+			const domain = domains.find((d) => d.id === article.domainId);
+			if (domain?.articlesDir) {
+				article = { ...article, filePath: `${article.slug}.md` };
+			}
+		}
 		if (!writeFile(`articles/${article.id}.json`, article)) { toast.error("Failed to create article"); return false; }
 		setArticles((prev) => [...prev, article]);
 		toast.success("Article created");
 		return true;
-	}, [writeFile]);
+	}, [writeFile, domains]);
 
 	const updateArticle = useCallback((article: Article): boolean => {
 		if (!writeFile(`articles/${article.id}.json`, article)) { toast.error("Failed to update article"); return false; }

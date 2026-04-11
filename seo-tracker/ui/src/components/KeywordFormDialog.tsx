@@ -22,6 +22,7 @@ interface KeywordFormDialogProps {
   onOpenChange: (open: boolean) => void;
   keyword: Keyword | null;
   pages: Page[];
+  domainId?: string | null;
   onSave: (keyword: Keyword) => void;
 }
 
@@ -30,6 +31,7 @@ export function KeywordFormDialog({
   onOpenChange,
   keyword,
   pages,
+  domainId,
   onSave,
 }: KeywordFormDialogProps) {
   const [term, setTerm] = useState("");
@@ -73,6 +75,7 @@ export function KeywordFormDialog({
       ...(intent && { intent }),
       status,
       ...(notes && { notes }),
+      ...(domainId ? { domainId } : keyword?.domainId ? { domainId: keyword.domainId } : {}),
     };
 
     onSave(data);

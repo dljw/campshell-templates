@@ -37,6 +37,63 @@
           "isDefault": {
             "type": "boolean",
             "description": "Whether this is the default domain"
+          },
+          "articlesDir": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Articles directory relative to basePath (e.g., content/blog/)"
+          },
+          "articleFormat": {
+            "type": "object",
+            "description": "Article structure template for this domain",
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Format name (e.g., Blog Post, Landing Page)"
+              },
+              "sections": {
+                "type": "array",
+                "maxItems": 20,
+                "items": {
+                  "type": "object",
+                  "required": ["name"],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "maxLength": 100
+                    },
+                    "description": {
+                      "type": "string",
+                      "maxLength": 500
+                    },
+                    "required": {
+                      "type": "boolean"
+                    },
+                    "guidanceNotes": {
+                      "type": "string",
+                      "maxLength": 1000
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "defaultWordCount": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Target word count for articles using this format"
+              },
+              "frontmatterFields": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                "maxItems": 20,
+                "description": "Custom metadata fields for this domain's articles"
+              }
+            },
+            "additionalProperties": false
           }
         },
         "additionalProperties": false

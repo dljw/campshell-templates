@@ -6,6 +6,8 @@ import type {
   Backlink,
   Competitor,
   CompetitorsCollection,
+  Domain,
+  DomainsCollection,
   Issue,
   Keyword,
   Page,
@@ -18,6 +20,7 @@ export interface UseSeoTrackerDataReturn {
   backlinks: Backlink[];
   competitors: Competitor[];
   issues: Issue[];
+  domains: Domain[];
   status: "connecting" | "connected" | "disconnected";
   isLoading: boolean;
   errorRecords: ValidationErrorDetail[];
@@ -39,6 +42,8 @@ export interface UseSeoTrackerDataReturn {
   createIssue: (i: Issue) => boolean;
   updateIssue: (i: Issue) => boolean;
   deleteIssue: (id: string) => boolean;
+
+  updateDomains: (domains: Domain[]) => boolean;
 }
 
 function humanizeError(error: {
@@ -82,6 +87,7 @@ export function useSeoTrackerData(apiBase = ""): UseSeoTrackerDataReturn {
   const [backlinks, setBacklinks] = useState<Backlink[]>([]);
   const [competitors, setCompetitors] = useState<Competitor[]>([]);
   const [issues, setIssues] = useState<Issue[]>([]);
+  const [domains, setDomains] = useState<Domain[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorRecords, setErrorRecords] = useState<ValidationErrorDetail[]>([]);
 
@@ -107,6 +113,7 @@ export function useSeoTrackerData(apiBase = ""): UseSeoTrackerDataReturn {
             backlinks?: Backlink[];
             competitors?: CompetitorsCollection;
             issues?: Issue[];
+            domains?: DomainsCollection;
           };
         } | null,
         ValidationErrorDetail[],
@@ -118,6 +125,7 @@ export function useSeoTrackerData(apiBase = ""): UseSeoTrackerDataReturn {
           setBacklinks(response.data.backlinks ?? []);
           setCompetitors(response.data.competitors?.competitors ?? []);
           setIssues(response.data.issues ?? []);
+          setDomains(response.data.domains?.domains ?? []);
         }
         setErrorRecords(errors);
         setIsLoading(false);
@@ -201,6 +209,9 @@ export function useSeoTrackerData(apiBase = ""): UseSeoTrackerDataReturn {
         } else if (entity === "competitors") {
           const data = event.data as CompetitorsCollection;
           setCompetitors(data.competitors ?? []);
+        } else if (entity === "domains") {
+          const data = event.data as DomainsCollection;
+          setDomains(data.domains ?? []);
         } else if (entity === "issues") {
           const data = event.data as Issue;
           setIssues((prev) => {
@@ -350,6 +361,19 @@ export function useSeoTrackerData(apiBase = ""): UseSeoTrackerDataReturn {
     [deleteFile],
   );
 
+  // Domains (collection pattern)
+  const updateDomainsFn = useCallback(
+    (newDomains: Domain[]): boolean => {
+      if (!writeFile("domains.json", { domains: newDomains })) {
+        toast.error("Failed to update domains");
+        return false;
+      }
+      setDomains(newDomains);
+      return true;
+    },
+    [writeFile],
+  );
+
   // Competitors (collection pattern)
   const updateCompetitorsFn = useCallback(
     (newCompetitors: Competitor[]): boolean => {
@@ -408,6 +432,7 @@ export function useSeoTrackerData(apiBase = ""): UseSeoTrackerDataReturn {
     backlinks,
     competitors,
     issues,
+    domains,
     status,
     isLoading,
     errorRecords,
@@ -421,6 +446,7 @@ export function useSeoTrackerData(apiBase = ""): UseSeoTrackerDataReturn {
     updateBacklink,
     deleteBacklink,
     updateCompetitors: updateCompetitorsFn,
+    updateDomains: updateDomainsFn,
     createIssue,
     updateIssue,
     deleteIssue,

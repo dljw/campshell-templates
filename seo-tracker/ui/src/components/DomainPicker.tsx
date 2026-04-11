@@ -1,8 +1,7 @@
 import { Button, Dialog, DialogContent, DialogHeader, DialogTitle } from "@campshell/ui-components";
 import { Globe, Pencil, Plus, Trash2 } from "lucide-react";
 import { useCallback, useState } from "react";
-import type { ArticleFormat, Domain } from "../types.js";
-import { ArticleFormatEditor } from "./ArticleFormatEditor.js";
+import type { Domain } from "../types.js";
 
 interface DomainPickerProps {
 	domains: Domain[];
@@ -18,8 +17,6 @@ export function DomainPicker({ domains, activeDomainId, onSelect, onUpdateDomain
 	const [formName, setFormName] = useState("");
 	const [formDomain, setFormDomain] = useState("");
 	const [formBasePath, setFormBasePath] = useState("");
-	const [formArticlesDir, setFormArticlesDir] = useState("");
-	const [formArticleFormat, setFormArticleFormat] = useState<ArticleFormat | undefined>(undefined);
 
 	const activeDomain = domains.find((d) => d.id === activeDomainId);
 	const label = activeDomain ? activeDomain.name : "All Domains";
@@ -33,16 +30,12 @@ export function DomainPicker({ domains, activeDomainId, onSelect, onUpdateDomain
 			name: formName.trim(),
 			domain: formDomain.trim() || undefined,
 			basePath: formBasePath.trim() || undefined,
-			articlesDir: formArticlesDir.trim() || undefined,
-			articleFormat: formArticleFormat,
 		};
 		onUpdateDomains([...domains, newDomain]);
 		setFormName("");
 		setFormDomain("");
 		setFormBasePath("");
-		setFormArticlesDir("");
-		setFormArticleFormat(undefined);
-	}, [formName, formDomain, formBasePath, formArticlesDir, formArticleFormat, domains, onUpdateDomains]);
+	}, [formName, formDomain, formBasePath, domains, onUpdateDomains]);
 
 	const handleDelete = useCallback((id: string) => {
 		onUpdateDomains(domains.filter((d) => d.id !== id));
@@ -52,17 +45,10 @@ export function DomainPicker({ domains, activeDomainId, onSelect, onUpdateDomain
 	const handleSaveEdit = useCallback(() => {
 		if (!editingDomain) return;
 		onUpdateDomains(domains.map((d) =>
-			d.id === editingDomain.id ? {
-				...editingDomain,
-				name: formName,
-				domain: formDomain,
-				basePath: formBasePath,
-				articlesDir: formArticlesDir.trim() || undefined,
-				articleFormat: formArticleFormat,
-			} : d,
+			d.id === editingDomain.id ? { ...editingDomain, name: formName, domain: formDomain, basePath: formBasePath } : d,
 		));
 		setEditingDomain(null);
-	}, [editingDomain, formName, formDomain, formBasePath, formArticlesDir, formArticleFormat, domains, onUpdateDomains]);
+	}, [editingDomain, formName, formDomain, formBasePath, domains, onUpdateDomains]);
 
 	return (
 		<>
@@ -127,7 +113,6 @@ export function DomainPicker({ domains, activeDomainId, onSelect, onUpdateDomain
 											<p className="text-sm font-medium truncate">{d.name}</p>
 											{d.domain && <p className="text-xs text-muted-foreground truncate">{d.domain}</p>}
 											{d.basePath && <p className="text-xs text-muted-foreground truncate">{d.basePath}</p>}
-											{d.articlesDir && <p className="text-xs text-muted-foreground truncate">Articles: {d.articlesDir}</p>}
 										</div>
 										<Button
 											variant="ghost"
@@ -138,8 +123,6 @@ export function DomainPicker({ domains, activeDomainId, onSelect, onUpdateDomain
 												setFormName(d.name);
 												setFormDomain(d.domain ?? "");
 												setFormBasePath(d.basePath ?? "");
-												setFormArticlesDir(d.articlesDir ?? "");
-												setFormArticleFormat(d.articleFormat);
 											}}
 										>
 											<Pencil className="h-3 w-3" />
@@ -178,21 +161,10 @@ export function DomainPicker({ domains, activeDomainId, onSelect, onUpdateDomain
 								onChange={(e) => setFormBasePath(e.target.value)}
 								className="w-full rounded-md border border-border bg-background px-3 py-1.5 text-sm text-foreground"
 							/>
-							<input
-								type="text"
-								placeholder="Articles directory (e.g., content/blog/)"
-								value={formArticlesDir}
-								onChange={(e) => setFormArticlesDir(e.target.value)}
-								className="w-full rounded-md border border-border bg-background px-3 py-1.5 text-sm text-foreground"
-							/>
-							<ArticleFormatEditor
-								value={formArticleFormat}
-								onChange={setFormArticleFormat}
-							/>
 							{editingDomain ? (
 								<div className="flex gap-2">
 									<Button size="sm" className="text-foreground" onClick={handleSaveEdit} disabled={!formName.trim()}>Save</Button>
-									<Button size="sm" variant="ghost" className="text-foreground" onClick={() => { setEditingDomain(null); setFormName(""); setFormDomain(""); setFormBasePath(""); setFormArticlesDir(""); setFormArticleFormat(undefined); }}>Cancel</Button>
+									<Button size="sm" variant="ghost" className="text-foreground" onClick={() => { setEditingDomain(null); setFormName(""); setFormDomain(""); setFormBasePath(""); }}>Cancel</Button>
 								</div>
 							) : (
 								<Button size="sm" onClick={handleAdd} disabled={!formName.trim()} className="gap-1 text-foreground">

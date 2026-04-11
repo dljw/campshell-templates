@@ -5,7 +5,18 @@
       "createdAt": "2026-03-19T00:00:00.000Z",
       "name": "My Site",
       "domain": "example.com",
-      "isDefault": true
+      "basePath": "/projects/my-site",
+      "articlesDir": "content/blog/",
+      "isDefault": true,
+      "articleFormat": {
+        "name": "Blog Post",
+        "sections": [
+          { "name": "Introduction", "required": true, "description": "Hook + what the reader will learn" },
+          { "name": "Main Content", "required": true },
+          { "name": "Conclusion", "required": true, "description": "Summary + CTA" }
+        ],
+        "defaultWordCount": 1500
+      }
     }
   ]
 }

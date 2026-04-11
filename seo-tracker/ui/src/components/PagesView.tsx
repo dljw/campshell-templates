@@ -18,6 +18,7 @@ import { PageFormDialog } from "./PageFormDialog.js";
 
 interface PagesViewProps {
   pages: Page[];
+  domainId: string | null;
   onCreatePage: (p: Page) => void;
   onUpdatePage: (p: Page) => void;
   onDeletePage: (id: string) => void;
@@ -39,7 +40,7 @@ const contentTypeLabels: Record<string, string> = {
   other: "Other",
 };
 
-export function PagesView({ pages, onCreatePage, onUpdatePage, onDeletePage }: PagesViewProps) {
+export function PagesView({ pages, domainId, onCreatePage, onUpdatePage, onDeletePage }: PagesViewProps) {
   const [formOpen, setFormOpen] = useState(false);
   const [editingPage, setEditingPage] = useState<Page | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Page | null>(null);
@@ -57,7 +58,7 @@ export function PagesView({ pages, onCreatePage, onUpdatePage, onDeletePage }: P
             setFormOpen(true);
           }}
         />
-        <PageFormDialog open={formOpen} onOpenChange={setFormOpen} page={null} onSave={onCreatePage} />
+        <PageFormDialog open={formOpen} onOpenChange={setFormOpen} page={null} domainId={domainId} onSave={onCreatePage} />
       </>
     );
   }
@@ -164,6 +165,7 @@ export function PagesView({ pages, onCreatePage, onUpdatePage, onDeletePage }: P
           if (!open) setEditingPage(null);
         }}
         page={editingPage}
+        domainId={domainId}
         onSave={(p) => {
           if (editingPage) {
             onUpdatePage(p);

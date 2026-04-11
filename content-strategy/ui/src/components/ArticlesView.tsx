@@ -80,7 +80,16 @@ export function ArticlesView({ data, domainId, activeDomain }: ArticlesViewProps
 												</td>
 												<td className="py-2 pr-3 font-medium">{article.title}</td>
 												<td className="py-2 pr-3"><HubBadge hub={hub} /></td>
-												<td className="py-2 pr-3"><StatusBadge status={article.status} /></td>
+												<td className="py-2 pr-3">
+									<div className="flex items-center gap-1.5">
+										<StatusBadge status={article.status} />
+										{activeDomain?.articleFormat?.name && (
+											<span className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+												{activeDomain.articleFormat.name}
+											</span>
+										)}
+									</div>
+								</td>
 												<td className="py-2 pr-3 text-muted-foreground">{article.publishDate ?? "—"}</td>
 												<td className="py-2 pr-3 text-right">{totalImpr}</td>
 												<td className="py-2 pr-3 text-right">{totalClicks}</td>
@@ -112,7 +121,7 @@ export function ArticlesView({ data, domainId, activeDomain }: ArticlesViewProps
 																<input
 																	type="text"
 																	defaultValue={article.filePath ?? ""}
-																	placeholder="e.g. content/blog/my-article.mdx"
+																	placeholder="e.g. my-article.md"
 																	className="rounded-md border border-border bg-background px-2 py-1 text-xs text-foreground w-80"
 																	onBlur={(e) => {
 																		const val = e.target.value.trim();
@@ -122,6 +131,11 @@ export function ArticlesView({ data, domainId, activeDomain }: ArticlesViewProps
 																	}}
 																/>
 															</div>
+															{article.filePath && activeDomain?.basePath && (
+																<div className="text-xs text-muted-foreground">
+																	Full path: {[activeDomain.basePath, activeDomain.articlesDir, article.filePath].filter(Boolean).join("/").replace(/\/+/g, "/")}
+																</div>
+															)}
 
 															{/* Optimize prompt button */}
 															<div className="flex items-center gap-2">

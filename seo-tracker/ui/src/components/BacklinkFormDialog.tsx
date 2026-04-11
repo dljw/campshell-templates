@@ -21,6 +21,7 @@ interface BacklinkFormDialogProps {
   onOpenChange: (open: boolean) => void;
   backlink: Backlink | null;
   pages: Page[];
+  domainId?: string | null;
   onSave: (backlink: Backlink) => void;
 }
 
@@ -29,6 +30,7 @@ export function BacklinkFormDialog({
   onOpenChange,
   backlink,
   pages,
+  domainId,
   onSave,
 }: BacklinkFormDialogProps) {
   const [sourceDomain, setSourceDomain] = useState("");
@@ -69,6 +71,7 @@ export function BacklinkFormDialog({
       ...(domainAuthority && { domainAuthority: Number.parseInt(domainAuthority) }),
       ...(dateDiscovered && { dateDiscovered }),
       status,
+      ...(domainId ? { domainId } : backlink?.domainId ? { domainId: backlink.domainId } : {}),
     };
 
     onSave(data);

@@ -19,10 +19,11 @@ import { EmptyState } from "./EmptyState.js";
 
 interface CompetitorsViewProps {
   competitors: Competitor[];
+  domainId: string | null;
   onUpdateCompetitors: (competitors: Competitor[]) => boolean;
 }
 
-export function CompetitorsView({ competitors, onUpdateCompetitors }: CompetitorsViewProps) {
+export function CompetitorsView({ competitors, domainId, onUpdateCompetitors }: CompetitorsViewProps) {
   const [formOpen, setFormOpen] = useState(false);
   const [editingCompetitor, setEditingCompetitor] = useState<Competitor | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Competitor | null>(null);
@@ -56,6 +57,7 @@ export function CompetitorsView({ competitors, onUpdateCompetitors }: Competitor
           open={formOpen}
           onOpenChange={setFormOpen}
           competitor={null}
+          domainId={domainId}
           onSave={handleSave}
         />
       </>
@@ -163,6 +165,7 @@ export function CompetitorsView({ competitors, onUpdateCompetitors }: Competitor
           if (!open) setEditingCompetitor(null);
         }}
         competitor={editingCompetitor}
+        domainId={domainId}
         onSave={handleSave}
       />
 
