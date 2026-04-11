@@ -1,0 +1,15 @@
+name: seo-content-pipeline
+displayName: SEO Content Pipeline
+description: >-
+  Orchestrate keyword research, content creation, and SEO tracking across
+  Content Strategy, SEO Tracker, and DataForSEO. Enables automated pipelines
+  for non-technical users — from keyword discovery to article publishing to
+  performance review — all through natural language.
+version: 1.0.0
+category: marketing
+emoji: 🔄
+requires:
+  - content-strategy
+  - seo-tracker
+  - dataforseo
+skill: SKILL.md
