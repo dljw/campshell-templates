@@ -1,0 +1,57 @@
+{
+  "onboarding": {
+    "title": "DataForSEO API Integration",
+    "subtitle": "Search volume, SERP analysis, and keyword research",
+    "sampleDataDescription": "No sample data — this is a service template that calls the DataForSEO API.",
+    "steps": [
+      {
+        "icon": "\uD83D\uDD11",
+        "title": "Configure API Keys",
+        "description": "Enter your DataForSEO login email and API password to connect to the API."
+      },
+      {
+        "icon": "\uD83D\uDD0D",
+        "title": "Run Operations",
+        "description": "Use the form or ask your AI assistant to fetch search volume, analyze SERPs, or get keyword ideas."
+      },
+      {
+        "icon": "\uD83D\uDCCA",
+        "title": "View Results",
+        "description": "Results are saved and viewable in the run history. Re-run any past operation with one click."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "DataForSEO provides programmatic access to keyword data, SERP results, and more. This service template wraps the most commonly used endpoints.",
+    "concepts": [
+      {
+        "name": "Search Volume",
+        "description": "Monthly search volume, CPC, and competition data for keywords from Google Ads.",
+        "icon": "\uD83D\uDCCA"
+      },
+      {
+        "name": "SERP Analysis",
+        "description": "Top organic search results for a keyword, including URLs, titles, and positions.",
+        "icon": "\uD83C\uDFAF"
+      },
+      {
+        "name": "Keyword Suggestions",
+        "description": "Related keyword ideas based on a seed keyword, with volume and competition metrics.",
+        "icon": "\uD83D\uDCA1"
+      }
+    ],
+    "prompts": [
+      "Get search volume for 'camping gear' and 'hiking boots'",
+      "Analyze the top 10 Google results for 'best project management tools'",
+      "Find keyword suggestions related to 'electric vehicles'",
+      "Compare search volume for 'react vs vue vs angular'"
+    ],
+    "tips": [
+      "You can look up to 50 keywords at once with search-volume",
+      "Use location codes to get data for specific countries (2840 = US, 2826 = UK)",
+      "SERP analysis shows the actual current Google results, not historical data",
+      "All results are saved in run history — you can reference past results anytime"
+    ]
+  },
+  "emptyStates": {}
+}

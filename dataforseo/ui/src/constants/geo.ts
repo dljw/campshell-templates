@@ -1,0 +1,30 @@
+export const COUNTRY_OPTIONS: { label: string; value: number }[] = [
+  { label: "United States", value: 2840 },
+  { label: "United Kingdom", value: 2826 },
+  { label: "Canada", value: 2124 },
+  { label: "Australia", value: 2036 },
+  { label: "Singapore", value: 2702 },
+  { label: "India", value: 2356 },
+  { label: "Germany", value: 2276 },
+  { label: "France", value: 2250 },
+  { label: "Brazil", value: 2076 },
+  { label: "Mexico", value: 2484 },
+  { label: "Japan", value: 2392 },
+  { label: "South Korea", value: 2410 },
+  { label: "Netherlands", value: 2528 },
+  { label: "Spain", value: 2724 },
+  { label: "Italy", value: 2380 },
+];
+
+export const LANGUAGE_OPTIONS: { label: string; value: string }[] = [
+  { label: "English", value: "en" },
+  { label: "Spanish", value: "es" },
+  { label: "French", value: "fr" },
+  { label: "German", value: "de" },
+  { label: "Portuguese", value: "pt" },
+  { label: "Italian", value: "it" },
+  { label: "Dutch", value: "nl" },
+  { label: "Japanese", value: "ja" },
+  { label: "Korean", value: "ko" },
+  { label: "Chinese (Simplified)", value: "zh_CN" },
+];

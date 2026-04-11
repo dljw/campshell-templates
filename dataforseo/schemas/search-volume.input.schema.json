@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "dataforseo/search-volume.input.schema.json",
+  "type": "object",
+  "required": ["keywords"],
+  "properties": {
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "maxItems": 50,
+      "description": "Keywords to look up"
+    },
+    "locationCode": {
+      "type": "integer",
+      "default": 2840,
+      "description": "DataForSEO location code (2840 = United States)"
+    },
+    "languageCode": {
+      "type": "string",
+      "default": "en",
+      "description": "Language code for results"
+    }
+  },
+  "additionalProperties": false
+}

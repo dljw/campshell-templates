@@ -31,6 +31,8 @@
     "dev": "tsc --build --watch",
     "test": "tsc --build && vitest run --passWithNoTests",
     "lint": "biome check src/",
-    "clean": "rm -rf dist .tsbuildinfo tsconfig.tsbuildinfo"
+    "clean": "rm -rf dist .tsbuildinfo tsconfig.tsbuildinfo",
+    "build-bundle": "node -e \"import('@campshell/core').then(m => m.buildBundle({ templateDir: process.cwd() })).then(r => { console.log('Bundle:', r.bundlePath); r.warnings.forEach(w => console.warn('Warning:', w)); })\"",
+    "dev-install": "node dev-install.mjs"
   }
 }

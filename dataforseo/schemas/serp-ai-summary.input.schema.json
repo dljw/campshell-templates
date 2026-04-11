@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["keyword"],
+  "properties": {
+    "keyword": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 700,
+      "description": "Search query to retrieve SERP results and AI Overview/Summary for"
+    },
+    "locationCode": {
+      "type": "integer",
+      "description": "Search engine location code. Default: 2840 (United States)",
+      "default": 2840
+    },
+    "languageCode": {
+      "type": "string",
+      "description": "Language code (e.g. en). Default: en",
+      "default": "en"
+    },
+    "device": {
+      "type": "string",
+      "enum": ["desktop", "mobile"],
+      "description": "Device type for SERP results. Default: desktop",
+      "default": "desktop"
+    }
+  },
+  "additionalProperties": false
+}
