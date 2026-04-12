@@ -16,6 +16,7 @@ interface CompetitorFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   competitor: Competitor | null;
+  domainId?: string | null;
   onSave: (competitor: Competitor) => void;
 }
 
@@ -23,6 +24,7 @@ export function CompetitorFormDialog({
   open,
   onOpenChange,
   competitor,
+  domainId,
   onSave,
 }: CompetitorFormDialogProps) {
   const [domain, setDomain] = useState("");
@@ -63,6 +65,7 @@ export function CompetitorFormDialog({
       ...(topKeywords.length > 0 && { topKeywords }),
       ...(backlinkCount && { backlinkCount: Number.parseInt(backlinkCount) }),
       ...(notes && { notes }),
+      ...(domainId ? { domainId } : competitor?.domainId ? { domainId: competitor.domainId } : {}),
     };
 
     onSave(data);

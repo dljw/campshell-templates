@@ -16,7 +16,8 @@
     "pages": "schemas/pages.schema.json",
     "backlinks": "schemas/backlinks.schema.json",
     "competitors": "schemas/competitors.schema.json",
-    "issues": "schemas/issues.schema.json"
+    "issues": "schemas/issues.schema.json",
+    "domains": "schemas/domains.schema.json"
   },
   "storage": {
     "keywords": {
@@ -38,13 +39,38 @@
       "pattern": "collection",
       "file": "competitors.json"
     },
+    "domains": {
+      "pattern": "collection",
+      "file": "domains.json"
+    },
     "issues": {
       "pattern": "one-per-file",
       "directory": "issues",
       "fileNamePattern": "{id}.json"
     }
   },
-  "queries": {},
+  "queries": {
+    "keywords": {
+      "filterable": ["status", "intent", "domainId"],
+      "sortable": ["position", "searchVolume", "difficulty"],
+      "searchable": ["term"]
+    },
+    "pages": {
+      "filterable": ["status", "contentType", "domainId"],
+      "sortable": ["organicTraffic", "avgPosition"],
+      "searchable": ["title", "pageUrl"]
+    },
+    "backlinks": {
+      "filterable": ["linkType", "status", "domainId"],
+      "sortable": ["domainAuthority", "dateDiscovered"],
+      "searchable": ["sourceDomain", "anchorText"]
+    },
+    "issues": {
+      "filterable": ["issueType", "priority", "status", "domainId"],
+      "sortable": ["priority"],
+      "searchable": ["title"]
+    }
+  },
   "ui": {
     "framework": "react",
     "entry": "index.tsx",
@@ -84,6 +110,26 @@
     },
     "backlinks.targetPageId": {
       "entity": "pages",
+      "type": "one"
+    },
+    "keywords.domainId": {
+      "entity": "domains",
+      "type": "one"
+    },
+    "pages.domainId": {
+      "entity": "domains",
+      "type": "one"
+    },
+    "backlinks.domainId": {
+      "entity": "domains",
+      "type": "one"
+    },
+    "competitors.domainId": {
+      "entity": "domains",
+      "type": "one"
+    },
+    "issues.domainId": {
+      "entity": "domains",
       "type": "one"
     }
   },

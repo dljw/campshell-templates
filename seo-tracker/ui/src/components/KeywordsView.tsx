@@ -23,6 +23,7 @@ import { PositionChange } from "./PositionChange.js";
 interface KeywordsViewProps {
   keywords: Keyword[];
   pages: Page[];
+  domainId: string | null;
   onCreateKeyword: (k: Keyword) => void;
   onUpdateKeyword: (k: Keyword) => void;
   onDeleteKeyword: (id: string) => void;
@@ -44,6 +45,7 @@ const intentLabels: Record<string, string> = {
 export function KeywordsView({
   keywords,
   pages,
+  domainId,
   onCreateKeyword,
   onUpdateKeyword,
   onDeleteKeyword,
@@ -75,6 +77,7 @@ export function KeywordsView({
           onOpenChange={setFormOpen}
           keyword={null}
           pages={pages}
+          domainId={domainId}
           onSave={onCreateKeyword}
         />
       </>
@@ -200,6 +203,7 @@ export function KeywordsView({
         }}
         keyword={editingKeyword}
         pages={pages}
+        domainId={domainId}
         onSave={(kw) => {
           if (editingKeyword) {
             onUpdateKeyword(kw);

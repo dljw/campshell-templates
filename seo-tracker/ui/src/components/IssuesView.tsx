@@ -26,6 +26,7 @@ import { IssueFormDialog } from "./IssueFormDialog.js";
 
 interface IssuesViewProps {
   issues: Issue[];
+  domainId: string | null;
   onCreateIssue: (i: Issue) => void;
   onUpdateIssue: (i: Issue) => void;
   onDeleteIssue: (id: string) => void;
@@ -53,7 +54,7 @@ const issueTypeIcon: Record<string, typeof Zap> = {
   other: AlertTriangle,
 };
 
-export function IssuesView({ issues, onCreateIssue, onUpdateIssue, onDeleteIssue }: IssuesViewProps) {
+export function IssuesView({ issues, domainId, onCreateIssue, onUpdateIssue, onDeleteIssue }: IssuesViewProps) {
   const [formOpen, setFormOpen] = useState(false);
   const [editingIssue, setEditingIssue] = useState<Issue | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Issue | null>(null);
@@ -71,7 +72,7 @@ export function IssuesView({ issues, onCreateIssue, onUpdateIssue, onDeleteIssue
             setFormOpen(true);
           }}
         />
-        <IssueFormDialog open={formOpen} onOpenChange={setFormOpen} issue={null} onSave={onCreateIssue} />
+        <IssueFormDialog open={formOpen} onOpenChange={setFormOpen} issue={null} domainId={domainId} onSave={onCreateIssue} />
       </>
     );
   }
@@ -190,6 +191,7 @@ export function IssuesView({ issues, onCreateIssue, onUpdateIssue, onDeleteIssue
           if (!open) setEditingIssue(null);
         }}
         issue={editingIssue}
+        domainId={domainId}
         onSave={(issue) => {
           if (editingIssue) {
             onUpdateIssue(issue);

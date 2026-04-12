@@ -77,6 +77,11 @@
     },
     "notes": {
       "type": "string"
+    },
+    "domainId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]{2,36}$",
+      "description": "Reference to domain"
     }
   },
   "additionalProperties": false,

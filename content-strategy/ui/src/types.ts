@@ -159,6 +159,20 @@ export interface Competitor {
 	domainId?: string;
 }
 
+export interface ArticleFormatSection {
+	name: string;
+	description?: string;
+	required?: boolean;
+	guidanceNotes?: string;
+}
+
+export interface ArticleFormat {
+	name?: string;
+	sections?: ArticleFormatSection[];
+	defaultWordCount?: number;
+	frontmatterFields?: string[];
+}
+
 export interface Domain {
 	id: string;
 	createdAt: string;
@@ -166,6 +180,8 @@ export interface Domain {
 	domain?: string;
 	basePath?: string;
 	isDefault?: boolean;
+	articlesDir?: string;
+	articleFormat?: ArticleFormat;
 }
 
 export interface DomainsCollection {

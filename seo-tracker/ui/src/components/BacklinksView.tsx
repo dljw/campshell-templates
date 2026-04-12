@@ -22,6 +22,7 @@ import { EmptyState } from "./EmptyState.js";
 interface BacklinksViewProps {
   backlinks: Backlink[];
   pages: Page[];
+  domainId: string | null;
   onCreateBacklink: (b: Backlink) => void;
   onUpdateBacklink: (b: Backlink) => void;
   onDeleteBacklink: (id: string) => void;
@@ -43,6 +44,7 @@ const linkTypeBadge: Record<string, "default" | "outline" | "secondary"> = {
 export function BacklinksView({
   backlinks,
   pages,
+  domainId,
   onCreateBacklink,
   onUpdateBacklink,
   onDeleteBacklink,
@@ -74,6 +76,7 @@ export function BacklinksView({
           onOpenChange={setFormOpen}
           backlink={null}
           pages={pages}
+          domainId={domainId}
           onSave={onCreateBacklink}
         />
       </>
@@ -185,6 +188,7 @@ export function BacklinksView({
         }}
         backlink={editingBacklink}
         pages={pages}
+        domainId={domainId}
         onSave={(bl) => {
           if (editingBacklink) {
             onUpdateBacklink(bl);

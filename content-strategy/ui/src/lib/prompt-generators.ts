@@ -14,8 +14,11 @@ function formatKeywordList(keywords: Keyword[]): string {
 
 function articleFileLine(article: Article, domain?: Domain): string {
 	if (article.filePath) {
-		const base = domain?.basePath ? `${domain.basePath}/` : "";
-		return `File: ${base}${article.filePath}`;
+		const parts: string[] = [];
+		if (domain?.basePath) parts.push(domain.basePath);
+		if (domain?.articlesDir) parts.push(domain.articlesDir);
+		parts.push(article.filePath);
+		return `File: ${parts.join("/").replace(/\/+/g, "/")}`;
 	}
 	return article.pageUrl ? `URL: ${article.pageUrl}` : "";
 }
@@ -87,6 +90,24 @@ export function generateArticleWritePrompt(
 		prompt += `\nTarget keywords to include naturally:\n`;
 		prompt += formatKeywordList(articleKws);
 		prompt += "\n";
+	}
+
+	if (domain?.articleFormat) {
+		const fmt = domain.articleFormat;
+		if (fmt.name) prompt += `\nArticle format: ${fmt.name}\n`;
+		if (fmt.defaultWordCount) prompt += `Target word count: ${fmt.defaultWordCount}\n`;
+		if (fmt.sections && fmt.sections.length > 0) {
+			prompt += `\nExpected sections:\n`;
+			for (const s of fmt.sections) {
+				prompt += `- ${s.name}${s.required ? " (required)" : ""}`;
+				if (s.description) prompt += ` — ${s.description}`;
+				prompt += "\n";
+				if (s.guidanceNotes) prompt += `  Guidance: ${s.guidanceNotes}\n`;
+			}
+		}
+		if (fmt.frontmatterFields && fmt.frontmatterFields.length > 0) {
+			prompt += `\nExpected frontmatter fields: ${fmt.frontmatterFields.join(", ")}\n`;
+		}
 	}
 
 	prompt += mpcUpdateArticle(article.id, `status: "published", publishDate: "${new Date().toISOString().split("T")[0]}", wordCount: <actual count>`);

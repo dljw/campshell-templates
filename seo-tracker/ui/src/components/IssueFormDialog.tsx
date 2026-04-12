@@ -21,10 +21,11 @@ interface IssueFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   issue: Issue | null;
+  domainId?: string | null;
   onSave: (issue: Issue) => void;
 }
 
-export function IssueFormDialog({ open, onOpenChange, issue, onSave }: IssueFormDialogProps) {
+export function IssueFormDialog({ open, onOpenChange, issue, domainId, onSave }: IssueFormDialogProps) {
   const [title, setTitle] = useState("");
   const [issueType, setIssueType] = useState<IssueType>("other");
   const [affectedPage, setAffectedPage] = useState("");
@@ -57,6 +58,7 @@ export function IssueFormDialog({ open, onOpenChange, issue, onSave }: IssueForm
       ...(description && { description }),
       priority,
       status,
+      ...(domainId ? { domainId } : issue?.domainId ? { domainId: issue.domainId } : {}),
     };
 
     onSave(data);

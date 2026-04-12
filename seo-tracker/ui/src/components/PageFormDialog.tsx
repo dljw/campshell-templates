@@ -21,10 +21,11 @@ interface PageFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   page: Page | null;
+  domainId?: string | null;
   onSave: (page: Page) => void;
 }
 
-export function PageFormDialog({ open, onOpenChange, page, onSave }: PageFormDialogProps) {
+export function PageFormDialog({ open, onOpenChange, page, domainId, onSave }: PageFormDialogProps) {
   const [title, setTitle] = useState("");
   const [pageUrl, setPageUrl] = useState("");
   const [status, setStatus] = useState<PageStatus>("planned");
@@ -69,6 +70,7 @@ export function PageFormDialog({ open, onOpenChange, page, onSave }: PageFormDia
       ...(avgPosition && { avgPosition: Number.parseFloat(avgPosition) }),
       ...(assignedTo && { assignedTo }),
       ...(notes && { notes }),
+      ...(domainId ? { domainId } : page?.domainId ? { domainId: page.domainId } : {}),
     };
 
     onSave(data);

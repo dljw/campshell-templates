@@ -1,0 +1,150 @@
+name: seo-content-pipeline
+displayName: SEO Content Pipeline
+description: >-
+  Orchestrate keyword research, content creation, and SEO tracking across
+  Content Strategy, SEO Tracker, and DataForSEO. Enables automated pipelines
+  for non-technical users — from keyword discovery to article publishing to
+  performance review — all through natural language.
+version: 1.0.0
+category: marketing
+emoji: 🔄
+requires:
+  - content-strategy
+  - seo-tracker
+  - dataforseo
+skill: SKILL.md
+
+subWorkflows:
+  - id: keyword-research
+    name: Keyword Research
+    description: Discover and track new keywords for a topic or article.
+    promptTemplate: |
+      Research keywords for {{topic}}.
+
+      Check my existing tracked keywords first to avoid adding duplicates. Then get keyword suggestions from DataForSEO, fetch search volume and difficulty scores, and present the results in a table sorted by monthly search volume. Briefly explain the difficulty scale so I know what I'm looking at.
+
+      Ask me which keywords I want to add to tracking, then save them to both Content Strategy and SEO Tracker using the same ID in both.{{#if additional_context}}
+
+      {{additional_context}}{{/if}}
+    inputs:
+      - name: topic
+        displayName: Topic or article
+        required: true
+        type: text
+        hint: "e.g. SaaS onboarding, email marketing for ecommerce"
+      - name: additional_context
+        displayName: Additional context
+        required: false
+        type: textarea
+        hint: "e.g. I already track some keywords around this — avoid duplicates"
+
+  - id: content-creation
+    name: Content Creation
+    description: Get a content brief and create your next article.
+    promptTemplate: |
+      {{#if topic}}Help me create content for: {{topic}}.{{else}}Pull up my content pipeline and recommend the next article I should work on — prioritise overdue items first, then by priority level.{{/if}}
+
+      Check the keyword readiness for the chosen article and run a SERP analysis on its primary keyword. Then give me a content brief covering: target keywords, search intent, what's currently ranking and why, recommended article length, suggested headings, and whether an AI Overview is present.
+
+      Once I confirm the article, mark it as drafting in Content Strategy and make sure a matching page exists in SEO Tracker.{{#if additional_context}}
+
+      {{additional_context}}{{/if}}
+    inputs:
+      - name: topic
+        displayName: Topic
+        required: false
+        type: text
+        hint: "Leave blank to get a recommendation from your content pipeline"
+      - name: additional_context
+        displayName: Additional context
+        required: false
+        type: textarea
+        hint: "e.g. Focus on beginner-friendly angle, targeting US audience"
+
+  - id: seo-audit
+    name: SEO Audit
+    description: A full health check across your content and SEO data.
+    promptTemplate: |
+      Run a full SEO audit across my Content Strategy and SEO Tracker data.
+
+      Pull all articles, keywords, pages, and open technical issues. Identify: quick wins (keywords ranked 11–30 with decent volume), content that needs attention (needs-refresh status or declining positions), technical issues by priority, keyword gaps compared to my competitors, and any orphan keywords or pages with no cross-template link.
+
+      For any new technical problems you find, create a SEO Tracker issue. For content opportunities, create a Content Strategy action. End with a prioritised to-do list of the top 5 things to tackle first.{{#if additional_context}}
+
+      {{additional_context}}{{/if}}
+    inputs:
+      - name: additional_context
+        displayName: Additional context
+        required: false
+        type: textarea
+        hint: "e.g. Focus on technical issues, or I've noticed rankings dropping recently"
+
+  - id: performance-review
+    name: Performance Review
+    description: Review your Google Search Console data and track ranking changes.
+    promptTemplate: |
+      Run a performance review of my content and search rankings.
+
+      Check if I have a Google Search Console export in my data folder — if so, import it and create a new cycle. Then sync keyword positions and page metrics to SEO Tracker (round positions to integers when syncing).
+
+      Give me a plain-language summary: impressions and clicks vs. last period, average position change, top 3 keywords that improved, top 3 that dropped, any keywords that changed quadrant, and articles with declining CTR. Finish with 2–3 recommended actions.{{#if additional_context}}
+
+      {{additional_context}}{{/if}}
+    inputs:
+      - name: additional_context
+        displayName: Additional context
+        required: false
+        type: textarea
+        hint: "e.g. I just uploaded a new GSC export, or focus on last month's changes"
+
+  - id: competitor-intelligence
+    name: Competitor Intelligence
+    description: Analyse what competitors are ranking for and find content gaps.
+    promptTemplate: |
+      {{#if domain}}Analyse competitor: {{domain}}.{{else}}Analyse my existing competitors.{{/if}}
+
+      Get their top-ranking keywords from DataForSEO and compare against my tracked keywords to find gaps — keywords they rank for in positions 1–20 that I don't track. Fetch search volume and difficulty for the top gap keywords, then present: a competitor ranking summary, the top 10 gap keywords by volume, and content themes they cover that I don't.
+
+      Ask if I want to add any of these keywords to tracking or create article stubs for the biggest gaps.{{#if additional_context}}
+
+      {{additional_context}}{{/if}}
+    inputs:
+      - name: domain
+        displayName: Competitor domain
+        required: false
+        type: text
+        hint: "e.g. competitor.com — leave blank to use your existing competitor list"
+      - name: additional_context
+        displayName: Additional context
+        required: false
+        type: textarea
+        hint: "e.g. Focus on blog content gaps, or compare against our top 3 competitors"
+
+  - id: full-sync
+    name: Full Sync
+    description: Reconcile all data between Content Strategy and SEO Tracker.
+    promptTemplate: |
+      Reconcile all data between my Content Strategy and SEO Tracker templates.
+
+      For each published, optimising, or needs-refresh article in Content Strategy, make sure a matching page exists in SEO Tracker. For each tracked keyword in Content Strategy, make sure a matching keyword exists in SEO Tracker with positions synced (rounded to integer). Fix any mismatches in title or status.
+
+      Report how many pages and keywords were synced, created, or updated.
+    inputs: []
+
+  - id: ai-visibility-check
+    name: AI Visibility Check
+    description: See how your brand and content appear in AI search results.
+    promptTemplate: |
+      Check how my brand and content show up in AI search.
+
+      Get my brand name from my domain settings, then: check brand mentions across AI platforms via DataForSEO llm-mentions, check AI Overview presence for my top 5 keywords by search volume, and compare AI search volume against traditional search volume for those terms.
+
+      Present the findings as: brand presence in AI responses, AI Overview coverage (which keywords trigger them and whether I'm cited), search trend comparison, and gaps where AI Overviews exist but I'm not cited. Finish with 2–3 concrete actions to improve my AI visibility.{{#if additional_context}}
+
+      {{additional_context}}{{/if}}
+    inputs:
+      - name: additional_context
+        displayName: Additional context
+        required: false
+        type: textarea
+        hint: "e.g. Focus on our main product keywords, or check a specific topic area"
