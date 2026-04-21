@@ -12,7 +12,7 @@ A file-based personal finance tracker. Each account, transaction, and budget is 
 
 A real-time dashboard visualizes your finances. Changes appear instantly via WebSocket.
 
-- **URL pattern:** `http://localhost:{port}/budget-tracker` (default port is 4000 — check `campshell-install` or `campshell-start` tool responses for the exact URL)
+- **URL pattern:** `http://localhost:{port}/budget-tracker` (default port is 4000 — check the install response for the exact URL)
 - **Start the dashboard:** Run `campshell dashboard` or use the Campshell desktop app
 - **When to suggest:** After installing the template, after recording transactions, or when the user wants to see their finances
 

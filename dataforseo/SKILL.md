@@ -8,7 +8,7 @@ version: 1.0.0
 
 A Campshell **service template** that provides programmatic access to DataForSEO's keyword and SERP data APIs.
 
-This is a service template — use `campshell-run-service` to execute operations (not `campshell-create-entity`).
+This is a service template — use `campshell-service` with action `run` to execute operations.
 
 ## Dashboard UI
 
@@ -28,7 +28,7 @@ Configure these before running any operations:
 
 Configure secrets via the **Campshell dashboard UI** — open the dashboard and navigate to the DataForSEO template settings. Secrets must never be shared in the AI conversation.
 
-Check configuration status: `campshell-secrets-status template="dataforseo"`
+Check configuration status: `campshell-service template="dataforseo" action="secrets"`
 
 ## Operations
 
@@ -55,7 +55,7 @@ Get monthly search volume and CPC data for keywords.
 
 **MCP call:**
 ```
-campshell-run-service template="dataforseo" operation="search-volume" input={"keywords":["camping gear","hiking boots"]}
+campshell-service template="dataforseo" action="run" operation="search-volume" input={"keywords":["camping gear","hiking boots"]}
 ```
 
 ### serp-analysis
@@ -81,7 +81,7 @@ Analyze top Google search results for a keyword. Returns current live SERP data.
 
 **MCP call:**
 ```
-campshell-run-service template="dataforseo" operation="serp-analysis" input={"keyword":"best project management tools"}
+campshell-service template="dataforseo" action="run" operation="serp-analysis" input={"keyword":"best project management tools"}
 ```
 
 ### keyword-suggestions
@@ -107,7 +107,7 @@ Get related keyword ideas based on a seed keyword.
 
 **MCP call:**
 ```
-campshell-run-service template="dataforseo" operation="keyword-suggestions" input={"seed":"electric vehicles"}
+campshell-service template="dataforseo" action="run" operation="keyword-suggestions" input={"seed":"electric vehicles"}
 ```
 
 ## Viewing Results
@@ -116,7 +116,7 @@ Run results are saved to `~/Campshell/data/dataforseo/runs/{run-id}.json`.
 
 View run history via MCP:
 ```
-campshell-get-service-runs template="dataforseo"
+campshell-service template="dataforseo" action="runs"
 ```
 
 ## Common Location Codes

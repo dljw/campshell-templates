@@ -24,7 +24,7 @@ function articleFileLine(article: Article, domain?: Domain): string {
 }
 
 function mpcUpdateArticle(articleId: string, fields: string): string {
-	return `\nAfter completing, update the article using:\ncampshell-update-entity(template: "content-strategy", entity: "articles", id: "${articleId}", data: { ${fields} })`;
+	return `\nAfter completing, update the article using:\ncampshell-template(action: "update-entity", template: "content-strategy", entity: "articles", id: "${articleId}", data: { ${fields} })`;
 }
 
 // ---------------------------------------------------------------------------
@@ -66,7 +66,7 @@ export function generateCycleAnalysisPrompt(
 
 	prompt += `\nAnalyze this cycle and create optimization actions. For each action specify:\n`;
 	prompt += `1. Description of what to do\n2. Which article(s) it affects\n3. Expected outcome (metric + direction)\n4. Priority (high/medium/low)\n\n`;
-	prompt += `Use campshell-create-entity(template: "content-strategy", entity: "actions") to create each action.`;
+	prompt += `Use campshell-template(action: "create-entity", template: "content-strategy", entity: "actions") to create each action.`;
 
 	return prompt;
 }
@@ -173,7 +173,7 @@ export function generateKeywordActionPrompt(
 	}
 
 	prompt += `\nFor each keyword, suggest a specific optimization action.\n`;
-	prompt += `Use campshell-create-entity(template: "content-strategy", entity: "actions") to create each action.`;
+	prompt += `Use campshell-template(action: "create-entity", template: "content-strategy", entity: "actions") to create each action.`;
 
 	return prompt;
 }
@@ -208,7 +208,7 @@ export function generateActionExecutePrompt(
 		prompt += "\n";
 	}
 
-	prompt += `\nAfter completing, update the action status:\ncampshell-update-entity(template: "content-strategy", entity: "actions", id: "${action.id}", data: { status: "done" })`;
+	prompt += `\nAfter completing, update the action status:\ncampshell-template(action: "update-entity", template: "content-strategy", entity: "actions", id: "${action.id}", data: { status: "done" })`;
 
 	return prompt;
 }
@@ -239,7 +239,7 @@ export function generateHubGapPrompt(
 	}
 
 	prompt += `\nSuggest:\n1. Content briefs for unpublished articles\n2. New article ideas to fill gaps in this hub\n3. Internal linking strategy between hub articles\n\n`;
-	prompt += `Use campshell-create-entity(template: "content-strategy", entity: "articles") to create new article entries.`;
+	prompt += `Use campshell-template(action: "create-entity", template: "content-strategy", entity: "articles") to create new article entries.`;
 
 	return prompt;
 }
