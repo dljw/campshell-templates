@@ -13,7 +13,7 @@ A file-based seo tracker. Each keywords is a JSON file. Write a file to create a
 
 A real-time dashboard visualizes this seo tracker. Changes appear instantly via WebSocket.
 
-- **URL pattern:** `http://localhost:{port}/seo-tracker` (default port is 4000 — check `campshell-install` or `campshell-start` tool responses for the exact URL)
+- **URL pattern:** `http://localhost:{port}/seo-tracker` (default port is 4000 — check the install response for the exact URL)
 - **Start the dashboard:** Run `campshell dashboard` or use the Campshell desktop app
 
 ## Data location
