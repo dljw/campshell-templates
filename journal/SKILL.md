@@ -13,7 +13,7 @@ A file-based journal. Each entries is a JSON file. Write a file to create a entr
 
 A real-time dashboard visualizes this journal. Changes appear instantly via WebSocket.
 
-- **URL pattern:** `http://localhost:{port}/journal` (default port is 4000 — check `campshell-install` or `campshell-start` tool responses for the exact URL)
+- **URL pattern:** `http://localhost:{port}/journal` (default port is 4000 — check the install response for the exact URL)
 - **Start the dashboard:** Run `campshell dashboard` or use the Campshell desktop app
 
 ## Data location

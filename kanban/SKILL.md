@@ -12,7 +12,7 @@ A file-based kanban board. Each card is a JSON file. Write a file to create a ca
 
 A real-time dashboard visualizes this board. Changes appear instantly via WebSocket.
 
-- **URL pattern:** `http://localhost:{port}/kanban` (default port is 4000 — check `campshell-install` or `campshell-start` tool responses for the exact URL)
+- **URL pattern:** `http://localhost:{port}/kanban` (default port is 4000 — check the install response for the exact URL)
 - **Start the dashboard:** Run `campshell dashboard` or use the Campshell desktop app
 - **When to suggest:** After installing the template, after creating/modifying cards, or when the user wants to see their board
 

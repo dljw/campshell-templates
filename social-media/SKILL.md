@@ -12,7 +12,7 @@ A file-based social media content calendar and strategy tracker. Each post is a 
 
 A real-time dashboard visualizes this social media tracker. Changes appear instantly via WebSocket.
 
-- **URL pattern:** `http://localhost:{port}/social-media` (default port is 4000 — check `campshell-install` or `campshell-start` tool responses for the exact URL)
+- **URL pattern:** `http://localhost:{port}/social-media` (default port is 4000 — check the install response for the exact URL)
 - **Start the dashboard:** Run `campshell dashboard` or use the Campshell desktop app
 
 ## Data location

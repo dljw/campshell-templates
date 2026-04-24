@@ -280,7 +280,7 @@ Users can place CSV files in `~/.campshell/data/content-strategy/imports/` for t
 
 #### Step 2: Create a new cycle
 
-Use `campshell-create-entity` with template `"content-strategy"`, entity `"cycles"`:
+Use `campshell-template` with action `create-entity`, template `"content-strategy"`, entity `"cycles"`:
 
 ```json
 {
@@ -327,9 +327,9 @@ Use `campshell-create-entity` with template `"content-strategy"`, entity `"cycle
 #### Step 3: Update existing keywords
 
 For each query in Queries.csv:
-1. Search existing keywords: `campshell-list-entities` with search by term
-2. If found: `campshell-update-entity` to set `previousPosition` (from old position), then update `position`, `impressions`, `clicks`, `ctr`, `quadrant`
-3. If not found: `campshell-create-entity` with term + GSC metrics + quadrant, status "tracking"
+1. Search existing keywords: `campshell-template` action `list-entities` with search by term
+2. If found: `campshell-template` action `update-entity` to set `previousPosition` (from old position), then update `position`, `impressions`, `clicks`, `ctr`, `quadrant`
+3. If not found: `campshell-template` action `create-entity` with term + GSC metrics + quadrant, status "tracking"
 
 **Keyword ID convention:** Slugify the query term — e.g. "best planner app" → `"best-planner-app"`
 
