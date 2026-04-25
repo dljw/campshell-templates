@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "posthog/get-feature-flags.input.schema.json",
+  "type": "object",
+  "required": ["distinctId"],
+  "properties": {
+    "distinctId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique user identifier"
+    },
+    "groups": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Optional group properties for group-based flags"
+    }
+  },
+  "additionalProperties": false
+}

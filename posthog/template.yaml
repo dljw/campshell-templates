@@ -1,0 +1,109 @@
+name: posthog
+displayName: PostHog
+emoji: "📊"
+category: analytics
+type: service
+description: Event capture, feature flag evaluation, and event listing via PostHog
+
+secrets:
+  POSTHOG_API_KEY:
+    label: PostHog Project API Key
+    description: Project API key from Project Settings → API Keys
+    required: true
+    sensitive: true
+  POSTHOG_INSTANCE:
+    label: PostHog Instance URL
+    description: e.g. https://app.posthog.com or https://eu.posthog.com
+    required: false
+    default: https://app.posthog.com
+  POSTHOG_PERSONAL_API_KEY:
+    label: Personal API Key (for list-events only)
+    description: Required only for list-events. From Account → Personal API Keys.
+    required: false
+    sensitive: true
+  POSTHOG_PROJECT_ID:
+    label: Project ID (for list-events only)
+    description: Numeric project ID, required only for list-events.
+    required: false
+
+operations:
+  capture-event:
+    description: Track a custom event for a user
+    timeout: 5000
+    rateLimit:
+      maxPerMinute: 600
+    input:
+      event:
+        type: string
+        required: true
+        max: 200
+        description: Event name to track
+      distinctId:
+        type: string
+        required: true
+        description: Unique identifier for the user
+      properties:
+        type: object
+        required: false
+        description: Event properties as key/value pairs
+      timestamp:
+        type: string
+        required: false
+        description: ISO 8601 timestamp; defaults to now
+    output:
+      success: { type: boolean }
+      status: { type: integer }
+
+  get-feature-flags:
+    description: Evaluate feature flags for a user via /decide
+    timeout: 10000
+    rateLimit:
+      maxPerMinute: 60
+    input:
+      distinctId:
+        type: string
+        required: true
+        description: Unique user identifier
+      groups:
+        type: object
+        required: false
+        description: Optional group properties for group-based flags
+    output:
+      flags:
+        type: object
+        description: Feature flag keys mapped to their evaluated values
+      featureFlagPayloads:
+        type: object
+        description: Optional payloads keyed by flag
+
+  list-events:
+    description: List recent events from the project (requires personal API key)
+    timeout: 30000
+    rateLimit:
+      maxPerMinute: 60
+    input:
+      limit:
+        type: integer
+        min: 1
+        max: 1000
+        default: 100
+        description: Max events to return
+      after:
+        type: string
+        required: false
+        description: ISO 8601 timestamp; only return events after this time
+      eventName:
+        type: string
+        required: false
+        description: Filter by event name
+    output:
+      results:
+        type: object[]
+        items:
+          id: { type: string }
+          event: { type: string }
+          distinctId: { type: string }
+          timestamp: { type: string }
+          properties: { type: object }
+
+entities: {}
