@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "apify-tiktok/hashtag-scrape.input.schema.json",
+  "type": "object",
+  "required": ["hashtag"],
+  "properties": {
+    "hashtag": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Hashtag without the # symbol"
+    },
+    "videosLimit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20,
+      "description": "Max number of videos to fetch"
+    }
+  },
+  "additionalProperties": false
+}

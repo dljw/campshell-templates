@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "apify-meta/pages-scrape.input.schema.json",
+  "type": "object",
+  "required": ["pageUrls"],
+  "properties": {
+    "pageUrls": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri", "minLength": 1 },
+      "minItems": 1,
+      "maxItems": 10,
+      "description": "Facebook page URLs (max 10 per call)"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,56 @@
+{
+  "onboarding": {
+    "title": "YouTube Analytics",
+    "subtitle": "Pull channel stats, videos, and search results from public YouTube",
+    "sampleDataDescription": "No sample data — this template scrapes live YouTube data via the Apify API.",
+    "steps": [
+      {
+        "icon": "🔑",
+        "title": "Add your Apify Token",
+        "description": "Sign up at apify.com and paste your token from console.apify.com/account/integrations."
+      },
+      {
+        "icon": "▶️",
+        "title": "Run an Operation",
+        "description": "Pull channel stats, recent videos, or search results from any public YouTube channel."
+      },
+      {
+        "icon": "📊",
+        "title": "Browse Results",
+        "description": "Every run is saved to history."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "Wraps the streamers/youtube-scraper actor to pull public YouTube data. Read-only.",
+    "concepts": [
+      {
+        "name": "Channel",
+        "description": "Public channel stats — subscribers, video count, total views.",
+        "icon": "📺"
+      },
+      {
+        "name": "Videos",
+        "description": "Recent videos with view/like/comment counts and duration.",
+        "icon": "🎬"
+      },
+      {
+        "name": "Search",
+        "description": "Search YouTube and get back ranked video results.",
+        "icon": "🔎"
+      }
+    ],
+    "prompts": [
+      "How many subscribers does MrBeast have?",
+      "Show me the last 10 videos from @veritasium",
+      "Search YouTube for 'react server components'",
+      "Compare subscriber counts for MrBeast and PewDiePie"
+    ],
+    "tips": [
+      "Each Apify run costs you compute on apify.com — keep maxVideos small while testing.",
+      "Channel URLs accept @handle, /channel/UC... and /c/Name formats.",
+      "Your APIFY_TOKEN unlocks the same actors across all four apify-* templates."
+    ]
+  },
+  "emptyStates": {}
+}

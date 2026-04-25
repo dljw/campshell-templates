@@ -1,0 +1,100 @@
+name: apify-tiktok
+displayName: TikTok Analytics
+emoji: "\U0001F3B5"
+category: social-media
+type: service
+description: Read-only TikTok analytics via the Apify scraper
+
+secrets:
+  APIFY_TOKEN:
+    label: Apify API Token
+    description: Your Apify token from console.apify.com/account/integrations
+    required: true
+    sensitive: true
+
+operations:
+  profile-scrape:
+    description: Scrape public TikTok profile stats for one or more usernames
+    timeout: 180000
+    rateLimit:
+      maxPerMinute: 5
+    input:
+      usernames:
+        type: string[]
+        required: true
+        max_items: 10
+        description: TikTok usernames (no @, max 10 per call)
+    output:
+      profiles:
+        type: object[]
+        items:
+          username: { type: string }
+          nickname: { type: string }
+          followerCount: { type: integer }
+          followingCount: { type: integer }
+          videoCount: { type: integer }
+          heartCount: { type: integer }
+          bio: { type: string }
+          verified: { type: boolean }
+          avatarUrl: { type: string }
+
+  videos-scrape:
+    description: Scrape recent videos from a public TikTok profile
+    timeout: 180000
+    rateLimit:
+      maxPerMinute: 5
+    input:
+      username:
+        type: string
+        required: true
+        description: TikTok username (no @)
+      videosLimit:
+        type: integer
+        required: false
+        default: 20
+        min: 1
+        max: 50
+        description: Max number of videos to fetch
+    output:
+      videos:
+        type: object[]
+        items:
+          id: { type: string }
+          text: { type: string }
+          playCount: { type: integer }
+          diggCount: { type: integer }
+          commentCount: { type: integer }
+          shareCount: { type: integer }
+          createTime: { type: string }
+          webVideoUrl: { type: string }
+          musicTitle: { type: string }
+
+  hashtag-scrape:
+    description: Scrape recent videos using a given hashtag
+    timeout: 180000
+    rateLimit:
+      maxPerMinute: 5
+    input:
+      hashtag:
+        type: string
+        required: true
+        description: Hashtag without the # symbol
+      videosLimit:
+        type: integer
+        required: false
+        default: 20
+        min: 1
+        max: 50
+        description: Max number of videos to fetch
+    output:
+      videos:
+        type: object[]
+        items:
+          id: { type: string }
+          text: { type: string }
+          playCount: { type: integer }
+          diggCount: { type: integer }
+          authorUsername: { type: string }
+          createTime: { type: string }
+
+entities: {}

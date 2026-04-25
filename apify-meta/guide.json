@@ -1,0 +1,50 @@
+{
+  "onboarding": {
+    "title": "Meta Analytics",
+    "subtitle": "Pull page stats and posts from public Facebook pages",
+    "sampleDataDescription": "No sample data — this template scrapes live Facebook data via the Apify API.",
+    "steps": [
+      {
+        "icon": "🔑",
+        "title": "Add your Apify Token",
+        "description": "Sign up at apify.com and paste your token from console.apify.com/account/integrations."
+      },
+      {
+        "icon": "👥",
+        "title": "Run an Operation",
+        "description": "Pull page stats or recent posts from any public Facebook page."
+      },
+      {
+        "icon": "📊",
+        "title": "Browse Results",
+        "description": "Every run is saved to history."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "Wraps Apify's Facebook page and post scrapers. Read-only.",
+    "concepts": [
+      {
+        "name": "Page",
+        "description": "Public page stats — followers, likes, category, about.",
+        "icon": "📃"
+      },
+      {
+        "name": "Posts",
+        "description": "Recent posts with text, like/comment/share counts.",
+        "icon": "📰"
+      }
+    ],
+    "prompts": [
+      "How many followers does facebook.com/nasa have?",
+      "Show me the last 10 posts from facebook.com/natgeo",
+      "Compare follower counts for nike, adidas Facebook pages"
+    ],
+    "tips": [
+      "Profiles, groups, and ads are not in scope — use page URLs only.",
+      "Each Apify run costs you compute on apify.com — keep postsLimit small while testing.",
+      "Your APIFY_TOKEN unlocks the same actors across all four apify-* templates."
+    ]
+  },
+  "emptyStates": {}
+}

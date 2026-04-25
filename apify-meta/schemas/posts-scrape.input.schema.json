@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "apify-meta/posts-scrape.input.schema.json",
+  "type": "object",
+  "required": ["pageUrl"],
+  "properties": {
+    "pageUrl": {
+      "type": "string",
+      "format": "uri",
+      "minLength": 1,
+      "description": "Facebook page URL"
+    },
+    "postsLimit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20,
+      "description": "Max number of posts to fetch"
+    }
+  },
+  "additionalProperties": false
+}

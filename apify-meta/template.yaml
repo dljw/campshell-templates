@@ -1,0 +1,70 @@
+name: apify-meta
+displayName: Meta Analytics
+emoji: "\U0001F465"
+category: social-media
+type: service
+description: Read-only Facebook (Meta) analytics via the Apify scraper
+
+secrets:
+  APIFY_TOKEN:
+    label: Apify API Token
+    description: Your Apify token from console.apify.com/account/integrations
+    required: true
+    sensitive: true
+
+operations:
+  pages-scrape:
+    description: Scrape public Facebook page stats for one or more page URLs
+    timeout: 180000
+    rateLimit:
+      maxPerMinute: 5
+    input:
+      pageUrls:
+        type: string[]
+        required: true
+        max_items: 10
+        description: Facebook page URLs (max 10 per call)
+    output:
+      pages:
+        type: object[]
+        items:
+          pageId: { type: string }
+          name: { type: string }
+          followers: { type: integer }
+          likes: { type: integer }
+          category: { type: string }
+          about: { type: string }
+          websites: { type: string[] }
+          profilePictureUrl: { type: string }
+
+  posts-scrape:
+    description: Scrape recent posts from a public Facebook page
+    timeout: 180000
+    rateLimit:
+      maxPerMinute: 5
+    input:
+      pageUrl:
+        type: string
+        required: true
+        description: Facebook page URL
+      postsLimit:
+        type: integer
+        required: false
+        default: 20
+        min: 1
+        max: 50
+        description: Max number of posts to fetch
+    output:
+      posts:
+        type: object[]
+        items:
+          postId: { type: string }
+          text: { type: string }
+          time: { type: string }
+          likesCount: { type: integer }
+          commentsCount: { type: integer }
+          sharesCount: { type: integer }
+          url: { type: string }
+          mediaType: { type: string }
+
+entities: {}
