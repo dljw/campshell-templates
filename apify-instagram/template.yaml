@@ -1,0 +1,100 @@
+name: apify-instagram
+displayName: Instagram Analytics
+emoji: "\U0001F4F8"
+category: social-media
+type: service
+description: Read-only Instagram analytics via the Apify scraper
+
+secrets:
+  APIFY_TOKEN:
+    label: Apify API Token
+    description: Your Apify token from console.apify.com/account/integrations
+    required: true
+    sensitive: true
+
+operations:
+  profile-scrape:
+    description: Scrape public Instagram profile stats for one or more usernames
+    timeout: 180000
+    rateLimit:
+      maxPerMinute: 5
+    input:
+      usernames:
+        type: string[]
+        required: true
+        max_items: 10
+        description: Instagram usernames (no @, max 10 per call)
+    output:
+      profiles:
+        type: object[]
+        items:
+          username: { type: string }
+          fullName: { type: string }
+          followersCount: { type: integer }
+          followingCount: { type: integer }
+          postsCount: { type: integer }
+          biography: { type: string }
+          isVerified: { type: boolean }
+          profilePicUrl: { type: string }
+
+  posts-scrape:
+    description: Scrape recent posts from a public Instagram profile
+    timeout: 180000
+    rateLimit:
+      maxPerMinute: 5
+    input:
+      username:
+        type: string
+        required: true
+        description: Instagram username (no @)
+      postsLimit:
+        type: integer
+        required: false
+        default: 20
+        min: 1
+        max: 50
+        description: Max number of posts to fetch
+    output:
+      posts:
+        type: object[]
+        items:
+          id: { type: string }
+          shortcode: { type: string }
+          caption: { type: string }
+          likesCount: { type: integer }
+          commentsCount: { type: integer }
+          timestamp: { type: string }
+          mediaUrl: { type: string }
+          mediaType: { type: string }
+          url: { type: string }
+
+  hashtag-scrape:
+    description: Scrape recent posts using a given hashtag
+    timeout: 180000
+    rateLimit:
+      maxPerMinute: 5
+    input:
+      hashtag:
+        type: string
+        required: true
+        description: Hashtag without the # symbol
+      postsLimit:
+        type: integer
+        required: false
+        default: 20
+        min: 1
+        max: 50
+        description: Max number of posts to fetch
+    output:
+      posts:
+        type: object[]
+        items:
+          id: { type: string }
+          shortcode: { type: string }
+          caption: { type: string }
+          likesCount: { type: integer }
+          commentsCount: { type: integer }
+          timestamp: { type: string }
+          ownerUsername: { type: string }
+
+entities: {}

@@ -1,0 +1,26 @@
+{
+  "name": "@campshell/apify-youtube",
+  "version": "1.0.0",
+  "description": "Apify-backed YouTube analytics service template for Campshell",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rm -rf dist .tsbuildinfo",
+    "build-bundle": "node -e \"import('@campshell/core').then(m => m.buildBundle({ templateDir: process.cwd() })).then(r => { console.log('Bundle:', r.bundlePath); r.warnings.forEach(w => console.warn('Warning:', w)); })\"",
+    "dev-install": "node dev-install.mjs"
+  },
+  "dependencies": {
+    "@campshell/core": "file:../../camp-shell/packages/core"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "onboarding": {
+    "title": "TikTok Analytics",
+    "subtitle": "Pull profile stats, videos, and hashtag activity from public TikTok",
+    "sampleDataDescription": "No sample data — this template scrapes live TikTok data via the Apify API.",
+    "steps": [
+      {
+        "icon": "🔑",
+        "title": "Add your Apify Token",
+        "description": "Sign up at apify.com and paste your token from console.apify.com/account/integrations."
+      },
+      {
+        "icon": "🎵",
+        "title": "Run an Operation",
+        "description": "Pull profile stats, recent videos, or hashtag activity from any public TikTok account."
+      },
+      {
+        "icon": "📊",
+        "title": "Browse Results",
+        "description": "Every run is saved to history."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "Wraps the clockworks/free-tiktok-scraper actor to pull public TikTok data. Read-only.",
+    "concepts": [
+      {
+        "name": "Profile",
+        "description": "Public account stats — followers, following, video count, heart count.",
+        "icon": "👤"
+      },
+      {
+        "name": "Videos",
+        "description": "Recent videos with caption, play/digg/comment counts, and music.",
+        "icon": "📹"
+      },
+      {
+        "name": "Hashtag",
+        "description": "Recent videos under a given hashtag with author info.",
+        "icon": "#️⃣"
+      }
+    ],
+    "prompts": [
+      "How many followers does @zachking have?",
+      "Show me the last 10 videos from @khaby.lame",
+      "What's trending under #funny?",
+      "Compare follower counts for charlidamelio, addisonre"
+    ],
+    "tips": [
+      "Each Apify run costs you compute on apify.com — keep videosLimit small while testing.",
+      "Private accounts return no data; the actor only reads public videos.",
+      "Your APIFY_TOKEN unlocks the same actors across all four apify-* templates."
+    ]
+  },
+  "emptyStates": {}
+}

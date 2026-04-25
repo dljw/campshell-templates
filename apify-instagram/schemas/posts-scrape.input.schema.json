@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "apify-instagram/posts-scrape.input.schema.json",
+  "type": "object",
+  "required": ["username"],
+  "properties": {
+    "username": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Instagram username (no @)"
+    },
+    "postsLimit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 20,
+      "description": "Max number of posts to fetch"
+    }
+  },
+  "additionalProperties": false
+}

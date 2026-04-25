@@ -1,0 +1,69 @@
+{
+  "name": "apify-youtube",
+  "type": "service",
+  "version": "1.0.0",
+  "displayName": "YouTube Analytics",
+  "description": "Read-only YouTube analytics — pull channel stats, recent videos, and search results via the Apify scraper",
+  "author": { "name": "campshell" },
+  "license": "MIT",
+  "category": "social-media",
+  "tags": ["social-media", "analytics", "scraping", "youtube", "video"],
+  "emoji": "▶️",
+  "dataDir": "data/apify-youtube",
+  "schemas": {
+    "channel-scrape.input": "schemas/channel-scrape.input.schema.json",
+    "channel-scrape.output": "schemas/channel-scrape.output.schema.json",
+    "videos-scrape.input": "schemas/videos-scrape.input.schema.json",
+    "videos-scrape.output": "schemas/videos-scrape.output.schema.json",
+    "search-scrape.input": "schemas/search-scrape.input.schema.json",
+    "search-scrape.output": "schemas/search-scrape.output.schema.json"
+  },
+  "storage": {
+    "runs": {
+      "pattern": "one-per-file",
+      "directory": "runs",
+      "fileNamePattern": "{id}.json"
+    }
+  },
+  "operations": {
+    "channel-scrape": {
+      "description": "Scrape public YouTube channel stats (subscribers, video count, view count) for one or more channel URLs",
+      "inputSchema": "schemas/channel-scrape.input.schema.json",
+      "outputSchema": "schemas/channel-scrape.output.schema.json",
+      "handler": "handlers/channel-scrape",
+      "timeout": 180000,
+      "rateLimit": { "maxPerMinute": 5 }
+    },
+    "videos-scrape": {
+      "description": "Scrape recent videos from a public YouTube channel, with engagement counts",
+      "inputSchema": "schemas/videos-scrape.input.schema.json",
+      "outputSchema": "schemas/videos-scrape.output.schema.json",
+      "handler": "handlers/videos-scrape",
+      "timeout": 180000,
+      "rateLimit": { "maxPerMinute": 5 }
+    },
+    "search-scrape": {
+      "description": "Scrape YouTube search results for a query",
+      "inputSchema": "schemas/search-scrape.input.schema.json",
+      "outputSchema": "schemas/search-scrape.output.schema.json",
+      "handler": "handlers/search-scrape",
+      "timeout": 180000,
+      "rateLimit": { "maxPerMinute": 5 }
+    }
+  },
+  "secrets": [
+    {
+      "key": "APIFY_TOKEN",
+      "label": "Apify API Token",
+      "description": "Your Apify token from console.apify.com/account/integrations",
+      "required": true,
+      "sensitive": true
+    }
+  ],
+  "ui": {
+    "framework": "react",
+    "entry": "index.tsx",
+    "route": "/apify-youtube"
+  },
+  "guide": "guide.json"
+}

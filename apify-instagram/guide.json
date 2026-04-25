@@ -1,0 +1,56 @@
+{
+  "onboarding": {
+    "title": "Instagram Analytics",
+    "subtitle": "Pull profile stats, posts, and hashtag activity from public Instagram",
+    "sampleDataDescription": "No sample data — this template scrapes live Instagram data via the Apify API.",
+    "steps": [
+      {
+        "icon": "🔑",
+        "title": "Add your Apify Token",
+        "description": "Sign up at apify.com and paste your token from console.apify.com/account/integrations."
+      },
+      {
+        "icon": "📸",
+        "title": "Run an Operation",
+        "description": "Pull profile stats, recent posts, or hashtag activity from any public Instagram account."
+      },
+      {
+        "icon": "📊",
+        "title": "Browse Results",
+        "description": "Every run is saved to history. Re-run any past operation with a click."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "Wraps the apify/instagram-scraper actor to pull public Instagram data. Read-only — no posting or DMs.",
+    "concepts": [
+      {
+        "name": "Profile",
+        "description": "Public account stats — followers, following, post count, bio, verified flag.",
+        "icon": "👤"
+      },
+      {
+        "name": "Posts",
+        "description": "Recent posts with caption, like and comment counts, media URL, and timestamp.",
+        "icon": "🖼️"
+      },
+      {
+        "name": "Hashtag",
+        "description": "Recent posts under a given hashtag, including the owner username.",
+        "icon": "#️⃣"
+      }
+    ],
+    "prompts": [
+      "How many followers does @nasa have?",
+      "Show me the last 10 posts from @natgeo",
+      "What's trending under #travel?",
+      "Compare follower counts for nike, adidas, puma"
+    ],
+    "tips": [
+      "Each Apify run costs you compute on apify.com — keep postsLimit small while testing.",
+      "Private accounts return no data; the actor only reads public posts.",
+      "Your APIFY_TOKEN unlocks the same actors across all four apify-* templates."
+    ]
+  },
+  "emptyStates": {}
+}

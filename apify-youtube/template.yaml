@@ -1,0 +1,98 @@
+name: apify-youtube
+displayName: YouTube Analytics
+emoji: "▶️"
+category: social-media
+type: service
+description: Read-only YouTube analytics via the Apify scraper
+
+secrets:
+  APIFY_TOKEN:
+    label: Apify API Token
+    description: Your Apify token from console.apify.com/account/integrations
+    required: true
+    sensitive: true
+
+operations:
+  channel-scrape:
+    description: Scrape public YouTube channel stats for one or more channel URLs
+    timeout: 180000
+    rateLimit:
+      maxPerMinute: 5
+    input:
+      channelUrls:
+        type: string[]
+        required: true
+        max_items: 10
+        description: YouTube channel URLs (max 10 per call)
+    output:
+      channels:
+        type: object[]
+        items:
+          channelId: { type: string }
+          channelName: { type: string }
+          subscriberCount: { type: integer }
+          videosCount: { type: integer }
+          viewCount: { type: integer }
+          description: { type: string }
+          channelUrl: { type: string }
+
+  videos-scrape:
+    description: Scrape recent videos from a public YouTube channel
+    timeout: 180000
+    rateLimit:
+      maxPerMinute: 5
+    input:
+      channelUrl:
+        type: string
+        required: true
+        description: YouTube channel URL
+      maxVideos:
+        type: integer
+        required: false
+        default: 20
+        min: 1
+        max: 50
+        description: Max number of videos to fetch
+    output:
+      videos:
+        type: object[]
+        items:
+          videoId: { type: string }
+          title: { type: string }
+          viewCount: { type: integer }
+          likesCount: { type: integer }
+          commentsCount: { type: integer }
+          durationSeconds: { type: integer }
+          publishedAt: { type: string }
+          url: { type: string }
+          thumbnailUrl: { type: string }
+
+  search-scrape:
+    description: Scrape YouTube search results for a query
+    timeout: 180000
+    rateLimit:
+      maxPerMinute: 5
+    input:
+      query:
+        type: string
+        required: true
+        description: Search query
+      maxResults:
+        type: integer
+        required: false
+        default: 20
+        min: 1
+        max: 50
+        description: Max number of results to fetch
+    output:
+      results:
+        type: object[]
+        items:
+          videoId: { type: string }
+          title: { type: string }
+          channelName: { type: string }
+          viewCount: { type: integer }
+          publishedAt: { type: string }
+          url: { type: string }
+
+entities: {}

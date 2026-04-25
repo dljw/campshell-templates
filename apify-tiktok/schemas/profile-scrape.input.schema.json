@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "apify-tiktok/profile-scrape.input.schema.json",
+  "type": "object",
+  "required": ["usernames"],
+  "properties": {
+    "usernames": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "maxItems": 10,
+      "description": "TikTok usernames (no @, max 10 per call)"
+    }
+  },
+  "additionalProperties": false
+}

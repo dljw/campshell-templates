@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "apify-youtube/search-scrape.output.schema.json",
+  "type": "object",
+  "required": ["results"],
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true }
+    }
+  },
+  "additionalProperties": false
+}

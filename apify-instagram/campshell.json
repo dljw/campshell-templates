@@ -1,0 +1,69 @@
+{
+  "name": "apify-instagram",
+  "type": "service",
+  "version": "1.0.0",
+  "displayName": "Instagram Analytics",
+  "description": "Read-only Instagram analytics — pull profile stats, posts, and hashtag activity via the Apify scraper",
+  "author": { "name": "campshell" },
+  "license": "MIT",
+  "category": "social-media",
+  "tags": ["social-media", "analytics", "scraping", "instagram"],
+  "emoji": "📸",
+  "dataDir": "data/apify-instagram",
+  "schemas": {
+    "profile-scrape.input": "schemas/profile-scrape.input.schema.json",
+    "profile-scrape.output": "schemas/profile-scrape.output.schema.json",
+    "posts-scrape.input": "schemas/posts-scrape.input.schema.json",
+    "posts-scrape.output": "schemas/posts-scrape.output.schema.json",
+    "hashtag-scrape.input": "schemas/hashtag-scrape.input.schema.json",
+    "hashtag-scrape.output": "schemas/hashtag-scrape.output.schema.json"
+  },
+  "storage": {
+    "runs": {
+      "pattern": "one-per-file",
+      "directory": "runs",
+      "fileNamePattern": "{id}.json"
+    }
+  },
+  "operations": {
+    "profile-scrape": {
+      "description": "Scrape public Instagram profile stats (followers, following, post count, bio) for one or more usernames",
+      "inputSchema": "schemas/profile-scrape.input.schema.json",
+      "outputSchema": "schemas/profile-scrape.output.schema.json",
+      "handler": "handlers/profile-scrape",
+      "timeout": 180000,
+      "rateLimit": { "maxPerMinute": 5 }
+    },
+    "posts-scrape": {
+      "description": "Scrape recent posts from a public Instagram profile, with engagement counts",
+      "inputSchema": "schemas/posts-scrape.input.schema.json",
+      "outputSchema": "schemas/posts-scrape.output.schema.json",
+      "handler": "handlers/posts-scrape",
+      "timeout": 180000,
+      "rateLimit": { "maxPerMinute": 5 }
+    },
+    "hashtag-scrape": {
+      "description": "Scrape recent posts using a given hashtag",
+      "inputSchema": "schemas/hashtag-scrape.input.schema.json",
+      "outputSchema": "schemas/hashtag-scrape.output.schema.json",
+      "handler": "handlers/hashtag-scrape",
+      "timeout": 180000,
+      "rateLimit": { "maxPerMinute": 5 }
+    }
+  },
+  "secrets": [
+    {
+      "key": "APIFY_TOKEN",
+      "label": "Apify API Token",
+      "description": "Your Apify token from console.apify.com/account/integrations",
+      "required": true,
+      "sensitive": true
+    }
+  ],
+  "ui": {
+    "framework": "react",
+    "entry": "index.tsx",
+    "route": "/apify-instagram"
+  },
+  "guide": "guide.json"
+}
