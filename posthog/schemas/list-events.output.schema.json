@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "posthog/list-events.output.schema.json",
+  "type": "object",
+  "required": ["results"],
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "event", "distinctId", "timestamp"],
+        "properties": {
+          "id": { "type": "string" },
+          "event": { "type": "string" },
+          "distinctId": { "type": "string" },
+          "timestamp": { "type": "string" },
+          "properties": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

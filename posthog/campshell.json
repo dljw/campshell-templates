@@ -1,0 +1,83 @@
+{
+  "name": "posthog",
+  "type": "service",
+  "version": "1.0.0",
+  "displayName": "PostHog",
+  "description": "Event capture, feature flag evaluation, and event listing via PostHog",
+  "author": { "name": "campshell" },
+  "license": "MIT",
+  "category": "analytics",
+  "tags": ["analytics", "events", "feature-flags", "tracking"],
+  "emoji": "📊",
+  "dataDir": "data/posthog",
+  "schemas": {
+    "capture-event.input": "schemas/capture-event.input.schema.json",
+    "capture-event.output": "schemas/capture-event.output.schema.json",
+    "get-feature-flags.input": "schemas/get-feature-flags.input.schema.json",
+    "get-feature-flags.output": "schemas/get-feature-flags.output.schema.json",
+    "list-events.input": "schemas/list-events.input.schema.json",
+    "list-events.output": "schemas/list-events.output.schema.json"
+  },
+  "storage": {
+    "runs": {
+      "pattern": "one-per-file",
+      "directory": "runs",
+      "fileNamePattern": "{id}.json"
+    }
+  },
+  "operations": {
+    "capture-event": {
+      "description": "Track a custom event for a user",
+      "inputSchema": "schemas/capture-event.input.schema.json",
+      "outputSchema": "schemas/capture-event.output.schema.json",
+      "handler": "handlers/capture-event",
+      "timeout": 5000,
+      "rateLimit": { "maxPerMinute": 600 }
+    },
+    "get-feature-flags": {
+      "description": "Evaluate feature flags for a user via /decide",
+      "inputSchema": "schemas/get-feature-flags.input.schema.json",
+      "outputSchema": "schemas/get-feature-flags.output.schema.json",
+      "handler": "handlers/get-feature-flags",
+      "timeout": 10000,
+      "rateLimit": { "maxPerMinute": 60 }
+    },
+    "list-events": {
+      "description": "List recent events from the project (requires personal API key)",
+      "inputSchema": "schemas/list-events.input.schema.json",
+      "outputSchema": "schemas/list-events.output.schema.json",
+      "handler": "handlers/list-events",
+      "timeout": 30000,
+      "rateLimit": { "maxPerMinute": 60 }
+    }
+  },
+  "secrets": [
+    {
+      "key": "POSTHOG_API_KEY",
+      "label": "PostHog Project API Key",
+      "description": "Project API key from Project Settings → API Keys",
+      "required": true,
+      "sensitive": true
+    },
+    {
+      "key": "POSTHOG_INSTANCE",
+      "label": "PostHog Instance URL",
+      "description": "e.g. https://app.posthog.com or https://eu.posthog.com",
+      "required": false
+    },
+    {
+      "key": "POSTHOG_PERSONAL_API_KEY",
+      "label": "Personal API Key (for list-events only)",
+      "description": "Required only for list-events. From Account → Personal API Keys.",
+      "required": false,
+      "sensitive": true
+    },
+    {
+      "key": "POSTHOG_PROJECT_ID",
+      "label": "Project ID (for list-events only)",
+      "description": "Numeric project ID, required only for list-events.",
+      "required": false
+    }
+  ],
+  "guide": "guide.json"
+}

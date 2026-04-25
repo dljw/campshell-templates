@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "posthog/list-events.input.schema.json",
+  "type": "object",
+  "properties": {
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 100,
+      "description": "Max events to return"
+    },
+    "after": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp; only return events after this time"
+    },
+    "eventName": {
+      "type": "string",
+      "description": "Filter by event name"
+    }
+  },
+  "additionalProperties": false
+}

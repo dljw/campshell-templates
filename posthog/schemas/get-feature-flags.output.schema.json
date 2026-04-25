@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "posthog/get-feature-flags.output.schema.json",
+  "type": "object",
+  "required": ["flags"],
+  "properties": {
+    "flags": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Feature flag keys mapped to their evaluated values (boolean or string variant)"
+    },
+    "featureFlagPayloads": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional payloads keyed by flag"
+    }
+  },
+  "additionalProperties": false
+}

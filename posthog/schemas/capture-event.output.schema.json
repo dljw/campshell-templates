@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "posthog/capture-event.output.schema.json",
+  "type": "object",
+  "required": ["success", "status"],
+  "properties": {
+    "success": { "type": "boolean" },
+    "status": { "type": "integer" }
+  },
+  "additionalProperties": false
+}

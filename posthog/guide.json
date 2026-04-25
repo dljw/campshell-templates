@@ -1,0 +1,56 @@
+{
+  "onboarding": {
+    "title": "PostHog Integration",
+    "subtitle": "Event capture, feature flags, and event queries",
+    "sampleDataDescription": "No sample data — this is a service template that calls the PostHog API.",
+    "steps": [
+      {
+        "icon": "🔑",
+        "title": "Configure API Key",
+        "description": "Enter your PostHog Project API key. For self-hosted or EU instances, also set the instance URL."
+      },
+      {
+        "icon": "📤",
+        "title": "Capture Events & Evaluate Flags",
+        "description": "Use the project key to capture events and evaluate feature flags from the desktop app or via AI."
+      },
+      {
+        "icon": "🔍",
+        "title": "Optional: Query Events",
+        "description": "To list past events, also configure a Personal API Key and Project ID — required by PostHog's events query endpoint."
+      }
+    ]
+  },
+  "reference": {
+    "overview": "PostHog is a product analytics platform. This service template wraps the most common ingest and query endpoints.",
+    "concepts": [
+      {
+        "name": "Event Capture",
+        "description": "Track custom events for users with arbitrary properties via /capture/.",
+        "icon": "📤"
+      },
+      {
+        "name": "Feature Flags",
+        "description": "Evaluate feature flags for a user via /decide/?v=3 — including multivariate variants and payloads.",
+        "icon": "🚩"
+      },
+      {
+        "name": "Event Queries",
+        "description": "List recent events from your project. Requires a Personal API Key (Bearer auth) and the project ID.",
+        "icon": "🔎"
+      }
+    ],
+    "prompts": [
+      "Track an event 'signup_completed' for user user_42 with property plan='pro'",
+      "What feature flags does user_42 have enabled?",
+      "List the last 50 'signup_completed' events"
+    ],
+    "tips": [
+      "Use a stable distinct_id per user so events join correctly across sessions",
+      "Feature flag changes can take a minute or two to propagate to /decide/",
+      "list-events needs a Personal API Key — the Project API Key isn't authorized for it",
+      "For EU customers set POSTHOG_INSTANCE to https://eu.posthog.com"
+    ]
+  },
+  "emptyStates": {}
+}
