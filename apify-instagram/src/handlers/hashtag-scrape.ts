@@ -1,5 +1,7 @@
 // Apify actor: https://apify.com/apify/instagram-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
+import { pickIgPost, type IgPost } from "../lib/normalize.js";
+import { cacheMediaForItems, type UrlSpec } from "../lib/media-cache.js";
 
 const ACTOR_ID = "apify/instagram-scraper";
 
@@ -7,22 +9,12 @@ interface Input {
   hashtag: string;
   postsLimit?: number;
   onlyPostsNewerThan?: string;
-  onlyPostsOlderThan?: string;
   proxyCountry?: string;
-}
-
-interface PostItem {
-  id: string;
-  shortcode: string;
-  caption: string;
-  likesCount: number;
-  commentsCount: number;
-  timestamp: string;
-  ownerUsername: string;
+  cacheMedia?: boolean;
 }
 
 interface Output {
-  posts: PostItem[];
+  posts: IgPost[];
 }
 
 export default async function hashtagScrape(
@@ -42,9 +34,8 @@ export default async function hashtagScrape(
     addParentData: false,
   };
   if (input.onlyPostsNewerThan) actorInput.onlyPostsNewerThan = input.onlyPostsNewerThan;
-  if (input.onlyPostsOlderThan) actorInput.onlyPostsOlderThan = input.onlyPostsOlderThan;
   if (input.proxyCountry) {
-    actorInput.proxy = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
+    actorInput.proxyConfiguration = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
   }
 
   const items = await runApifyActor<Record<string, unknown>>({
@@ -53,15 +44,24 @@ export default async function hashtagScrape(
     input: actorInput,
   });
 
-  const posts: PostItem[] = items.slice(0, limit).map((item) => ({
-    id: String(item.id ?? ""),
-    shortcode: String(item.shortCode ?? item.shortcode ?? ""),
-    caption: String(item.caption ?? ""),
-    likesCount: Number(item.likesCount ?? 0),
-    commentsCount: Number(item.commentsCount ?? 0),
-    timestamp: String(item.timestamp ?? ""),
-    ownerUsername: String(item.ownerUsername ?? ""),
-  }));
+  const posts: IgPost[] = items.slice(0, limit).map(pickIgPost);
+
+  if (input.cacheMedia) {
+    await cacheMediaForItems({
+      items: posts,
+      ctx: { dataDir: context.dataDir, runId: context.runId },
+      pickUrls: (p): UrlSpec[] => {
+        const specs: UrlSpec[] = [];
+        if (p.displayUrl) specs.push({ kind: "thumb", url: p.displayUrl, ext: "jpg" });
+        p.childPosts.forEach((c, i) => {
+          if (c.displayUrl) {
+            specs.push({ kind: `child-${i}-thumb`, url: c.displayUrl, ext: "jpg" });
+          }
+        });
+        return specs;
+      },
+    });
+  }
 
   return { posts };
 }

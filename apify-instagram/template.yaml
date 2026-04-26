@@ -24,6 +24,15 @@ operations:
         required: true
         max_items: 10
         description: Instagram usernames (no @, max 10 per call)
+      proxyCountry:
+        type: string
+        required: false
+        description: Two-letter country code for Apify proxy (e.g. US, GB)
+      cacheMedia:
+        type: boolean
+        required: false
+        default: true
+        description: Download and cache avatars and latest post thumbnails locally
     output:
       profiles:
         type: object[]
@@ -52,8 +61,21 @@ operations:
         required: false
         default: 20
         min: 1
-        max: 50
+        max: 200
         description: Max number of posts to fetch
+      onlyPostsNewerThan:
+        type: string
+        required: false
+        description: Only return posts newer than this date (YYYY-MM-DD)
+      proxyCountry:
+        type: string
+        required: false
+        description: Two-letter country code for Apify proxy (e.g. US, GB)
+      cacheMedia:
+        type: boolean
+        required: false
+        default: false
+        description: Download and cache thumbnails locally
     output:
       posts:
         type: object[]
@@ -83,8 +105,21 @@ operations:
         required: false
         default: 20
         min: 1
-        max: 50
+        max: 200
         description: Max number of posts to fetch
+      onlyPostsNewerThan:
+        type: string
+        required: false
+        description: Only return posts newer than this date (YYYY-MM-DD)
+      proxyCountry:
+        type: string
+        required: false
+        description: Two-letter country code for Apify proxy (e.g. US, GB)
+      cacheMedia:
+        type: boolean
+        required: false
+        default: false
+        description: Download and cache thumbnails locally
     output:
       posts:
         type: object[]

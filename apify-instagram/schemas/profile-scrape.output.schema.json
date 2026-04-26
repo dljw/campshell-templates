@@ -8,6 +8,53 @@
       "type": "array",
       "items": {
         "type": "object",
+        "properties": {
+          "username": { "type": "string" },
+          "fullName": { "type": "string" },
+          "followersCount": { "type": ["number", "null"] },
+          "followingCount": { "type": ["number", "null"] },
+          "postsCount": { "type": ["number", "null"] },
+          "biography": { "type": "string" },
+          "isVerified": { "type": "boolean" },
+          "profilePicUrl": { "type": "string" },
+          "externalUrl": { "type": "string" },
+          "businessCategory": { "type": "string" },
+          "isBusinessAccount": { "type": "boolean" },
+          "relatedProfiles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "username": { "type": "string" },
+                "profilePicUrl": { "type": "string" }
+              },
+              "additionalProperties": true
+            }
+          },
+          "latestPosts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "shortCode": { "type": "string" },
+                "displayUrl": { "type": "string" },
+                "type": { "type": "string" },
+                "likesCount": { "type": ["number", "null"] },
+                "commentsCount": { "type": ["number", "null"] }
+              },
+              "additionalProperties": true
+            }
+          },
+          "mediaCache": {
+            "type": "object",
+            "additionalProperties": { "type": ["string", "null"] }
+          },
+          "_raw": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Original Apify item, preserved verbatim. Shape varies between actor versions."
+          }
+        },
         "additionalProperties": true
       }
     }

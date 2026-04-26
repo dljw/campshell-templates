@@ -38,6 +38,11 @@
       "enum": ["", "US", "GB", "DE", "FR", "JP", "BR", "IN", "AU", "CA"],
       "default": "",
       "description": "Apify proxy country (empty = automatic)"
+    },
+    "cacheMedia": {
+      "type": "boolean",
+      "default": false,
+      "description": "Download thumbnails to local cache so historical runs render after Apify URLs expire (typically a few hours). Adds ~1-3s per item."
     }
   },
   "additionalProperties": false

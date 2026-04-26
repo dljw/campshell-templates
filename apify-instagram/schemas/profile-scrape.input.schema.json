@@ -16,6 +16,11 @@
       "enum": ["", "US", "GB", "DE", "FR", "JP", "BR", "IN", "AU", "CA"],
       "default": "",
       "description": "Apify proxy country (empty = automatic). Use when scraping is geo-sensitive."
+    },
+    "cacheMedia": {
+      "type": "boolean",
+      "default": true,
+      "description": "Download avatars + latest-post thumbnails to local cache. Recommended on — avatars are tiny and Instagram CDN URLs expire."
     }
   },
   "additionalProperties": false

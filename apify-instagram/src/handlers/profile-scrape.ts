@@ -1,26 +1,18 @@
 // Apify actor: https://apify.com/apify/instagram-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
+import { pickIgProfile, type IgProfile } from "../lib/normalize.js";
+import { cacheMediaForItems, type UrlSpec } from "../lib/media-cache.js";
 
 const ACTOR_ID = "apify/instagram-scraper";
 
 interface Input {
   usernames: string[];
   proxyCountry?: string;
-}
-
-interface ProfileItem {
-  username: string;
-  fullName: string;
-  followersCount: number;
-  followingCount: number;
-  postsCount: number;
-  biography: string;
-  isVerified: boolean;
-  profilePicUrl: string;
+  cacheMedia?: boolean;
 }
 
 interface Output {
-  profiles: ProfileItem[];
+  profiles: IgProfile[];
 }
 
 export default async function profileScrape(
@@ -39,7 +31,7 @@ export default async function profileScrape(
     addParentData: false,
   };
   if (input.proxyCountry) {
-    actorInput.proxy = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
+    actorInput.proxyConfiguration = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
   }
 
   const items = await runApifyActor<Record<string, unknown>>({
@@ -48,16 +40,31 @@ export default async function profileScrape(
     input: actorInput,
   });
 
-  const profiles: ProfileItem[] = items.map((item) => ({
-    username: String(item.username ?? ""),
-    fullName: String(item.fullName ?? ""),
-    followersCount: Number(item.followersCount ?? 0),
-    followingCount: Number(item.followsCount ?? item.followingCount ?? 0),
-    postsCount: Number(item.postsCount ?? 0),
-    biography: String(item.biography ?? ""),
-    isVerified: Boolean(item.verified ?? item.isVerified ?? false),
-    profilePicUrl: String(item.profilePicUrl ?? item.profilePicUrlHD ?? ""),
-  }));
+  const profiles: IgProfile[] = items.map(pickIgProfile);
+
+  // Avatars are tiny — always cache.
+  if (input.cacheMedia !== false) {
+    await cacheMediaForItems({
+      items: profiles,
+      ctx: { dataDir: context.dataDir, runId: context.runId },
+      pickUrls: (p): UrlSpec[] => {
+        const specs: UrlSpec[] = [];
+        if (p.profilePicUrl) {
+          specs.push({ kind: "avatar", url: p.profilePicUrl, ext: "jpg" });
+        }
+        p.latestPosts.forEach((post, i) => {
+          if (post.displayUrl) {
+            specs.push({
+              kind: `latest-${i}-thumb`,
+              url: post.displayUrl,
+              ext: "jpg",
+            });
+          }
+        });
+        return specs;
+      },
+    });
+  }
 
   return { profiles };
 }

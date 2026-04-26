@@ -8,6 +8,79 @@
       "type": "array",
       "items": {
         "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "shortcode": { "type": "string" },
+          "caption": { "type": "string" },
+          "likesCount": { "type": ["number", "null"] },
+          "commentsCount": { "type": ["number", "null"] },
+          "videoViewCount": { "type": ["number", "null"] },
+          "videoPlayCount": { "type": ["number", "null"] },
+          "timestamp": { "type": "string" },
+          "mediaType": { "type": "string" },
+          "productType": { "type": "string" },
+          "isSponsored": { "type": "boolean" },
+          "displayUrl": { "type": "string" },
+          "videoUrl": { "type": "string" },
+          "mediaUrl": { "type": "string" },
+          "dimensions": {
+            "type": ["object", "null"],
+            "properties": {
+              "width": { "type": "number" },
+              "height": { "type": "number" }
+            }
+          },
+          "videoDurationSeconds": { "type": ["number", "null"] },
+          "hashtags": { "type": "array", "items": { "type": "string" } },
+          "mentions": { "type": "array", "items": { "type": "string" } },
+          "taggedUsers": { "type": "array", "items": { "type": "string" } },
+          "location": {
+            "type": ["object", "null"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" }
+            }
+          },
+          "musicInfo": { "type": ["object", "null"], "additionalProperties": true },
+          "childPosts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "type": { "type": "string" },
+                "displayUrl": { "type": "string" },
+                "videoUrl": { "type": "string" },
+                "dimensions": {
+                  "type": ["object", "null"],
+                  "properties": {
+                    "width": { "type": "number" },
+                    "height": { "type": "number" }
+                  }
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "ownerUsername": { "type": "string" },
+          "ownerFullName": { "type": "string" },
+          "ownerProfilePicUrl": { "type": "string" },
+          "url": { "type": "string" },
+          "firstComment": { "type": "string" },
+          "latestComments": {
+            "type": "array",
+            "items": { "type": "object", "additionalProperties": true }
+          },
+          "mediaCache": {
+            "type": "object",
+            "additionalProperties": { "type": ["string", "null"] }
+          },
+          "_raw": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Original Apify item, preserved verbatim. Shape varies between actor versions."
+          }
+        },
         "additionalProperties": true
       }
     }

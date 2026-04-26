@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Badge,
   Button,
   Label,
   Select,
@@ -7,40 +8,56 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
   Textarea,
 } from "@campshell/ui-components";
-import { User } from "lucide-react";
+import { ExternalLink, User } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyInstagram.js";
 import { ACTORS } from "../lib/actors.js";
 import { ActorInfoCard } from "./ActorInfoCard.js";
 import { PROXY_COUNTRIES } from "../lib/options.js";
+import { MediaThumbnail } from "./MediaThumbnail.js";
+
+const TEMPLATE_NAME = "apify-instagram";
+
+interface LatestPost {
+  shortCode: string;
+  displayUrl: string;
+  type: string;
+  likesCount: number | null;
+  commentsCount: number | null;
+}
 
 interface Profile {
   username: string;
-  fullName: string;
-  followersCount: number;
-  followingCount: number;
-  postsCount: number;
-  biography: string;
-  isVerified: boolean;
-  profilePicUrl: string;
+  fullName?: string;
+  followersCount?: number | null;
+  followingCount?: number | null;
+  postsCount?: number | null;
+  biography?: string;
+  isVerified?: boolean;
+  profilePicUrl?: string;
+  externalUrl?: string;
+  businessCategory?: string;
+  isBusinessAccount?: boolean;
+  latestPosts?: LatestPost[];
+  mediaCache?: Record<string, string | null> | null;
 }
 
 export interface ProfileScrapeViewProps {
-  onExecute: (operation: string, input: unknown) => Promise<unknown>;
+  onExecute: (operation: string, input: unknown) => Promise<any>;
   isExecuting: boolean;
   runs: RunHistoryItem[];
+}
+
+function fmt(n: number | null | undefined): string {
+  if (n == null) return "—";
+  return n.toLocaleString();
 }
 
 export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewProps) {
   const [usernamesText, setUsernamesText] = useState("");
   const [proxyCountry, setProxyCountry] = useState("");
+  const [cacheMedia, setCacheMedia] = useState(true);
   const [profiles, setProfiles] = useState<Profile[] | null>(null);
 
   const handleExecute = async () => {
@@ -51,9 +68,10 @@ export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewP
     if (usernames.length === 0) return;
 
     try {
-      const data: any = await onExecute("profile-scrape", {
+      const data = await onExecute("profile-scrape", {
         usernames,
         ...(proxyCountry ? { proxyCountry } : {}),
+        cacheMedia,
       });
       setProfiles(data.output?.profiles ?? []);
     } catch {
@@ -105,6 +123,20 @@ export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewP
             </Select>
             <p className="text-xs text-muted-foreground">Use when scraping is geo-sensitive.</p>
           </div>
+          <label className="flex items-start gap-2 cursor-pointer text-xs">
+            <input
+              type="checkbox"
+              checked={cacheMedia}
+              onChange={(e) => setCacheMedia(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              <span className="font-medium">Cache avatars + thumbnails</span>
+              <p className="text-muted-foreground mt-0.5">
+                Recommended on — avatars are tiny and Instagram CDN URLs expire after a few hours.
+              </p>
+            </span>
+          </label>
         </div>
         <div className="p-6 border-t border-border/40">
           <Button
@@ -118,9 +150,6 @@ export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewP
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="p-6 border-b border-border/40">
-          <h2 className="font-semibold text-sm">Results</h2>
-        </div>
         <div className="flex-1 overflow-auto">
           {profiles === null ? (
             <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
@@ -136,38 +165,101 @@ export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewP
               <p className="text-xs">Check the usernames are spelled correctly and the accounts are public.</p>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Username</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead className="text-right">Followers</TableHead>
-                  <TableHead className="text-right">Following</TableHead>
-                  <TableHead className="text-right">Posts</TableHead>
-                  <TableHead>Bio</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {profiles.map((p) => (
-                  <TableRow key={p.username}>
-                    <TableCell className="font-medium">
-                      @{p.username}
-                      {p.isVerified && <span className="ml-1 text-blue-500" title="Verified">✓</span>}
-                    </TableCell>
-                    <TableCell>{p.fullName || "—"}</TableCell>
-                    <TableCell className="text-right">{p.followersCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{p.followingCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{p.postsCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="max-w-md text-xs text-muted-foreground line-clamp-2">
-                      {p.biography || "—"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-6">
+              {profiles.map((p) => (
+                <ProfileCard key={p.username} profile={p} />
+              ))}
+            </div>
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function ProfileCard({ profile: p }: { profile: Profile }) {
+  return (
+    <div className="rounded-lg border border-border/40 bg-card p-5 space-y-4">
+      <div className="flex items-start gap-4">
+        <div className="w-16 h-16 rounded-full overflow-hidden shrink-0">
+          <MediaThumbnail
+            templateName={TEMPLATE_NAME}
+            cachedRelPath={p.mediaCache?.avatar ?? null}
+            liveUrl={p.profilePicUrl ?? ""}
+            aspect="square"
+            alt={p.username}
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5">
+            <h3 className="font-semibold text-sm truncate">@{p.username}</h3>
+            {p.isVerified && (
+              <span className="text-blue-500 text-xs" title="Verified">✓</span>
+            )}
+            {p.isBusinessAccount && (
+              <Badge variant="secondary" className="text-[10px]">Business</Badge>
+            )}
+          </div>
+          {p.fullName && <p className="text-xs text-muted-foreground truncate">{p.fullName}</p>}
+          {p.businessCategory && (
+            <p className="text-[11px] text-muted-foreground mt-0.5">{p.businessCategory}</p>
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 text-center">
+        <Stat value={fmt(p.followersCount)} label="Followers" />
+        <Stat value={fmt(p.followingCount)} label="Following" />
+        <Stat value={fmt(p.postsCount)} label="Posts" />
+      </div>
+
+      {p.biography && (
+        <p className="text-xs text-muted-foreground whitespace-pre-wrap line-clamp-4">
+          {p.biography}
+        </p>
+      )}
+
+      {p.externalUrl && (
+        <a
+          href={p.externalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-xs text-primary hover:underline truncate max-w-full"
+        >
+          <ExternalLink className="w-3 h-3 shrink-0" />
+          <span className="truncate">{p.externalUrl.replace(/^https?:\/\//, "")}</span>
+        </a>
+      )}
+
+      {(p.latestPosts?.length ?? 0) > 0 && (
+        <div className="grid grid-cols-6 gap-1">
+          {p.latestPosts!.slice(0, 6).map((post, i) => (
+            <a
+              key={post.shortCode || i}
+              href={post.shortCode ? `https://www.instagram.com/p/${post.shortCode}/` : undefined}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded overflow-hidden"
+            >
+              <MediaThumbnail
+                templateName={TEMPLATE_NAME}
+                cachedRelPath={p.mediaCache?.[`latest-${i}-thumb`] ?? null}
+                liveUrl={post.displayUrl}
+                aspect="square"
+              />
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <p className="font-semibold text-sm">{value}</p>
+      <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{label}</p>
     </div>
   );
 }

@@ -8,55 +8,71 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from "@campshell/ui-components";
 import { Hash } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyInstagram.js";
 import { ACTORS } from "../lib/actors.js";
 import { ActorInfoCard } from "./ActorInfoCard.js";
 import { PROXY_COUNTRIES } from "../lib/options.js";
+import { PostsResultsView } from "./PostsResultsView.js";
+
+const TEMPLATE_NAME = "apify-instagram";
 
 interface Post {
-  id: string;
-  shortcode: string;
-  caption: string;
-  likesCount: number;
-  commentsCount: number;
-  timestamp: string;
-  ownerUsername: string;
+  id?: string;
+  shortcode?: string;
+  caption?: string;
+  likesCount?: number | null;
+  commentsCount?: number | null;
+  videoViewCount?: number | null;
+  videoPlayCount?: number | null;
+  timestamp?: string;
+  mediaType?: string;
+  productType?: string;
+  displayUrl?: string;
+  videoUrl?: string;
+  url?: string;
+  hashtags?: string[];
+  mentions?: string[];
+  childPosts?: { id?: string; type?: string; displayUrl?: string; videoUrl?: string }[];
+  ownerUsername?: string;
+  mediaCache?: Record<string, string | null> | null;
+  _raw?: Record<string, unknown> | null;
 }
 
 export interface HashtagScrapeViewProps {
-  onExecute: (operation: string, input: unknown) => Promise<unknown>;
+  onExecute: (operation: string, input: unknown) => Promise<any>;
   isExecuting: boolean;
   runs: RunHistoryItem[];
+  onDownloadZip: (runId: string, itemIds: string[]) => Promise<void>;
 }
 
-export function HashtagScrapeView({ onExecute, isExecuting }: HashtagScrapeViewProps) {
+export function HashtagScrapeView({
+  onExecute,
+  isExecuting,
+  onDownloadZip,
+}: HashtagScrapeViewProps) {
   const [hashtag, setHashtag] = useState("");
   const [postsLimit, setPostsLimit] = useState(20);
   const [onlyNewerThan, setOnlyNewerThan] = useState("");
-  const [onlyOlderThan, setOnlyOlderThan] = useState("");
   const [proxyCountry, setProxyCountry] = useState("");
+  const [cacheMedia, setCacheMedia] = useState(false);
   const [posts, setPosts] = useState<Post[] | null>(null);
+  const [runId, setRunId] = useState<string | null>(null);
 
   const handleExecute = async () => {
     const tag = hashtag.trim().replace(/^#/, "");
     if (!tag) return;
     try {
-      const data: any = await onExecute("hashtag-scrape", {
+      const data = await onExecute("hashtag-scrape", {
         hashtag: tag,
         postsLimit,
         ...(onlyNewerThan ? { onlyPostsNewerThan: onlyNewerThan } : {}),
-        ...(onlyOlderThan ? { onlyPostsOlderThan: onlyOlderThan } : {}),
         ...(proxyCountry ? { proxyCountry } : {}),
+        cacheMedia,
       });
       setPosts(data.output?.posts ?? []);
+      setRunId(data.runId ?? null);
     } catch {
       // toast handled
     }
@@ -98,15 +114,9 @@ export function HashtagScrapeView({ onExecute, isExecuting }: HashtagScrapeViewP
             />
             <p className="text-xs text-muted-foreground">Max 200 per call.</p>
           </div>
-          <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-2">
-              <Label htmlFor="newer">Newer than</Label>
-              <Input id="newer" type="date" value={onlyNewerThan} onChange={(e) => setOnlyNewerThan(e.target.value)} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="older">Older than</Label>
-              <Input id="older" type="date" value={onlyOlderThan} onChange={(e) => setOnlyOlderThan(e.target.value)} />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="newer">Newer than</Label>
+            <Input id="newer" type="date" value={onlyNewerThan} onChange={(e) => setOnlyNewerThan(e.target.value)} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="proxy">Proxy country</Label>
@@ -124,6 +134,20 @@ export function HashtagScrapeView({ onExecute, isExecuting }: HashtagScrapeViewP
               </SelectContent>
             </Select>
           </div>
+          <label className="flex items-start gap-2 cursor-pointer text-xs">
+            <input
+              type="checkbox"
+              checked={cacheMedia}
+              onChange={(e) => setCacheMedia(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              <span className="font-medium">Cache media</span>
+              <p className="text-muted-foreground mt-0.5">
+                Download thumbnails so they still render after Instagram CDN URLs expire.
+              </p>
+            </span>
+          </label>
         </div>
         <div className="p-6 border-t border-border/40">
           <Button onClick={handleExecute} disabled={isExecuting || !hashtag.trim()} className="w-full">
@@ -133,49 +157,24 @@ export function HashtagScrapeView({ onExecute, isExecuting }: HashtagScrapeViewP
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="p-6 border-b border-border/40">
-          <h2 className="font-semibold text-sm">Results</h2>
-        </div>
-        <div className="flex-1 overflow-auto">
-          {posts === null ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
-              <Hash className="w-10 h-10 opacity-25" />
-              <p className="font-medium text-sm">Hashtag posts will appear here</p>
-              <p className="text-xs max-w-xs">
-                Enter a hashtag and click <span className="font-medium text-foreground">Get Posts</span>.
-              </p>
-            </div>
-          ) : posts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
-              <p className="text-sm">No posts found for #{hashtag}.</p>
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Owner</TableHead>
-                  <TableHead>Caption</TableHead>
-                  <TableHead className="text-right">Likes</TableHead>
-                  <TableHead className="text-right">Comments</TableHead>
-                  <TableHead>Posted</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {posts.map((p) => (
-                  <TableRow key={p.id || p.shortcode}>
-                    <TableCell className="font-medium">@{p.ownerUsername || "?"}</TableCell>
-                    <TableCell className="max-w-md text-xs line-clamp-2">{p.caption || "—"}</TableCell>
-                    <TableCell className="text-right">{p.likesCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{p.commentsCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
-                      {p.timestamp ? new Date(p.timestamp).toLocaleDateString() : "—"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </div>
+        {posts === null ? (
+          <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
+            <Hash className="w-10 h-10 opacity-25" />
+            <p className="font-medium text-sm">Hashtag posts will appear here</p>
+            <p className="text-xs max-w-xs">
+              Enter a hashtag and click <span className="font-medium text-foreground">Get Posts</span>.
+            </p>
+          </div>
+        ) : (
+          <PostsResultsView
+            items={posts}
+            templateName={TEMPLATE_NAME}
+            runId={runId}
+            aspect="square"
+            emptyMessage={`No posts found for #${hashtag}.`}
+            onDownloadZip={onDownloadZip}
+          />
+        )}
       </div>
     </div>
   );

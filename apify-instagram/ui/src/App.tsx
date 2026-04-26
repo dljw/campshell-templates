@@ -80,6 +80,7 @@ export function App({ data }: AppProps) {
               onExecute={data.executeOperation}
               isExecuting={data.isExecuting}
               runs={data.runs}
+              onDownloadZip={data.downloadMediaZip}
             />
           </div>
         )}
@@ -90,6 +91,7 @@ export function App({ data }: AppProps) {
               onExecute={data.executeOperation}
               isExecuting={data.isExecuting}
               runs={data.runs}
+              onDownloadZip={data.downloadMediaZip}
             />
           </div>
         )}
