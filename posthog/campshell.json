@@ -79,5 +79,10 @@
       "required": false
     }
   ],
+  "ui": {
+    "framework": "react",
+    "entry": "index.tsx",
+    "route": "/posthog"
+  },
   "guide": "guide.json"
 }

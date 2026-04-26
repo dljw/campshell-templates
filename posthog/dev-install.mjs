@@ -20,12 +20,16 @@ const campshellHome = resolveCampshellHome();
 console.log("▸ Building service handlers...");
 execSync("pnpm run build", { cwd: templateDir, stdio: "inherit" });
 
-// 2. Package into a .campshell bundle (service-only — no UI)
+// 2. Build the React UI
+console.log("▸ Building UI...");
+execSync("pnpm run build", { cwd: path.join(templateDir, "ui"), stdio: "inherit" });
+
+// 3. Package into a .campshell bundle
 console.log("▸ Packaging bundle...");
 const { bundlePath, warnings } = await buildBundle({ templateDir });
 for (const w of warnings) console.warn("  Warning:", w);
 
-// 3. Install bundle into ~/.campshell/templates/
+// 4. Install bundle into ~/.campshell/templates/
 console.log(`▸ Installing to ${campshellHome}/templates/...`);
 const result = await installBundle(bundlePath, campshellHome, { source: "local" });
 
