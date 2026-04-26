@@ -53,7 +53,7 @@ export function App({ data }: AppProps) {
 
       <main className="flex-1 overflow-hidden flex flex-col">
         {currentView === "settings" && (
-          <SettingsView secretsStatus={data.secretsStatus} onSetSecrets={data.setSecrets} />
+          <SettingsView secretsStatus={data.secretsStatus} onRefresh={data.fetchSecretsStatus} />
         )}
 
         {currentView === "profile-scrape" && (

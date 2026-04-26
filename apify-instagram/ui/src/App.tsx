@@ -60,7 +60,7 @@ export function App({ data }: AppProps) {
         {currentView === "settings" && (
           <SettingsView
             secretsStatus={data.secretsStatus}
-            onSetSecrets={data.setSecrets}
+            onRefresh={data.fetchSecretsStatus}
           />
         )}
 
