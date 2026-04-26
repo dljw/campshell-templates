@@ -8,12 +8,6 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from "@campshell/ui-components";
 import { Search } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyYouTube.js";
@@ -25,44 +19,76 @@ import {
   SEARCH_SORT_OPTIONS,
   UPLOAD_DATE_OPTIONS,
 } from "../lib/options.js";
+import { PostsResultsView } from "./PostsResultsView.js";
 
-interface Result {
-  videoId: string;
-  title: string;
-  channelName: string;
-  viewCount: number;
-  publishedAt: string;
-  url: string;
+const TEMPLATE_NAME = "apify-youtube";
+
+interface SearchResultItem {
+  id?: string;
+  videoId?: string;
+  title?: string;
+  caption?: string;
+  description?: string;
+  channelName?: string;
+  channelUrl?: string;
+  viewCount?: number | null;
+  videoViewCount?: number | null;
+  publishedAt?: string;
+  timestamp?: string;
+  url?: string;
+  thumbnailUrl?: string;
+  displayUrl?: string;
+  videoUrl?: string;
+  durationSeconds?: number | null;
+  videoDurationSeconds?: number | null;
+  hashtags?: string[];
+  isShorts?: boolean;
+  kind?: string;
+  shortcode?: string;
+  mediaType?: string;
+  productType?: string;
+  childPosts?: { id?: string; type?: string; displayUrl?: string; videoUrl?: string }[];
+  mediaCache?: Record<string, string | null> | null;
+  _raw?: Record<string, unknown> | null;
 }
 
 export interface SearchScrapeViewProps {
-  onExecute: (operation: string, input: unknown) => Promise<unknown>;
+  onExecute: (operation: string, input: unknown) => Promise<any>;
   isExecuting: boolean;
   runs: RunHistoryItem[];
+  onDownloadZip: (runId: string, itemIds: string[]) => Promise<void>;
 }
 
-export function SearchScrapeView({ onExecute, isExecuting }: SearchScrapeViewProps) {
+export function SearchScrapeView({
+  onExecute,
+  isExecuting,
+  onDownloadZip,
+}: SearchScrapeViewProps) {
   const [query, setQuery] = useState("");
   const [maxResults, setMaxResults] = useState(20);
   const [uploadDate, setUploadDate] = useState("all");
   const [duration, setDuration] = useState("all");
   const [sortBy, setSortBy] = useState("relevance");
   const [proxyCountry, setProxyCountry] = useState("");
-  const [results, setResults] = useState<Result[] | null>(null);
+  const [cacheMedia, setCacheMedia] = useState(false);
+  const [results, setResults] = useState<SearchResultItem[] | null>(null);
+  const [runId, setRunId] = useState<string | null>(null);
 
   const handleExecute = async () => {
     const q = query.trim();
     if (!q) return;
     try {
-      const data: any = await onExecute("search-scrape", {
+      const data = await onExecute("search-scrape", {
         query: q,
         maxResults,
         uploadDate,
         duration,
         sortBy,
         ...(proxyCountry ? { proxyCountry } : {}),
+        cacheMedia,
       });
       setResults(data.output?.results ?? []);
+      setRunId(data.runId ?? null);
     } catch {}
   };
 
@@ -161,6 +187,20 @@ export function SearchScrapeView({ onExecute, isExecuting }: SearchScrapeViewPro
               </SelectContent>
             </Select>
           </div>
+          <label className="flex items-start gap-2 cursor-pointer text-xs">
+            <input
+              type="checkbox"
+              checked={cacheMedia}
+              onChange={(e) => setCacheMedia(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              <span className="font-medium">Cache thumbnails</span>
+              <p className="text-muted-foreground mt-0.5">
+                Download thumbnails so historical search runs render later.
+              </p>
+            </span>
+          </label>
         </div>
         <div className="p-6 border-t border-border/40">
           <Button onClick={handleExecute} disabled={isExecuting || !query.trim()} className="w-full">
@@ -170,52 +210,21 @@ export function SearchScrapeView({ onExecute, isExecuting }: SearchScrapeViewPro
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="p-6 border-b border-border/40">
-          <h2 className="font-semibold text-sm">Results</h2>
-        </div>
-        <div className="flex-1 overflow-auto">
-          {results === null ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
-              <Search className="w-10 h-10 opacity-25" />
-              <p className="font-medium text-sm">Search results will appear here</p>
-            </div>
-          ) : results.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
-              <p className="text-sm">No results found.</p>
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Channel</TableHead>
-                  <TableHead className="text-right">Views</TableHead>
-                  <TableHead>Posted</TableHead>
-                  <TableHead>Link</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {results.map((r) => (
-                  <TableRow key={r.videoId}>
-                    <TableCell className="max-w-md text-xs line-clamp-2 font-medium">{r.title || "—"}</TableCell>
-                    <TableCell className="text-xs">{r.channelName || "—"}</TableCell>
-                    <TableCell className="text-right">{r.viewCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
-                      {r.publishedAt ? new Date(r.publishedAt).toLocaleDateString() : "—"}
-                    </TableCell>
-                    <TableCell>
-                      {r.url ? (
-                        <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-xs text-primary underline">
-                          Open
-                        </a>
-                      ) : "—"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </div>
+        {results === null ? (
+          <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
+            <Search className="w-10 h-10 opacity-25" />
+            <p className="font-medium text-sm">Search results will appear here</p>
+          </div>
+        ) : (
+          <PostsResultsView
+            items={results}
+            templateName={TEMPLATE_NAME}
+            runId={runId}
+            aspect="16:9"
+            emptyMessage="No results found."
+            onDownloadZip={onDownloadZip}
+          />
+        )}
       </div>
     </div>
   );

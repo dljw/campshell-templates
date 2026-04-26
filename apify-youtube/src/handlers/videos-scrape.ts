@@ -1,5 +1,7 @@
 // Apify actor: https://apify.com/streamers/youtube-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
+import { pickYtVideo, type YtVideo } from "../lib/normalize.js";
+import { cacheMediaForItems, type UrlSpec } from "../lib/media-cache.js";
 
 const ACTOR_ID = "streamers/youtube-scraper";
 
@@ -10,22 +12,11 @@ interface Input {
   onlyPostsOlderThan?: string;
   sortBy?: "newest" | "popular" | "oldest";
   proxyCountry?: string;
-}
-
-interface VideoItem {
-  videoId: string;
-  title: string;
-  viewCount: number;
-  likesCount: number;
-  commentsCount: number;
-  durationSeconds: number;
-  publishedAt: string;
-  url: string;
-  thumbnailUrl: string;
+  cacheMedia?: boolean;
 }
 
 interface Output {
-  videos: VideoItem[];
+  videos: YtVideo[];
 }
 
 export default async function videosScrape(
@@ -43,7 +34,7 @@ export default async function videosScrape(
     maxResults: limit,
     maxResultsShorts: 0,
     maxResultStreams: 0,
-    sortVideosBy: sortBy,
+    sortVideosBy: sortBy.toUpperCase(),
   };
   if (input.onlyPostsNewerThan) actorInput.dateFilter = `after:${input.onlyPostsNewerThan}`;
   if (input.onlyPostsOlderThan) actorInput.dateFilterUntil = input.onlyPostsOlderThan;
@@ -57,26 +48,28 @@ export default async function videosScrape(
     input: actorInput,
   });
 
-  let videos: VideoItem[] = items.slice(0, limit).map((item) => ({
-    videoId: String(item.id ?? ""),
-    title: String(item.title ?? ""),
-    viewCount: Number(item.viewCount ?? 0),
-    likesCount: Number(item.likes ?? item.likesCount ?? 0),
-    commentsCount: Number(item.commentsCount ?? 0),
-    durationSeconds: Number(item.duration ?? 0),
-    publishedAt: String(item.date ?? item.publishedAt ?? ""),
-    url: String(item.url ?? ""),
-    thumbnailUrl: String(item.thumbnailUrl ?? ""),
-  }));
+  let videos: YtVideo[] = items.slice(0, limit).map(pickYtVideo);
 
-  // Apply client-side date filtering as a safety net (the actor may ignore the field)
   if (input.onlyPostsNewerThan) {
     const cutoff = new Date(input.onlyPostsNewerThan).getTime();
-    videos = videos.filter((v) => v.publishedAt && new Date(v.publishedAt).getTime() >= cutoff);
+    videos = videos.filter(
+      (v) => v.publishedAt && new Date(v.publishedAt).getTime() >= cutoff,
+    );
   }
   if (input.onlyPostsOlderThan) {
     const cutoff = new Date(input.onlyPostsOlderThan).getTime();
-    videos = videos.filter((v) => v.publishedAt && new Date(v.publishedAt).getTime() <= cutoff);
+    videos = videos.filter(
+      (v) => v.publishedAt && new Date(v.publishedAt).getTime() <= cutoff,
+    );
+  }
+
+  if (input.cacheMedia) {
+    await cacheMediaForItems({
+      items: videos,
+      ctx: { dataDir: context.dataDir, runId: context.runId },
+      pickUrls: (v): UrlSpec[] =>
+        v.thumbnailUrl ? [{ kind: "thumb", url: v.thumbnailUrl, ext: "jpg" }] : [],
+    });
   }
 
   return { videos };

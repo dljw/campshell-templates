@@ -32,6 +32,11 @@
       "enum": ["", "US", "GB", "DE", "FR", "JP", "BR", "IN", "AU", "CA"],
       "default": "",
       "description": "Apify proxy country (empty = automatic)"
+    },
+    "cacheMedia": {
+      "type": "boolean",
+      "default": false,
+      "description": "Download post thumbnails to local cache so historical runs render after Apify URLs expire."
     }
   },
   "additionalProperties": false

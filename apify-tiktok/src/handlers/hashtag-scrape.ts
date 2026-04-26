@@ -1,5 +1,7 @@
 // Apify actor: https://apify.com/clockworks/free-tiktok-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
+import { pickTtVideo, type TtVideo } from "../lib/normalize.js";
+import { cacheMediaForItems, type UrlSpec } from "../lib/media-cache.js";
 
 const ACTOR_ID = "clockworks/free-tiktok-scraper";
 
@@ -7,19 +9,12 @@ interface Input {
   hashtag: string;
   videosLimit?: number;
   proxyCountry?: string;
-}
-
-interface VideoItem {
-  id: string;
-  text: string;
-  playCount: number;
-  diggCount: number;
-  authorUsername: string;
-  createTime: string;
+  cacheMedia?: boolean;
+  cacheVideos?: boolean;
 }
 
 interface Output {
-  videos: VideoItem[];
+  videos: TtVideo[];
 }
 
 export default async function hashtagScrape(
@@ -50,19 +45,25 @@ export default async function hashtagScrape(
     input: actorInput,
   });
 
-  const videos: VideoItem[] = items.slice(0, limit).map((item) => {
-    const author = (item.authorMeta ?? item.author ?? {}) as Record<string, unknown>;
-    return {
-      id: String(item.id ?? ""),
-      text: String(item.text ?? ""),
-      playCount: Number(item.playCount ?? 0),
-      diggCount: Number(item.diggCount ?? 0),
-      authorUsername: String(author.name ?? author.uniqueId ?? ""),
-      createTime: typeof item.createTimeISO === "string"
-        ? item.createTimeISO
-        : new Date(Number(item.createTime ?? 0) * 1000).toISOString(),
-    };
-  });
+  const videos: TtVideo[] = items.slice(0, limit).map(pickTtVideo);
+
+  if (input.cacheMedia) {
+    await cacheMediaForItems({
+      items: videos,
+      ctx: { dataDir: context.dataDir, runId: context.runId },
+      pickUrls: (v): UrlSpec[] => {
+        const specs: UrlSpec[] = [];
+        if (v.coverUrl) specs.push({ kind: "thumb", url: v.coverUrl, ext: "jpg" });
+        v.slideshowImages.forEach((s, i) => {
+          if (s.url) specs.push({ kind: `child-${i}-thumb`, url: s.url, ext: "jpg" });
+        });
+        if (input.cacheVideos && v.videoDownloadUrl) {
+          specs.push({ kind: "video", url: v.videoDownloadUrl, ext: "mp4" });
+        }
+        return specs;
+      },
+    });
+  }
 
   return { videos };
 }

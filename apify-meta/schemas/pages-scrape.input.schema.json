@@ -16,6 +16,11 @@
       "enum": ["", "US", "GB", "DE", "FR", "JP", "BR", "IN", "AU", "CA"],
       "default": "",
       "description": "Apify proxy country (empty = automatic)"
+    },
+    "cacheMedia": {
+      "type": "boolean",
+      "default": true,
+      "description": "Download profile picture and cover photo to local cache so historical runs render after Apify URLs expire."
     }
   },
   "additionalProperties": false

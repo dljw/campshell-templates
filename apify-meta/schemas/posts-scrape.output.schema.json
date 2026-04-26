@@ -6,7 +6,86 @@
   "properties": {
     "posts": {
       "type": "array",
-      "items": { "type": "object", "additionalProperties": true }
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "string" },
+          "postId": { "type": "string" },
+          "caption": { "type": "string" },
+          "timestamp": { "type": "string" },
+          "shortcode": { "type": "string" },
+          "text": { "type": "string" },
+          "time": { "type": "string" },
+          "likesCount": { "type": ["number", "null"] },
+          "commentsCount": { "type": ["number", "null"] },
+          "sharesCount": { "type": ["number", "null"] },
+          "viewsCount": { "type": ["number", "null"] },
+          "url": { "type": "string" },
+          "displayUrl": { "type": "string" },
+          "videoUrl": { "type": "string" },
+          "mediaType": { "type": "string" },
+          "hashtags": { "type": "array", "items": { "type": "string" } },
+          "mentions": { "type": "array", "items": { "type": "string" } },
+          "isSponsored": { "type": "boolean" },
+          "reactions": {
+            "type": "object",
+            "properties": {
+              "like": { "type": ["number", "null"] },
+              "love": { "type": ["number", "null"] },
+              "haha": { "type": ["number", "null"] },
+              "wow": { "type": ["number", "null"] },
+              "sad": { "type": ["number", "null"] },
+              "angry": { "type": ["number", "null"] },
+              "care": { "type": ["number", "null"] }
+            }
+          },
+          "media": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string" },
+                "url": { "type": "string" },
+                "thumbnailUrl": { "type": "string" },
+                "width": { "type": ["number", "null"] },
+                "height": { "type": ["number", "null"] }
+              },
+              "additionalProperties": true
+            }
+          },
+          "link": {
+            "type": ["object", "null"],
+            "properties": {
+              "url": { "type": "string" },
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "image": { "type": "string" }
+            }
+          },
+          "pageName": { "type": "string" },
+          "pageUrl": { "type": "string" },
+          "childPosts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "type": { "type": "string" },
+                "displayUrl": { "type": "string" },
+                "videoUrl": { "type": "string" }
+              },
+              "additionalProperties": true
+            }
+          },
+          "topComments": { "type": "array", "items": {} },
+          "mediaCache": {
+            "type": ["object", "null"],
+            "additionalProperties": { "type": ["string", "null"] }
+          },
+          "_raw": { "type": ["object", "null"], "additionalProperties": true }
+        }
+      }
     }
   },
   "additionalProperties": false

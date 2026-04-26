@@ -21,6 +21,16 @@
       "enum": ["", "US", "GB", "DE", "FR", "JP", "BR", "IN", "AU", "CA"],
       "default": "",
       "description": "Apify proxy country (empty = automatic)"
+    },
+    "cacheMedia": {
+      "type": "boolean",
+      "default": false,
+      "description": "Download cover thumbnails so historical runs render after TikTok URLs expire."
+    },
+    "cacheVideos": {
+      "type": "boolean",
+      "default": false,
+      "description": "Also download the full MP4 video files. Storage-heavy."
     }
   },
   "additionalProperties": false

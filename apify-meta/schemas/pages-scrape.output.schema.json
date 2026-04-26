@@ -6,7 +6,35 @@
   "properties": {
     "pages": {
       "type": "array",
-      "items": { "type": "object", "additionalProperties": true }
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "string" },
+          "pageId": { "type": "string" },
+          "name": { "type": "string" },
+          "followers": { "type": ["number", "null"] },
+          "likes": { "type": ["number", "null"] },
+          "category": { "type": "string" },
+          "about": { "type": "string" },
+          "websites": { "type": "array", "items": { "type": "string" } },
+          "profilePictureUrl": { "type": "string" },
+          "coverPhotoUrl": { "type": "string" },
+          "pageUrl": { "type": "string" },
+          "verified": { "type": "boolean" },
+          "address": { "type": "string" },
+          "phone": { "type": "string" },
+          "email": { "type": "string" },
+          "priceRange": { "type": "string" },
+          "creationDate": { "type": "string" },
+          "categories": { "type": "array", "items": { "type": "string" } },
+          "mediaCache": {
+            "type": ["object", "null"],
+            "additionalProperties": { "type": ["string", "null"] }
+          },
+          "_raw": { "type": ["object", "null"], "additionalProperties": true }
+        }
+      }
     }
   },
   "additionalProperties": false

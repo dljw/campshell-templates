@@ -8,68 +8,92 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from "@campshell/ui-components";
 import { Video } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyYouTube.js";
 import { ACTORS } from "../lib/actors.js";
 import { ActorInfoCard } from "./ActorInfoCard.js";
 import { PROXY_COUNTRIES, VIDEOS_SORT_OPTIONS } from "../lib/options.js";
+import { PostsResultsView } from "./PostsResultsView.js";
+import type { Aspect } from "./MediaThumbnail.js";
 
-interface VideoItem {
-  videoId: string;
-  title: string;
-  viewCount: number;
-  likesCount: number;
-  commentsCount: number;
-  durationSeconds: number;
-  publishedAt: string;
-  url: string;
-  thumbnailUrl: string;
+const TEMPLATE_NAME = "apify-youtube";
+
+interface YtVideoItem {
+  id?: string;
+  videoId?: string;
+  title?: string;
+  caption?: string;
+  description?: string;
+  viewCount?: number | null;
+  likesCount?: number | null;
+  commentsCount?: number | null;
+  videoViewCount?: number | null;
+  durationSeconds?: number | null;
+  videoDurationSeconds?: number | null;
+  publishedAt?: string;
+  timestamp?: string;
+  url?: string;
+  thumbnailUrl?: string;
+  displayUrl?: string;
+  videoUrl?: string;
+  channelName?: string;
+  channelUrl?: string;
+  hashtags?: string[];
+  isShorts?: boolean;
+  isLive?: boolean;
+  shortcode?: string;
+  mediaType?: string;
+  productType?: string;
+  childPosts?: { id?: string; type?: string; displayUrl?: string; videoUrl?: string }[];
+  mediaCache?: Record<string, string | null> | null;
+  _raw?: Record<string, unknown> | null;
 }
 
 export interface VideosScrapeViewProps {
-  onExecute: (operation: string, input: unknown) => Promise<unknown>;
+  onExecute: (operation: string, input: unknown) => Promise<any>;
   isExecuting: boolean;
   runs: RunHistoryItem[];
+  onDownloadZip: (runId: string, itemIds: string[]) => Promise<void>;
 }
 
-function formatDuration(seconds: number) {
-  if (!seconds) return "—";
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return `${m}:${String(s).padStart(2, "0")}`;
-}
-
-export function VideosScrapeView({ onExecute, isExecuting }: VideosScrapeViewProps) {
+export function VideosScrapeView({
+  onExecute,
+  isExecuting,
+  onDownloadZip,
+}: VideosScrapeViewProps) {
   const [channelUrl, setChannelUrl] = useState("");
   const [maxVideos, setMaxVideos] = useState(20);
   const [onlyNewerThan, setOnlyNewerThan] = useState("");
   const [onlyOlderThan, setOnlyOlderThan] = useState("");
   const [sortBy, setSortBy] = useState<"newest" | "popular" | "oldest">("newest");
   const [proxyCountry, setProxyCountry] = useState("");
-  const [videos, setVideos] = useState<VideoItem[] | null>(null);
+  const [cacheMedia, setCacheMedia] = useState(true);
+  const [videos, setVideos] = useState<YtVideoItem[] | null>(null);
+  const [runId, setRunId] = useState<string | null>(null);
 
   const handleExecute = async () => {
     const u = channelUrl.trim();
     if (!u) return;
     try {
-      const data: any = await onExecute("videos-scrape", {
+      const data = await onExecute("videos-scrape", {
         channelUrl: u,
         maxVideos,
         sortBy,
         ...(onlyNewerThan ? { onlyPostsNewerThan: onlyNewerThan } : {}),
         ...(onlyOlderThan ? { onlyPostsOlderThan: onlyOlderThan } : {}),
         ...(proxyCountry ? { proxyCountry } : {}),
+        cacheMedia,
       });
       setVideos(data.output?.videos ?? []);
+      setRunId(data.runId ?? null);
     } catch {}
   };
+
+  // Choose aspect: 9:16 if all results are Shorts, otherwise 16:9.
+  const allShorts =
+    videos !== null && videos.length > 0 && videos.every((v) => v.isShorts);
+  const aspect: Aspect = allShorts ? "9:16" : "16:9";
 
   return (
     <div className="flex h-full">
@@ -147,6 +171,20 @@ export function VideosScrapeView({ onExecute, isExecuting }: VideosScrapeViewPro
               </SelectContent>
             </Select>
           </div>
+          <label className="flex items-start gap-2 cursor-pointer text-xs">
+            <input
+              type="checkbox"
+              checked={cacheMedia}
+              onChange={(e) => setCacheMedia(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              <span className="font-medium">Cache thumbnails</span>
+              <p className="text-muted-foreground mt-0.5">
+                Recommended on — YouTube thumbnails are tiny.
+              </p>
+            </span>
+          </label>
         </div>
         <div className="p-6 border-t border-border/40">
           <Button onClick={handleExecute} disabled={isExecuting || !channelUrl.trim()} className="w-full">
@@ -156,56 +194,21 @@ export function VideosScrapeView({ onExecute, isExecuting }: VideosScrapeViewPro
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="p-6 border-b border-border/40">
-          <h2 className="font-semibold text-sm">Results</h2>
-        </div>
-        <div className="flex-1 overflow-auto">
-          {videos === null ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
-              <Video className="w-10 h-10 opacity-25" />
-              <p className="font-medium text-sm">Videos will appear here</p>
-            </div>
-          ) : videos.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
-              <p className="text-sm">No videos found for that channel.</p>
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead className="text-right">Views</TableHead>
-                  <TableHead className="text-right">Likes</TableHead>
-                  <TableHead className="text-right">Comments</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Posted</TableHead>
-                  <TableHead>Link</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {videos.map((v) => (
-                  <TableRow key={v.videoId}>
-                    <TableCell className="max-w-md text-xs line-clamp-2 font-medium">{v.title || "—"}</TableCell>
-                    <TableCell className="text-right">{v.viewCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{v.likesCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{v.commentsCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground">{formatDuration(v.durationSeconds)}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
-                      {v.publishedAt ? new Date(v.publishedAt).toLocaleDateString() : "—"}
-                    </TableCell>
-                    <TableCell>
-                      {v.url ? (
-                        <a href={v.url} target="_blank" rel="noopener noreferrer" className="text-xs text-primary underline">
-                          Open
-                        </a>
-                      ) : "—"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </div>
+        {videos === null ? (
+          <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
+            <Video className="w-10 h-10 opacity-25" />
+            <p className="font-medium text-sm">Videos will appear here</p>
+          </div>
+        ) : (
+          <PostsResultsView
+            items={videos}
+            templateName={TEMPLATE_NAME}
+            runId={runId}
+            aspect={aspect}
+            emptyMessage="No videos found for that channel."
+            onDownloadZip={onDownloadZip}
+          />
+        )}
       </div>
     </div>
   );

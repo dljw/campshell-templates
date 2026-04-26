@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "apify-instagram/media-zip.output.schema.json",
+  "type": "object",
+  "required": ["filename", "dataUrl", "fileCount", "bytes"],
+  "properties": {
+    "filename": { "type": "string" },
+    "dataUrl": { "type": "string", "description": "data:application/zip;base64,..." },
+    "fileCount": { "type": "number" },
+    "bytes": { "type": "number" }
+  },
+  "additionalProperties": false
+}

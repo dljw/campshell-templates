@@ -1,27 +1,18 @@
 // Apify actor: https://apify.com/clockworks/free-tiktok-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
+import { pickTtProfile, type TtProfile } from "../lib/normalize.js";
+import { cacheMediaForItems, type UrlSpec } from "../lib/media-cache.js";
 
 const ACTOR_ID = "clockworks/free-tiktok-scraper";
 
 interface Input {
   usernames: string[];
   proxyCountry?: string;
-}
-
-interface ProfileItem {
-  username: string;
-  nickname: string;
-  followerCount: number;
-  followingCount: number;
-  videoCount: number;
-  heartCount: number;
-  bio: string;
-  verified: boolean;
-  avatarUrl: string;
+  cacheMedia?: boolean;
 }
 
 interface Output {
-  profiles: ProfileItem[];
+  profiles: TtProfile[];
 }
 
 export default async function profileScrape(
@@ -52,23 +43,26 @@ export default async function profileScrape(
     input: actorInput,
   });
 
+  // Dedupe — actor returns one record per video, all sharing the same profile.
   const seen = new Set<string>();
-  const profiles: ProfileItem[] = [];
+  const profiles: TtProfile[] = [];
   for (const item of items) {
-    const author = (item.authorMeta ?? item.author ?? {}) as Record<string, unknown>;
-    const username = String(author.name ?? author.uniqueId ?? "");
-    if (!username || seen.has(username)) continue;
-    seen.add(username);
-    profiles.push({
-      username,
-      nickname: String(author.nickName ?? author.nickname ?? ""),
-      followerCount: Number(author.fans ?? author.followerCount ?? 0),
-      followingCount: Number(author.following ?? author.followingCount ?? 0),
-      videoCount: Number(author.video ?? author.videoCount ?? 0),
-      heartCount: Number(author.heart ?? author.heartCount ?? 0),
-      bio: String(author.signature ?? author.bio ?? ""),
-      verified: Boolean(author.verified ?? false),
-      avatarUrl: String(author.avatar ?? author.avatarUrl ?? ""),
+    const profile = pickTtProfile(item);
+    if (!profile.username || seen.has(profile.username)) continue;
+    seen.add(profile.username);
+    profiles.push(profile);
+  }
+
+  if (input.cacheMedia !== false) {
+    await cacheMediaForItems({
+      items: profiles,
+      ctx: { dataDir: context.dataDir, runId: context.runId },
+      pickUrls: (p): UrlSpec[] => {
+        const specs: UrlSpec[] = [];
+        const url = p.avatarLargerUrl || p.avatarUrl;
+        if (url) specs.push({ kind: "avatar", url, ext: "jpg" });
+        return specs;
+      },
     });
   }
 

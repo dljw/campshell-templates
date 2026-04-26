@@ -64,13 +64,23 @@ export function App({ data }: AppProps) {
 
         {currentView === "videos-scrape" && (
           <div className="flex-1 overflow-hidden">
-            <VideosScrapeView onExecute={data.executeOperation} isExecuting={data.isExecuting} runs={data.runs} />
+            <VideosScrapeView
+              onExecute={data.executeOperation}
+              isExecuting={data.isExecuting}
+              runs={data.runs}
+              onDownloadZip={data.downloadMediaZip}
+            />
           </div>
         )}
 
         {currentView === "hashtag-scrape" && (
           <div className="flex-1 overflow-hidden">
-            <HashtagScrapeView onExecute={data.executeOperation} isExecuting={data.isExecuting} runs={data.runs} />
+            <HashtagScrapeView
+              onExecute={data.executeOperation}
+              isExecuting={data.isExecuting}
+              runs={data.runs}
+              onDownloadZip={data.downloadMediaZip}
+            />
           </div>
         )}
 

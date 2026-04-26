@@ -1,25 +1,18 @@
 // Apify actor: https://apify.com/streamers/youtube-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
+import { pickYtChannel, type YtChannel } from "../lib/normalize.js";
+import { cacheMediaForItems, type UrlSpec } from "../lib/media-cache.js";
 
 const ACTOR_ID = "streamers/youtube-scraper";
 
 interface Input {
   channelUrls: string[];
   proxyCountry?: string;
-}
-
-interface ChannelItem {
-  channelId: string;
-  channelName: string;
-  subscriberCount: number;
-  videosCount: number;
-  viewCount: number;
-  description: string;
-  channelUrl: string;
+  cacheMedia?: boolean;
 }
 
 interface Output {
-  channels: ChannelItem[];
+  channels: YtChannel[];
 }
 
 export default async function channelScrape(
@@ -46,19 +39,24 @@ export default async function channelScrape(
   });
 
   const seen = new Set<string>();
-  const channels: ChannelItem[] = [];
+  const channels: YtChannel[] = [];
   for (const item of items) {
-    const channelId = String(item.channelId ?? item.channelUrl ?? "");
-    if (!channelId || seen.has(channelId)) continue;
-    seen.add(channelId);
-    channels.push({
-      channelId,
-      channelName: String(item.channelName ?? item.channelTitle ?? ""),
-      subscriberCount: Number(item.numberOfSubscribers ?? item.subscriberCount ?? 0),
-      videosCount: Number(item.channelTotalVideos ?? item.videosCount ?? 0),
-      viewCount: Number(item.channelTotalViews ?? item.viewCount ?? 0),
-      description: String(item.channelDescription ?? item.description ?? ""),
-      channelUrl: String(item.channelUrl ?? ""),
+    const channel = pickYtChannel(item);
+    if (!channel.channelId || seen.has(channel.channelId)) continue;
+    seen.add(channel.channelId);
+    channels.push(channel);
+  }
+
+  if (input.cacheMedia !== false) {
+    await cacheMediaForItems({
+      items: channels,
+      ctx: { dataDir: context.dataDir, runId: context.runId },
+      pickUrls: (c): UrlSpec[] => {
+        const specs: UrlSpec[] = [];
+        if (c.channelAvatarUrl) specs.push({ kind: "avatar", url: c.channelAvatarUrl, ext: "jpg" });
+        if (c.channelBannerUrl) specs.push({ kind: "banner", url: c.channelBannerUrl, ext: "jpg" });
+        return specs;
+      },
     });
   }
 

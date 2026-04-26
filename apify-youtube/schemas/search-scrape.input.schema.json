@@ -39,6 +39,11 @@
       "enum": ["", "US", "GB", "DE", "FR", "JP", "BR", "IN", "AU", "CA"],
       "default": "",
       "description": "Apify proxy country (empty = automatic)"
+    },
+    "cacheMedia": {
+      "type": "boolean",
+      "default": false,
+      "description": "Download video thumbnails to local cache."
     }
   },
   "additionalProperties": false

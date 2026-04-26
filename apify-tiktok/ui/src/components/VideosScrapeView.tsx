@@ -8,59 +8,85 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from "@campshell/ui-components";
 import { Video } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyTikTok.js";
 import { ACTORS } from "../lib/actors.js";
 import { ActorInfoCard } from "./ActorInfoCard.js";
 import { PROXY_COUNTRIES } from "../lib/options.js";
+import { PostsResultsView } from "./PostsResultsView.js";
+
+const TEMPLATE_NAME = "apify-tiktok";
 
 interface VideoItem {
-  id: string;
-  text: string;
-  playCount: number;
-  diggCount: number;
-  commentCount: number;
-  shareCount: number;
-  createTime: string;
-  webVideoUrl: string;
-  musicTitle: string;
+  id?: string;
+  caption?: string;
+  text?: string;
+  playCount?: number | null;
+  diggCount?: number | null;
+  commentCount?: number | null;
+  shareCount?: number | null;
+  videoViewCount?: number | null;
+  likesCount?: number | null;
+  commentsCount?: number | null;
+  videoDurationSeconds?: number | null;
+  createTime?: string;
+  timestamp?: string;
+  webVideoUrl?: string;
+  url?: string;
+  coverUrl?: string;
+  displayUrl?: string;
+  videoUrl?: string;
+  mediaType?: string;
+  hashtags?: string[];
+  mentions?: string[];
+  musicTitle?: string;
+  childPosts?: { id?: string; type?: string; displayUrl?: string; videoUrl?: string }[];
+  authorUsername?: string;
+  shortcode?: string;
+  mediaCache?: Record<string, string | null> | null;
+  _raw?: Record<string, unknown> | null;
 }
 
 export interface VideosScrapeViewProps {
-  onExecute: (operation: string, input: unknown) => Promise<unknown>;
+  onExecute: (operation: string, input: unknown) => Promise<any>;
   isExecuting: boolean;
   runs: RunHistoryItem[];
+  onDownloadZip: (runId: string, itemIds: string[]) => Promise<void>;
 }
 
-export function VideosScrapeView({ onExecute, isExecuting }: VideosScrapeViewProps) {
+export function VideosScrapeView({
+  onExecute,
+  isExecuting,
+  onDownloadZip,
+}: VideosScrapeViewProps) {
   const [username, setUsername] = useState("");
   const [videosLimit, setVideosLimit] = useState(20);
   const [onlyNewerThan, setOnlyNewerThan] = useState("");
   const [onlyOlderThan, setOnlyOlderThan] = useState("");
   const [sortBy, setSortBy] = useState<"latest" | "oldest" | "popular">("latest");
   const [proxyCountry, setProxyCountry] = useState("");
+  const [cacheMedia, setCacheMedia] = useState(false);
+  const [cacheVideos, setCacheVideos] = useState(false);
   const [videos, setVideos] = useState<VideoItem[] | null>(null);
+  const [runId, setRunId] = useState<string | null>(null);
 
   const handleExecute = async () => {
     const u = username.trim().replace(/^@/, "");
     if (!u) return;
     try {
-      const data: any = await onExecute("videos-scrape", {
+      const data = await onExecute("videos-scrape", {
         username: u,
         videosLimit,
         sortBy,
         ...(onlyNewerThan ? { onlyPostsNewerThan: onlyNewerThan } : {}),
         ...(onlyOlderThan ? { onlyPostsOlderThan: onlyOlderThan } : {}),
         ...(proxyCountry ? { proxyCountry } : {}),
+        cacheMedia,
+        cacheVideos,
       });
       setVideos(data.output?.videos ?? []);
+      setRunId(data.runId ?? null);
     } catch {}
   };
 
@@ -138,6 +164,35 @@ export function VideosScrapeView({ onExecute, isExecuting }: VideosScrapeViewPro
               </SelectContent>
             </Select>
           </div>
+          <label className="flex items-start gap-2 cursor-pointer text-xs">
+            <input
+              type="checkbox"
+              checked={cacheMedia}
+              onChange={(e) => setCacheMedia(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              <span className="font-medium">Cache thumbnails</span>
+              <p className="text-muted-foreground mt-0.5">
+                Download cover images so historical runs render after TikTok URLs expire.
+              </p>
+            </span>
+          </label>
+          <label className="flex items-start gap-2 cursor-pointer text-xs">
+            <input
+              type="checkbox"
+              checked={cacheVideos}
+              onChange={(e) => setCacheVideos(e.target.checked)}
+              disabled={!cacheMedia}
+              className="mt-0.5"
+            />
+            <span>
+              <span className="font-medium">Cache full videos</span>
+              <p className="text-muted-foreground mt-0.5">
+                Also download MP4 files. Storage-heavy — use only if you need them offline.
+              </p>
+            </span>
+          </label>
         </div>
         <div className="p-6 border-t border-border/40">
           <Button onClick={handleExecute} disabled={isExecuting || !username.trim()} className="w-full">
@@ -147,60 +202,21 @@ export function VideosScrapeView({ onExecute, isExecuting }: VideosScrapeViewPro
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="p-6 border-b border-border/40">
-          <h2 className="font-semibold text-sm">Results</h2>
-        </div>
-        <div className="flex-1 overflow-auto">
-          {videos === null ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
-              <Video className="w-10 h-10 opacity-25" />
-              <p className="font-medium text-sm">Videos will appear here</p>
-            </div>
-          ) : videos.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
-              <p className="text-sm">No videos found for @{username}.</p>
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Caption</TableHead>
-                  <TableHead className="text-right">Plays</TableHead>
-                  <TableHead className="text-right">Likes</TableHead>
-                  <TableHead className="text-right">Comments</TableHead>
-                  <TableHead className="text-right">Shares</TableHead>
-                  <TableHead>Music</TableHead>
-                  <TableHead>Posted</TableHead>
-                  <TableHead>Link</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {videos.map((v) => (
-                  <TableRow key={v.id}>
-                    <TableCell className="max-w-md text-xs line-clamp-2">{v.text || "—"}</TableCell>
-                    <TableCell className="text-right">{v.playCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{v.diggCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{v.commentCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{v.shareCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground max-w-[160px] line-clamp-1">
-                      {v.musicTitle || "—"}
-                    </TableCell>
-                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
-                      {v.createTime ? new Date(v.createTime).toLocaleDateString() : "—"}
-                    </TableCell>
-                    <TableCell>
-                      {v.webVideoUrl ? (
-                        <a href={v.webVideoUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary underline">
-                          Open
-                        </a>
-                      ) : "—"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </div>
+        {videos === null ? (
+          <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
+            <Video className="w-10 h-10 opacity-25" />
+            <p className="font-medium text-sm">Videos will appear here</p>
+          </div>
+        ) : (
+          <PostsResultsView
+            items={videos}
+            templateName={TEMPLATE_NAME}
+            runId={runId}
+            aspect="9:16"
+            emptyMessage={`No videos found for @${username}.`}
+            onDownloadZip={onDownloadZip}
+          />
+        )}
       </div>
     </div>
   );

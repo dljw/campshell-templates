@@ -6,7 +6,42 @@
   "properties": {
     "channels": {
       "type": "array",
-      "items": { "type": "object", "additionalProperties": true }
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "channelId": { "type": "string" },
+          "channelName": { "type": "string" },
+          "subscriberCount": { "type": ["number", "null"] },
+          "videosCount": { "type": ["number", "null"] },
+          "viewCount": { "type": ["number", "null"] },
+          "description": { "type": "string" },
+          "channelUrl": { "type": "string" },
+          "channelHandle": { "type": "string" },
+          "channelAvatarUrl": { "type": "string" },
+          "channelBannerUrl": { "type": "string" },
+          "channelJoinedDate": { "type": "string" },
+          "channelLocation": { "type": "string" },
+          "channelLinks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "url": { "type": "string" }
+              },
+              "additionalProperties": true
+            }
+          },
+          "isVerified": { "type": "boolean" },
+          "mediaCache": {
+            "type": "object",
+            "additionalProperties": { "type": ["string", "null"] }
+          },
+          "_raw": { "type": "object", "additionalProperties": true }
+        },
+        "additionalProperties": true
+      }
     }
   },
   "additionalProperties": false

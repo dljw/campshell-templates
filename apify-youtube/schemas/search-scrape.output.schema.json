@@ -6,7 +6,51 @@
   "properties": {
     "results": {
       "type": "array",
-      "items": { "type": "object", "additionalProperties": true }
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "videoId": { "type": "string" },
+          "title": { "type": "string" },
+          "viewCount": { "type": ["number", "null"] },
+          "likesCount": { "type": ["number", "null"] },
+          "commentsCount": { "type": ["number", "null"] },
+          "durationSeconds": { "type": ["number", "null"] },
+          "publishedAt": { "type": "string" },
+          "url": { "type": "string" },
+          "thumbnailUrl": { "type": "string" },
+          "description": { "type": "string" },
+          "channelId": { "type": "string" },
+          "channelName": { "type": "string" },
+          "channelUrl": { "type": "string" },
+          "channelAvatarUrl": { "type": "string" },
+          "category": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "hashtags": { "type": "array", "items": { "type": "string" } },
+          "isShorts": { "type": "boolean" },
+          "isLive": { "type": "boolean" },
+          "kind": { "type": "string" },
+          "caption": { "type": "string" },
+          "shortcode": { "type": "string" },
+          "mediaType": { "type": "string" },
+          "productType": { "type": "string" },
+          "displayUrl": { "type": "string" },
+          "videoUrl": { "type": "string" },
+          "videoViewCount": { "type": ["number", "null"] },
+          "timestamp": { "type": "string" },
+          "videoDurationSeconds": { "type": ["number", "null"] },
+          "childPosts": {
+            "type": "array",
+            "items": { "type": "object", "additionalProperties": true }
+          },
+          "mediaCache": {
+            "type": "object",
+            "additionalProperties": { "type": ["string", "null"] }
+          },
+          "_raw": { "type": "object", "additionalProperties": true }
+        },
+        "additionalProperties": true
+      }
     }
   },
   "additionalProperties": false

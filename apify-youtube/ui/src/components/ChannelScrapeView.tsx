@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Badge,
   Button,
   Label,
   Select,
@@ -7,39 +8,51 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
   Textarea,
 } from "@campshell/ui-components";
-import { Tv } from "lucide-react";
+import { ExternalLink, Tv } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyYouTube.js";
 import { ACTORS } from "../lib/actors.js";
 import { ActorInfoCard } from "./ActorInfoCard.js";
 import { PROXY_COUNTRIES } from "../lib/options.js";
+import { MediaThumbnail } from "./MediaThumbnail.js";
+
+const TEMPLATE_NAME = "apify-youtube";
 
 interface Channel {
+  id?: string;
   channelId: string;
-  channelName: string;
-  subscriberCount: number;
-  videosCount: number;
-  viewCount: number;
-  description: string;
-  channelUrl: string;
+  channelName?: string;
+  subscriberCount?: number | null;
+  videosCount?: number | null;
+  viewCount?: number | null;
+  description?: string;
+  channelUrl?: string;
+  channelHandle?: string;
+  channelAvatarUrl?: string;
+  channelBannerUrl?: string;
+  channelJoinedDate?: string;
+  channelLocation?: string;
+  channelLinks?: { name: string; url: string }[];
+  isVerified?: boolean;
+  mediaCache?: Record<string, string | null> | null;
 }
 
 export interface ChannelScrapeViewProps {
-  onExecute: (operation: string, input: unknown) => Promise<unknown>;
+  onExecute: (operation: string, input: unknown) => Promise<any>;
   isExecuting: boolean;
   runs: RunHistoryItem[];
+}
+
+function fmt(n: number | null | undefined): string {
+  if (n == null) return "—";
+  return n.toLocaleString();
 }
 
 export function ChannelScrapeView({ onExecute, isExecuting }: ChannelScrapeViewProps) {
   const [urlsText, setUrlsText] = useState("");
   const [proxyCountry, setProxyCountry] = useState("");
+  const [cacheMedia, setCacheMedia] = useState(true);
   const [channels, setChannels] = useState<Channel[] | null>(null);
 
   const handleExecute = async () => {
@@ -49,9 +62,10 @@ export function ChannelScrapeView({ onExecute, isExecuting }: ChannelScrapeViewP
       .filter((u) => u.length > 0);
     if (channelUrls.length === 0) return;
     try {
-      const data: any = await onExecute("channel-scrape", {
+      const data = await onExecute("channel-scrape", {
         channelUrls,
         ...(proxyCountry ? { proxyCountry } : {}),
+        cacheMedia,
       });
       setChannels(data.output?.channels ?? []);
     } catch {}
@@ -98,6 +112,18 @@ export function ChannelScrapeView({ onExecute, isExecuting }: ChannelScrapeViewP
               </SelectContent>
             </Select>
           </div>
+          <label className="flex items-start gap-2 cursor-pointer text-xs">
+            <input
+              type="checkbox"
+              checked={cacheMedia}
+              onChange={(e) => setCacheMedia(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              <span className="font-medium">Cache avatars + banners</span>
+              <p className="text-muted-foreground mt-0.5">Recommended on.</p>
+            </span>
+          </label>
         </div>
         <div className="p-6 border-t border-border/40">
           <Button onClick={handleExecute} disabled={isExecuting || !urlsText.trim()} className="w-full">
@@ -107,9 +133,6 @@ export function ChannelScrapeView({ onExecute, isExecuting }: ChannelScrapeViewP
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="p-6 border-b border-border/40">
-          <h2 className="font-semibold text-sm">Results</h2>
-        </div>
         <div className="flex-1 overflow-auto">
           {channels === null ? (
             <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
@@ -121,41 +144,110 @@ export function ChannelScrapeView({ onExecute, isExecuting }: ChannelScrapeViewP
               <p className="text-sm">No channels found.</p>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Channel</TableHead>
-                  <TableHead className="text-right">Subscribers</TableHead>
-                  <TableHead className="text-right">Videos</TableHead>
-                  <TableHead className="text-right">Total Views</TableHead>
-                  <TableHead>Description</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {channels.map((c, i) => (
-                  <TableRow key={c.channelId || i}>
-                    <TableCell className="font-medium">
-                      {c.channelUrl ? (
-                        <a href={c.channelUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">
-                          {c.channelName || "—"}
-                        </a>
-                      ) : (
-                        c.channelName || "—"
-                      )}
-                    </TableCell>
-                    <TableCell className="text-right">{c.subscriberCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{c.videosCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{c.viewCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="max-w-md text-xs text-muted-foreground line-clamp-2">
-                      {c.description || "—"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <div className="space-y-4 p-6">
+              {channels.map((c) => (
+                <ChannelCard key={c.channelId} channel={c} />
+              ))}
+            </div>
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function ChannelCard({ channel: c }: { channel: Channel }) {
+  return (
+    <div className="rounded-lg border border-border/40 bg-card overflow-hidden">
+      {c.channelBannerUrl && (
+        <div className="aspect-[6/1] w-full">
+          <MediaThumbnail
+            templateName={TEMPLATE_NAME}
+            cachedRelPath={c.mediaCache?.banner ?? null}
+            liveUrl={c.channelBannerUrl}
+            aspect="16:9"
+            alt={c.channelName ?? ""}
+          />
+        </div>
+      )}
+      <div className="p-5 space-y-4">
+        <div className="flex items-start gap-4">
+          <div className="w-16 h-16 rounded-full overflow-hidden shrink-0">
+            <MediaThumbnail
+              templateName={TEMPLATE_NAME}
+              cachedRelPath={c.mediaCache?.avatar ?? null}
+              liveUrl={c.channelAvatarUrl ?? ""}
+              aspect="square"
+              alt={c.channelName ?? ""}
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h3 className="font-semibold text-sm truncate">
+                {c.channelUrl ? (
+                  <a href={c.channelUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    {c.channelName ?? "—"}
+                  </a>
+                ) : (
+                  c.channelName ?? "—"
+                )}
+              </h3>
+              {c.isVerified && <span className="text-blue-500 text-xs" title="Verified">✓</span>}
+              {c.channelHandle && (
+                <Badge variant="outline" className="text-[10px]">
+                  {c.channelHandle.startsWith("@") ? c.channelHandle : `@${c.channelHandle}`}
+                </Badge>
+              )}
+            </div>
+            {c.channelLocation && (
+              <p className="text-[11px] text-muted-foreground mt-0.5">{c.channelLocation}</p>
+            )}
+            {c.channelJoinedDate && (
+              <p className="text-[11px] text-muted-foreground mt-0.5">
+                Joined {c.channelJoinedDate}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 text-center">
+          <Stat value={fmt(c.subscriberCount)} label="Subscribers" />
+          <Stat value={fmt(c.videosCount)} label="Videos" />
+          <Stat value={fmt(c.viewCount)} label="Total Views" />
+        </div>
+
+        {c.description && (
+          <p className="text-xs text-muted-foreground whitespace-pre-wrap line-clamp-4">
+            {c.description}
+          </p>
+        )}
+
+        {(c.channelLinks?.length ?? 0) > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {c.channelLinks!.map((l, i) => (
+              <a
+                key={`${l.url}-${i}`}
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+              >
+                <ExternalLink className="w-3 h-3 shrink-0" />
+                <span>{l.name || l.url.replace(/^https?:\/\//, "")}</span>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <p className="font-semibold text-sm">{value}</p>
+      <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{label}</p>
     </div>
   );
 }

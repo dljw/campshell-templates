@@ -38,6 +38,11 @@
       "enum": ["", "US", "GB", "DE", "FR", "JP", "BR", "IN", "AU", "CA"],
       "default": "",
       "description": "Apify proxy country (empty = automatic)"
+    },
+    "cacheMedia": {
+      "type": "boolean",
+      "default": true,
+      "description": "Download video thumbnails to local cache. Recommended on — YouTube thumbnails are tiny."
     }
   },
   "additionalProperties": false

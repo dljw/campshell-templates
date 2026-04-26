@@ -1,5 +1,7 @@
 // Apify actor: https://apify.com/apify/facebook-posts-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
+import { pickMetaPost, type MetaPost } from "../lib/normalize.js";
+import { cacheMediaForItems, type UrlSpec } from "../lib/media-cache.js";
 
 const ACTOR_ID = "apify/facebook-posts-scraper";
 
@@ -9,21 +11,11 @@ interface Input {
   onlyPostsNewerThan?: string;
   onlyPostsOlderThan?: string;
   proxyCountry?: string;
-}
-
-interface PostItem {
-  postId: string;
-  text: string;
-  time: string;
-  likesCount: number;
-  commentsCount: number;
-  sharesCount: number;
-  url: string;
-  mediaType: string;
+  cacheMedia?: boolean;
 }
 
 interface Output {
-  posts: PostItem[];
+  posts: MetaPost[];
 }
 
 export default async function postsScrape(
@@ -51,16 +43,26 @@ export default async function postsScrape(
     input: actorInput,
   });
 
-  const posts: PostItem[] = items.slice(0, limit).map((item) => ({
-    postId: String(item.postId ?? item.id ?? ""),
-    text: String(item.text ?? item.message ?? ""),
-    time: String(item.time ?? item.publishedAt ?? ""),
-    likesCount: Number(item.likes ?? item.likesCount ?? 0),
-    commentsCount: Number(item.comments ?? item.commentsCount ?? 0),
-    sharesCount: Number(item.shares ?? item.sharesCount ?? 0),
-    url: String(item.url ?? item.postUrl ?? ""),
-    mediaType: String(item.media?.toString() ? "media" : item.mediaType ?? ""),
-  }));
+  const posts: MetaPost[] = items.slice(0, limit).map(pickMetaPost);
+
+  if (input.cacheMedia) {
+    await cacheMediaForItems<MetaPost>({
+      items: posts,
+      ctx: { dataDir: context.dataDir, runId: context.runId },
+      pickUrls: (post): UrlSpec[] => {
+        const specs: UrlSpec[] = [];
+        if (post.displayUrl) {
+          specs.push({ kind: "thumb", url: post.displayUrl, ext: "jpg" });
+        }
+        post.childPosts?.forEach((c, i) => {
+          if (c.displayUrl) {
+            specs.push({ kind: `child-${i}-thumb`, url: c.displayUrl, ext: "jpg" });
+          }
+        });
+        return specs;
+      },
+    });
+  }
 
   return { posts };
 }

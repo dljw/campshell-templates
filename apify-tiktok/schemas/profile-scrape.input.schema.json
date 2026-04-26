@@ -16,6 +16,11 @@
       "enum": ["", "US", "GB", "DE", "FR", "JP", "BR", "IN", "AU", "CA"],
       "default": "",
       "description": "Apify proxy country (empty = automatic)"
+    },
+    "cacheMedia": {
+      "type": "boolean",
+      "default": true,
+      "description": "Download avatars to local cache. Recommended on — TikTok CDN URLs expire after a few hours."
     }
   },
   "additionalProperties": false

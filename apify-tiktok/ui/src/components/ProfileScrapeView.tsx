@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Badge,
   Button,
   Label,
   Select,
@@ -7,41 +8,49 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
   Textarea,
 } from "@campshell/ui-components";
-import { User } from "lucide-react";
+import { ExternalLink, User } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyTikTok.js";
 import { ACTORS } from "../lib/actors.js";
 import { ActorInfoCard } from "./ActorInfoCard.js";
 import { PROXY_COUNTRIES } from "../lib/options.js";
+import { MediaThumbnail } from "./MediaThumbnail.js";
+
+const TEMPLATE_NAME = "apify-tiktok";
 
 interface Profile {
   username: string;
-  nickname: string;
-  followerCount: number;
-  followingCount: number;
-  videoCount: number;
-  heartCount: number;
-  bio: string;
-  verified: boolean;
-  avatarUrl: string;
+  nickname?: string;
+  followerCount?: number | null;
+  followingCount?: number | null;
+  videoCount?: number | null;
+  heartCount?: number | null;
+  bio?: string;
+  verified?: boolean;
+  avatarUrl?: string;
+  avatarLargerUrl?: string;
+  region?: string;
+  privateAccount?: boolean;
+  bioLink?: string;
+  mediaCache?: Record<string, string | null> | null;
 }
 
 export interface ProfileScrapeViewProps {
-  onExecute: (operation: string, input: unknown) => Promise<unknown>;
+  onExecute: (operation: string, input: unknown) => Promise<any>;
   isExecuting: boolean;
   runs: RunHistoryItem[];
+}
+
+function fmt(n: number | null | undefined): string {
+  if (n == null) return "—";
+  return n.toLocaleString();
 }
 
 export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewProps) {
   const [usernamesText, setUsernamesText] = useState("");
   const [proxyCountry, setProxyCountry] = useState("");
+  const [cacheMedia, setCacheMedia] = useState(true);
   const [profiles, setProfiles] = useState<Profile[] | null>(null);
 
   const handleExecute = async () => {
@@ -52,9 +61,10 @@ export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewP
     if (usernames.length === 0) return;
 
     try {
-      const data: any = await onExecute("profile-scrape", {
+      const data = await onExecute("profile-scrape", {
         usernames,
         ...(proxyCountry ? { proxyCountry } : {}),
+        cacheMedia,
       });
       setProfiles(data.output?.profiles ?? []);
     } catch {}
@@ -103,6 +113,20 @@ export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewP
               </SelectContent>
             </Select>
           </div>
+          <label className="flex items-start gap-2 cursor-pointer text-xs">
+            <input
+              type="checkbox"
+              checked={cacheMedia}
+              onChange={(e) => setCacheMedia(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              <span className="font-medium">Cache avatars</span>
+              <p className="text-muted-foreground mt-0.5">
+                Recommended on — TikTok CDN URLs expire after a few hours.
+              </p>
+            </span>
+          </label>
         </div>
         <div className="p-6 border-t border-border/40">
           <Button
@@ -116,9 +140,6 @@ export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewP
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="p-6 border-b border-border/40">
-          <h2 className="font-semibold text-sm">Results</h2>
-        </div>
         <div className="flex-1 overflow-auto">
           {profiles === null ? (
             <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
@@ -130,40 +151,77 @@ export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewP
               <p className="text-sm">No profiles found.</p>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Username</TableHead>
-                  <TableHead>Nickname</TableHead>
-                  <TableHead className="text-right">Followers</TableHead>
-                  <TableHead className="text-right">Following</TableHead>
-                  <TableHead className="text-right">Videos</TableHead>
-                  <TableHead className="text-right">Hearts</TableHead>
-                  <TableHead>Bio</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {profiles.map((p) => (
-                  <TableRow key={p.username}>
-                    <TableCell className="font-medium">
-                      @{p.username}
-                      {p.verified && <span className="ml-1 text-blue-500" title="Verified">✓</span>}
-                    </TableCell>
-                    <TableCell>{p.nickname || "—"}</TableCell>
-                    <TableCell className="text-right">{p.followerCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{p.followingCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{p.videoCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{p.heartCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="max-w-md text-xs text-muted-foreground line-clamp-2">
-                      {p.bio || "—"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-6">
+              {profiles.map((p) => (
+                <ProfileCard key={p.username} profile={p} />
+              ))}
+            </div>
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function ProfileCard({ profile: p }: { profile: Profile }) {
+  return (
+    <div className="rounded-lg border border-border/40 bg-card p-5 space-y-4">
+      <div className="flex items-start gap-4">
+        <div className="w-16 h-16 rounded-full overflow-hidden shrink-0">
+          <MediaThumbnail
+            templateName={TEMPLATE_NAME}
+            cachedRelPath={p.mediaCache?.avatar ?? null}
+            liveUrl={p.avatarLargerUrl || p.avatarUrl || ""}
+            aspect="square"
+            alt={p.username}
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5">
+            <h3 className="font-semibold text-sm truncate">@{p.username}</h3>
+            {p.verified && <span className="text-blue-500 text-xs" title="Verified">✓</span>}
+            {p.privateAccount && <Badge variant="secondary" className="text-[10px]">Private</Badge>}
+          </div>
+          {p.nickname && <p className="text-xs text-muted-foreground truncate">{p.nickname}</p>}
+          {p.region && (
+            <p className="text-[11px] text-muted-foreground mt-0.5">{p.region}</p>
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-4 gap-2 text-center">
+        <Stat value={fmt(p.followerCount)} label="Followers" />
+        <Stat value={fmt(p.followingCount)} label="Following" />
+        <Stat value={fmt(p.videoCount)} label="Videos" />
+        <Stat value={fmt(p.heartCount)} label="Hearts" />
+      </div>
+
+      {p.bio && (
+        <p className="text-xs text-muted-foreground whitespace-pre-wrap line-clamp-4">
+          {p.bio}
+        </p>
+      )}
+
+      {p.bioLink && (
+        <a
+          href={p.bioLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-xs text-primary hover:underline truncate max-w-full"
+        >
+          <ExternalLink className="w-3 h-3 shrink-0" />
+          <span className="truncate">{p.bioLink.replace(/^https?:\/\//, "")}</span>
+        </a>
+      )}
+    </div>
+  );
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <p className="font-semibold text-sm">{value}</p>
+      <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{label}</p>
     </div>
   );
 }

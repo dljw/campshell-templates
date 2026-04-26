@@ -1,26 +1,18 @@
 // Apify actor: https://apify.com/apify/facebook-pages-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
+import { pickMetaPage, type MetaPage } from "../lib/normalize.js";
+import { cacheMediaForItems, type UrlSpec } from "../lib/media-cache.js";
 
 const ACTOR_ID = "apify/facebook-pages-scraper";
 
 interface Input {
   pageUrls: string[];
   proxyCountry?: string;
-}
-
-interface PageItem {
-  pageId: string;
-  name: string;
-  followers: number;
-  likes: number;
-  category: string;
-  about: string;
-  websites: string[];
-  profilePictureUrl: string;
+  cacheMedia?: boolean;
 }
 
 interface Output {
-  pages: PageItem[];
+  pages: MetaPage[];
 }
 
 export default async function pagesScrape(
@@ -43,16 +35,24 @@ export default async function pagesScrape(
     input: actorInput,
   });
 
-  const pages: PageItem[] = items.map((item) => ({
-    pageId: String(item.pageId ?? item.id ?? ""),
-    name: String(item.title ?? item.name ?? ""),
-    followers: Number(item.followers ?? item.followersCount ?? 0),
-    likes: Number(item.likes ?? item.likesCount ?? 0),
-    category: String(item.categories ?? item.category ?? ""),
-    about: String(item.intro ?? item.about ?? ""),
-    websites: Array.isArray(item.websites) ? (item.websites as string[]) : [],
-    profilePictureUrl: String(item.profilePictureUrl ?? item.profilePhoto ?? ""),
-  }));
+  const pages: MetaPage[] = items.map(pickMetaPage);
+
+  if (input.cacheMedia !== false) {
+    await cacheMediaForItems<MetaPage>({
+      items: pages,
+      ctx: { dataDir: context.dataDir, runId: context.runId },
+      pickUrls: (page): UrlSpec[] => {
+        const specs: UrlSpec[] = [];
+        if (page.profilePictureUrl) {
+          specs.push({ kind: "avatar", url: page.profilePictureUrl, ext: "jpg" });
+        }
+        if (page.coverPhotoUrl) {
+          specs.push({ kind: "cover", url: page.coverPhotoUrl, ext: "jpg" });
+        }
+        return specs;
+      },
+    });
+  }
 
   return { pages };
 }

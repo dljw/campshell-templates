@@ -6,7 +6,107 @@
   "properties": {
     "videos": {
       "type": "array",
-      "items": { "type": "object", "additionalProperties": true }
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "text": { "type": "string" },
+          "playCount": { "type": ["number", "null"] },
+          "diggCount": { "type": ["number", "null"] },
+          "commentCount": { "type": ["number", "null"] },
+          "shareCount": { "type": ["number", "null"] },
+          "collectCount": { "type": ["number", "null"] },
+          "createTime": { "type": "string" },
+          "webVideoUrl": { "type": "string" },
+          "videoMeta": {
+            "type": "object",
+            "properties": {
+              "duration": { "type": ["number", "null"] },
+              "height": { "type": ["number", "null"] },
+              "width": { "type": ["number", "null"] },
+              "definition": { "type": "string" },
+              "format": { "type": "string" },
+              "coverUrl": { "type": "string" },
+              "originalCoverUrl": { "type": "string" },
+              "downloadAddr": { "type": "string" },
+              "playAddr": { "type": "string" }
+            },
+            "additionalProperties": true
+          },
+          "coverUrl": { "type": "string" },
+          "videoDownloadUrl": { "type": "string" },
+          "videoPlayUrl": { "type": "string" },
+          "music": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "author": { "type": "string" },
+              "original": { "type": "boolean" },
+              "album": { "type": "string" },
+              "playUrl": { "type": "string" },
+              "coverThumb": { "type": "string" }
+            },
+            "additionalProperties": true
+          },
+          "musicTitle": { "type": "string" },
+          "hashtags": { "type": "array", "items": { "type": "string" } },
+          "mentions": { "type": "array", "items": { "type": "string" } },
+          "effectStickers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "name": { "type": "string" }
+              },
+              "additionalProperties": true
+            }
+          },
+          "slideshowImages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "url": { "type": "string" },
+                "width": { "type": ["number", "null"] },
+                "height": { "type": ["number", "null"] }
+              },
+              "additionalProperties": true
+            }
+          },
+          "isSlideshow": { "type": "boolean" },
+          "isAd": { "type": "boolean" },
+          "locationCreated": { "type": "string" },
+          "authorUsername": { "type": "string" },
+          "authorNickname": { "type": "string" },
+          "authorAvatar": { "type": "string" },
+          "authorVerified": { "type": "boolean" },
+          "caption": { "type": "string" },
+          "mediaType": { "type": "string" },
+          "displayUrl": { "type": "string" },
+          "videoUrl": { "type": "string" },
+          "url": { "type": "string" },
+          "timestamp": { "type": "string" },
+          "likesCount": { "type": ["number", "null"] },
+          "commentsCount": { "type": ["number", "null"] },
+          "videoViewCount": { "type": ["number", "null"] },
+          "shortcode": { "type": "string" },
+          "childPosts": {
+            "type": "array",
+            "items": { "type": "object", "additionalProperties": true }
+          },
+          "mediaCache": {
+            "type": "object",
+            "additionalProperties": { "type": ["string", "null"] }
+          },
+          "_raw": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
     }
   },
   "additionalProperties": false

@@ -38,7 +38,8 @@ export interface UseApifyYouTubeReturn {
   fetchSecretsStatus: () => Promise<void>;
   setSecrets: (secrets: Record<string, string>) => Promise<boolean>;
   fetchRuns: () => Promise<void>;
-  executeOperation: (operation: string, input: unknown) => Promise<unknown>;
+  executeOperation: (operation: string, input: unknown) => Promise<any>;
+  downloadMediaZip: (runId: string, itemIds: string[]) => Promise<void>;
 }
 
 export function useApifyYouTube(apiBase = ""): UseApifyYouTubeReturn {
@@ -125,6 +126,42 @@ export function useApifyYouTube(apiBase = ""): UseApifyYouTubeReturn {
     [apiBase, fetchRuns],
   );
 
+  const downloadMediaZip = useCallback(
+    async (runId: string, itemIds: string[]) => {
+      try {
+        const res = await fetch(
+          `${apiBase}/api/services/${TEMPLATE_NAME}/media-zip`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ runId, itemIds }),
+          },
+        );
+        const data = await res.json();
+        if (!res.ok || data.status === "error") {
+          toast.error(`Download failed: ${data.error ?? "Unknown error"}`);
+          return;
+        }
+        const out = data.output ?? data;
+        if (!out?.dataUrl) {
+          toast.error("Download failed: no data returned");
+          return;
+        }
+        const a = document.createElement("a");
+        a.href = out.dataUrl;
+        a.download = out.filename ?? `${runId}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        toast.success(`Downloaded ${out.fileCount ?? itemIds.length} files`);
+      } catch (err) {
+        console.error("Failed to download media zip", err);
+        toast.error("Download failed");
+      }
+    },
+    [apiBase],
+  );
+
   useEffect(() => {
     let mounted = true;
     setIsLoading(true);
@@ -145,5 +182,6 @@ export function useApifyYouTube(apiBase = ""): UseApifyYouTubeReturn {
     setSecrets,
     fetchRuns,
     executeOperation,
+    downloadMediaZip,
   };
 }

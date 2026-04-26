@@ -1,5 +1,7 @@
 // Apify actor: https://apify.com/streamers/youtube-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
+import { pickYtSearchResult, type YtSearchResult } from "../lib/normalize.js";
+import { cacheMediaForItems, type UrlSpec } from "../lib/media-cache.js";
 
 const ACTOR_ID = "streamers/youtube-scraper";
 
@@ -10,19 +12,11 @@ interface Input {
   duration?: "all" | "short" | "medium" | "long";
   sortBy?: "relevance" | "date" | "viewCount" | "rating";
   proxyCountry?: string;
-}
-
-interface SearchResult {
-  videoId: string;
-  title: string;
-  channelName: string;
-  viewCount: number;
-  publishedAt: string;
-  url: string;
+  cacheMedia?: boolean;
 }
 
 interface Output {
-  results: SearchResult[];
+  results: YtSearchResult[];
 }
 
 export default async function searchScrape(
@@ -40,15 +34,9 @@ export default async function searchScrape(
     maxResultsShorts: 0,
     maxResultStreams: 0,
   };
-  if (input.uploadDate && input.uploadDate !== "all") {
-    actorInput.uploadDate = input.uploadDate;
-  }
-  if (input.duration && input.duration !== "all") {
-    actorInput.duration = input.duration;
-  }
-  if (input.sortBy && input.sortBy !== "relevance") {
-    actorInput.sortBy = input.sortBy;
-  }
+  if (input.uploadDate && input.uploadDate !== "all") actorInput.uploadDate = input.uploadDate;
+  if (input.duration && input.duration !== "all") actorInput.duration = input.duration;
+  if (input.sortBy && input.sortBy !== "relevance") actorInput.sortBy = input.sortBy;
   if (input.proxyCountry) {
     actorInput.proxyConfiguration = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
   }
@@ -59,14 +47,16 @@ export default async function searchScrape(
     input: actorInput,
   });
 
-  const results: SearchResult[] = items.slice(0, limit).map((item) => ({
-    videoId: String(item.id ?? ""),
-    title: String(item.title ?? ""),
-    channelName: String(item.channelName ?? item.channelTitle ?? ""),
-    viewCount: Number(item.viewCount ?? 0),
-    publishedAt: String(item.date ?? item.publishedAt ?? ""),
-    url: String(item.url ?? ""),
-  }));
+  const results: YtSearchResult[] = items.slice(0, limit).map(pickYtSearchResult);
+
+  if (input.cacheMedia) {
+    await cacheMediaForItems({
+      items: results,
+      ctx: { dataDir: context.dataDir, runId: context.runId },
+      pickUrls: (r): UrlSpec[] =>
+        r.thumbnailUrl ? [{ kind: "thumb", url: r.thumbnailUrl, ext: "jpg" }] : [],
+    });
+  }
 
   return { results };
 }

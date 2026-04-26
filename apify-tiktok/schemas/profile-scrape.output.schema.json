@@ -6,7 +6,37 @@
   "properties": {
     "profiles": {
       "type": "array",
-      "items": { "type": "object", "additionalProperties": true }
+      "items": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string" },
+          "nickname": { "type": "string" },
+          "followerCount": { "type": ["number", "null"] },
+          "followingCount": { "type": ["number", "null"] },
+          "videoCount": { "type": ["number", "null"] },
+          "heartCount": { "type": ["number", "null"] },
+          "bio": { "type": "string" },
+          "verified": { "type": "boolean" },
+          "avatarUrl": { "type": "string" },
+          "avatarLargerUrl": { "type": "string" },
+          "region": { "type": "string" },
+          "privateAccount": { "type": "boolean" },
+          "bioLink": { "type": "string" },
+          "signatureLanguage": { "type": "string" },
+          "commerceUserInfo": { "type": ["object", "null"], "additionalProperties": true },
+          "roomId": { "type": "string" },
+          "mediaCache": {
+            "type": "object",
+            "additionalProperties": { "type": ["string", "null"] }
+          },
+          "_raw": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Original Apify item, preserved verbatim. Shape varies between actor versions."
+          }
+        },
+        "additionalProperties": true
+      }
     }
   },
   "additionalProperties": false

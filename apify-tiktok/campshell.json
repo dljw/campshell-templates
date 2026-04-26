@@ -16,7 +16,9 @@
     "videos-scrape.input": "schemas/videos-scrape.input.schema.json",
     "videos-scrape.output": "schemas/videos-scrape.output.schema.json",
     "hashtag-scrape.input": "schemas/hashtag-scrape.input.schema.json",
-    "hashtag-scrape.output": "schemas/hashtag-scrape.output.schema.json"
+    "hashtag-scrape.output": "schemas/hashtag-scrape.output.schema.json",
+    "media-zip.input": "schemas/media-zip.input.schema.json",
+    "media-zip.output": "schemas/media-zip.output.schema.json"
   },
   "storage": {
     "runs": {
@@ -49,6 +51,13 @@
       "handler": "handlers/hashtag-scrape",
       "timeout": 280000,
       "rateLimit": { "maxPerMinute": 5 }
+    },
+    "media-zip": {
+      "description": "Bundle cached media for items in a saved run into a downloadable ZIP",
+      "inputSchema": "schemas/media-zip.input.schema.json",
+      "outputSchema": "schemas/media-zip.output.schema.json",
+      "handler": "handlers/media-zip",
+      "timeout": 60000
     }
   },
   "secrets": [

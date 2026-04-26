@@ -62,7 +62,12 @@ export function App({ data }: AppProps) {
 
         {currentView === "posts-scrape" && (
           <div className="flex-1 overflow-hidden">
-            <PostsScrapeView onExecute={data.executeOperation} isExecuting={data.isExecuting} runs={data.runs} />
+            <PostsScrapeView
+              onExecute={data.executeOperation}
+              isExecuting={data.isExecuting}
+              runs={data.runs}
+              onDownloadZip={data.downloadMediaZip}
+            />
           </div>
         )}
 

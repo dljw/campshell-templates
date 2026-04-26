@@ -8,56 +8,80 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from "@campshell/ui-components";
 import { FileText } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyMeta.js";
 import { ACTORS } from "../lib/actors.js";
 import { ActorInfoCard } from "./ActorInfoCard.js";
 import { PROXY_COUNTRIES } from "../lib/options.js";
+import { PostsResultsView } from "./PostsResultsView.js";
 
-interface Post {
-  postId: string;
-  text: string;
-  time: string;
-  likesCount: number;
-  commentsCount: number;
-  sharesCount: number;
-  url: string;
-  mediaType: string;
+const TEMPLATE_NAME = "apify-meta";
+
+interface MetaPost {
+  id?: string;
+  postId?: string;
+  caption?: string;
+  timestamp?: string;
+  shortcode?: string;
+  text?: string;
+  time?: string;
+  likesCount?: number | null;
+  commentsCount?: number | null;
+  sharesCount?: number | null;
+  viewsCount?: number | null;
+  url?: string;
+  displayUrl?: string;
+  videoUrl?: string;
+  mediaType?: string;
+  hashtags?: string[];
+  mentions?: string[];
+  isSponsored?: boolean;
+  reactions?: Record<string, number | null>;
+  media?: { type?: string; url?: string; thumbnailUrl?: string }[];
+  link?: { url: string; title: string; description: string; image: string } | null;
+  pageName?: string;
+  pageUrl?: string;
+  childPosts?: { id?: string; type?: string; displayUrl?: string; videoUrl?: string }[];
+  mediaCache?: Record<string, string | null> | null;
+  _raw?: Record<string, unknown> | null;
 }
 
 export interface PostsScrapeViewProps {
-  onExecute: (operation: string, input: unknown) => Promise<unknown>;
+  onExecute: (operation: string, input: unknown) => Promise<any>;
   isExecuting: boolean;
   runs: RunHistoryItem[];
+  onDownloadZip: (runId: string, itemIds: string[]) => Promise<void>;
 }
 
-export function PostsScrapeView({ onExecute, isExecuting }: PostsScrapeViewProps) {
+export function PostsScrapeView({
+  onExecute,
+  isExecuting,
+  onDownloadZip,
+}: PostsScrapeViewProps) {
   const [pageUrl, setPageUrl] = useState("");
   const [postsLimit, setPostsLimit] = useState(20);
   const [onlyNewerThan, setOnlyNewerThan] = useState("");
   const [onlyOlderThan, setOnlyOlderThan] = useState("");
   const [proxyCountry, setProxyCountry] = useState("");
-  const [posts, setPosts] = useState<Post[] | null>(null);
+  const [cacheMedia, setCacheMedia] = useState(false);
+  const [posts, setPosts] = useState<MetaPost[] | null>(null);
+  const [runId, setRunId] = useState<string | null>(null);
 
   const handleExecute = async () => {
     const u = pageUrl.trim();
     if (!u) return;
     try {
-      const data: any = await onExecute("posts-scrape", {
+      const data = await onExecute("posts-scrape", {
         pageUrl: u,
         postsLimit,
         ...(onlyNewerThan ? { onlyPostsNewerThan: onlyNewerThan } : {}),
         ...(onlyOlderThan ? { onlyPostsOlderThan: onlyOlderThan } : {}),
         ...(proxyCountry ? { proxyCountry } : {}),
+        cacheMedia,
       });
       setPosts(data.output?.posts ?? []);
+      setRunId(data.runId ?? null);
     } catch {}
   };
 
@@ -122,6 +146,20 @@ export function PostsScrapeView({ onExecute, isExecuting }: PostsScrapeViewProps
               </SelectContent>
             </Select>
           </div>
+          <label className="flex items-start gap-2 cursor-pointer text-xs">
+            <input
+              type="checkbox"
+              checked={cacheMedia}
+              onChange={(e) => setCacheMedia(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              <span className="font-medium">Cache thumbnails</span>
+              <p className="text-muted-foreground mt-0.5">
+                Download thumbnails so historical runs render later.
+              </p>
+            </span>
+          </label>
         </div>
         <div className="p-6 border-t border-border/40">
           <Button onClick={handleExecute} disabled={isExecuting || !pageUrl.trim()} className="w-full">
@@ -131,54 +169,21 @@ export function PostsScrapeView({ onExecute, isExecuting }: PostsScrapeViewProps
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="p-6 border-b border-border/40">
-          <h2 className="font-semibold text-sm">Results</h2>
-        </div>
-        <div className="flex-1 overflow-auto">
-          {posts === null ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
-              <FileText className="w-10 h-10 opacity-25" />
-              <p className="font-medium text-sm">Posts will appear here</p>
-            </div>
-          ) : posts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
-              <p className="text-sm">No posts found for that page.</p>
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Text</TableHead>
-                  <TableHead className="text-right">Likes</TableHead>
-                  <TableHead className="text-right">Comments</TableHead>
-                  <TableHead className="text-right">Shares</TableHead>
-                  <TableHead>Posted</TableHead>
-                  <TableHead>Link</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {posts.map((p, i) => (
-                  <TableRow key={p.postId || i}>
-                    <TableCell className="max-w-md text-xs line-clamp-2">{p.text || "—"}</TableCell>
-                    <TableCell className="text-right">{p.likesCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{p.commentsCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-right">{p.sharesCount?.toLocaleString() ?? "—"}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
-                      {p.time ? new Date(p.time).toLocaleDateString() : "—"}
-                    </TableCell>
-                    <TableCell>
-                      {p.url ? (
-                        <a href={p.url} target="_blank" rel="noopener noreferrer" className="text-xs text-primary underline">
-                          Open
-                        </a>
-                      ) : "—"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </div>
+        {posts === null ? (
+          <div className="flex flex-col items-center justify-center h-full text-center gap-3 py-16 text-muted-foreground">
+            <FileText className="w-10 h-10 opacity-25" />
+            <p className="font-medium text-sm">Posts will appear here</p>
+          </div>
+        ) : (
+          <PostsResultsView
+            items={posts}
+            templateName={TEMPLATE_NAME}
+            runId={runId}
+            aspect="16:9"
+            emptyMessage="No posts found for that page."
+            onDownloadZip={onDownloadZip}
+          />
+        )}
       </div>
     </div>
   );
