@@ -2,6 +2,11 @@ import { useState } from "react";
 import {
   Button,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +17,9 @@ import {
 } from "@campshell/ui-components";
 import { Tv } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyYouTube.js";
+import { ACTORS } from "../lib/actors.js";
+import { ActorInfoCard } from "./ActorInfoCard.js";
+import { PROXY_COUNTRIES } from "../lib/options.js";
 
 interface Channel {
   channelId: string;
@@ -31,6 +39,7 @@ export interface ChannelScrapeViewProps {
 
 export function ChannelScrapeView({ onExecute, isExecuting }: ChannelScrapeViewProps) {
   const [urlsText, setUrlsText] = useState("");
+  const [proxyCountry, setProxyCountry] = useState("");
   const [channels, setChannels] = useState<Channel[] | null>(null);
 
   const handleExecute = async () => {
@@ -40,7 +49,10 @@ export function ChannelScrapeView({ onExecute, isExecuting }: ChannelScrapeViewP
       .filter((u) => u.length > 0);
     if (channelUrls.length === 0) return;
     try {
-      const data: any = await onExecute("channel-scrape", { channelUrls });
+      const data: any = await onExecute("channel-scrape", {
+        channelUrls,
+        ...(proxyCountry ? { proxyCountry } : {}),
+      });
       setChannels(data.output?.channels ?? []);
     } catch {}
   };
@@ -55,6 +67,7 @@ export function ChannelScrapeView({ onExecute, isExecuting }: ChannelScrapeViewP
           </p>
         </div>
         <div className="flex-1 overflow-auto p-6 space-y-5">
+          <ActorInfoCard actor={ACTORS["streamers/youtube-scraper"]} />
           <div className="space-y-2">
             <Label htmlFor="urls">
               Channel URLs<span className="text-red-500 ml-1">*</span>
@@ -67,7 +80,23 @@ export function ChannelScrapeView({ onExecute, isExecuting }: ChannelScrapeViewP
               rows={6}
               className="resize-none text-xs font-mono"
             />
-            <p className="text-xs text-muted-foreground">One per line. Max 10 per call.</p>
+            <p className="text-xs text-muted-foreground">One per line. Max 50 per call.</p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="proxy">Proxy country</Label>
+            <Select value={proxyCountry || "auto"} onValueChange={(v) => setProxyCountry(v === "auto" ? "" : v)}>
+              <SelectTrigger id="proxy">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Automatic</SelectItem>
+                {PROXY_COUNTRIES.map((c) => (
+                  <SelectItem key={c.value} value={c.value}>
+                    {c.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="p-6 border-t border-border/40">

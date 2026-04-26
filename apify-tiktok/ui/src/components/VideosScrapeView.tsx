@@ -3,6 +3,11 @@ import {
   Button,
   Input,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +17,9 @@ import {
 } from "@campshell/ui-components";
 import { Video } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyTikTok.js";
+import { ACTORS } from "../lib/actors.js";
+import { ActorInfoCard } from "./ActorInfoCard.js";
+import { PROXY_COUNTRIES } from "../lib/options.js";
 
 interface VideoItem {
   id: string;
@@ -34,13 +42,24 @@ export interface VideosScrapeViewProps {
 export function VideosScrapeView({ onExecute, isExecuting }: VideosScrapeViewProps) {
   const [username, setUsername] = useState("");
   const [videosLimit, setVideosLimit] = useState(20);
+  const [onlyNewerThan, setOnlyNewerThan] = useState("");
+  const [onlyOlderThan, setOnlyOlderThan] = useState("");
+  const [sortBy, setSortBy] = useState<"latest" | "oldest" | "popular">("latest");
+  const [proxyCountry, setProxyCountry] = useState("");
   const [videos, setVideos] = useState<VideoItem[] | null>(null);
 
   const handleExecute = async () => {
     const u = username.trim().replace(/^@/, "");
     if (!u) return;
     try {
-      const data: any = await onExecute("videos-scrape", { username: u, videosLimit });
+      const data: any = await onExecute("videos-scrape", {
+        username: u,
+        videosLimit,
+        sortBy,
+        ...(onlyNewerThan ? { onlyPostsNewerThan: onlyNewerThan } : {}),
+        ...(onlyOlderThan ? { onlyPostsOlderThan: onlyOlderThan } : {}),
+        ...(proxyCountry ? { proxyCountry } : {}),
+      });
       setVideos(data.output?.videos ?? []);
     } catch {}
   };
@@ -55,6 +74,7 @@ export function VideosScrapeView({ onExecute, isExecuting }: VideosScrapeViewPro
           </p>
         </div>
         <div className="flex-1 overflow-auto p-6 space-y-5">
+          <ActorInfoCard actor={ACTORS["clockworks/free-tiktok-scraper"]} />
           <div className="space-y-2">
             <Label htmlFor="username">
               Username<span className="text-red-500 ml-1">*</span>
@@ -73,13 +93,50 @@ export function VideosScrapeView({ onExecute, isExecuting }: VideosScrapeViewPro
               id="videosLimit"
               type="number"
               min={1}
-              max={50}
+              max={200}
               value={videosLimit}
-              onChange={(e) =>
-                setVideosLimit(Math.min(50, Math.max(1, Number(e.target.value) || 20)))
-              }
+              onChange={(e) => setVideosLimit(Math.min(200, Math.max(1, Number(e.target.value) || 20)))}
             />
-            <p className="text-xs text-muted-foreground">Max 50 per call.</p>
+            <p className="text-xs text-muted-foreground">Max 200 per call.</p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="sortBy">Sort by</Label>
+            <Select value={sortBy} onValueChange={(v) => setSortBy(v as typeof sortBy)}>
+              <SelectTrigger id="sortBy">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="latest">Latest</SelectItem>
+                <SelectItem value="oldest">Oldest</SelectItem>
+                <SelectItem value="popular">Most popular</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-2">
+              <Label htmlFor="newer">Newer than</Label>
+              <Input id="newer" type="date" value={onlyNewerThan} onChange={(e) => setOnlyNewerThan(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="older">Older than</Label>
+              <Input id="older" type="date" value={onlyOlderThan} onChange={(e) => setOnlyOlderThan(e.target.value)} />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="proxy">Proxy country</Label>
+            <Select value={proxyCountry || "auto"} onValueChange={(v) => setProxyCountry(v === "auto" ? "" : v)}>
+              <SelectTrigger id="proxy">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Automatic</SelectItem>
+                {PROXY_COUNTRIES.map((c) => (
+                  <SelectItem key={c.value} value={c.value}>
+                    {c.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="p-6 border-t border-border/40">

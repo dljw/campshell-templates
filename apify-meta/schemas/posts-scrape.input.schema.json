@@ -13,9 +13,25 @@
     "postsLimit": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 50,
+      "maximum": 200,
       "default": 20,
-      "description": "Max number of posts to fetch"
+      "description": "Max number of posts to fetch (1-200)"
+    },
+    "onlyPostsNewerThan": {
+      "type": "string",
+      "format": "date",
+      "description": "Only return posts published on or after this date (YYYY-MM-DD). Optional."
+    },
+    "onlyPostsOlderThan": {
+      "type": "string",
+      "format": "date",
+      "description": "Only return posts published on or before this date (YYYY-MM-DD). Optional."
+    },
+    "proxyCountry": {
+      "type": "string",
+      "enum": ["", "US", "GB", "DE", "FR", "JP", "BR", "IN", "AU", "CA"],
+      "default": "",
+      "description": "Apify proxy country (empty = automatic)"
     }
   },
   "additionalProperties": false

@@ -3,6 +3,11 @@ import {
   Button,
   Input,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +17,9 @@ import {
 } from "@campshell/ui-components";
 import { Hash } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyInstagram.js";
+import { ACTORS } from "../lib/actors.js";
+import { ActorInfoCard } from "./ActorInfoCard.js";
+import { PROXY_COUNTRIES } from "../lib/options.js";
 
 interface Post {
   id: string;
@@ -32,16 +40,25 @@ export interface HashtagScrapeViewProps {
 export function HashtagScrapeView({ onExecute, isExecuting }: HashtagScrapeViewProps) {
   const [hashtag, setHashtag] = useState("");
   const [postsLimit, setPostsLimit] = useState(20);
+  const [onlyNewerThan, setOnlyNewerThan] = useState("");
+  const [onlyOlderThan, setOnlyOlderThan] = useState("");
+  const [proxyCountry, setProxyCountry] = useState("");
   const [posts, setPosts] = useState<Post[] | null>(null);
 
   const handleExecute = async () => {
     const tag = hashtag.trim().replace(/^#/, "");
     if (!tag) return;
     try {
-      const data: any = await onExecute("hashtag-scrape", { hashtag: tag, postsLimit });
+      const data: any = await onExecute("hashtag-scrape", {
+        hashtag: tag,
+        postsLimit,
+        ...(onlyNewerThan ? { onlyPostsNewerThan: onlyNewerThan } : {}),
+        ...(onlyOlderThan ? { onlyPostsOlderThan: onlyOlderThan } : {}),
+        ...(proxyCountry ? { proxyCountry } : {}),
+      });
       setPosts(data.output?.posts ?? []);
     } catch {
-      // toast handled by hook
+      // toast handled
     }
   };
 
@@ -55,6 +72,7 @@ export function HashtagScrapeView({ onExecute, isExecuting }: HashtagScrapeViewP
           </p>
         </div>
         <div className="flex-1 overflow-auto p-6 space-y-5">
+          <ActorInfoCard actor={ACTORS["apify/instagram-scraper"]} />
           <div className="space-y-2">
             <Label htmlFor="hashtag">
               Hashtag<span className="text-red-500 ml-1">*</span>
@@ -74,11 +92,37 @@ export function HashtagScrapeView({ onExecute, isExecuting }: HashtagScrapeViewP
               id="postsLimit"
               type="number"
               min={1}
-              max={50}
+              max={200}
               value={postsLimit}
-              onChange={(e) => setPostsLimit(Math.min(50, Math.max(1, Number(e.target.value) || 20)))}
+              onChange={(e) => setPostsLimit(Math.min(200, Math.max(1, Number(e.target.value) || 20)))}
             />
-            <p className="text-xs text-muted-foreground">Max 50 per call.</p>
+            <p className="text-xs text-muted-foreground">Max 200 per call.</p>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-2">
+              <Label htmlFor="newer">Newer than</Label>
+              <Input id="newer" type="date" value={onlyNewerThan} onChange={(e) => setOnlyNewerThan(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="older">Older than</Label>
+              <Input id="older" type="date" value={onlyOlderThan} onChange={(e) => setOnlyOlderThan(e.target.value)} />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="proxy">Proxy country</Label>
+            <Select value={proxyCountry || "auto"} onValueChange={(v) => setProxyCountry(v === "auto" ? "" : v)}>
+              <SelectTrigger id="proxy">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Automatic</SelectItem>
+                {PROXY_COUNTRIES.map((c) => (
+                  <SelectItem key={c.value} value={c.value}>
+                    {c.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="p-6 border-t border-border/40">

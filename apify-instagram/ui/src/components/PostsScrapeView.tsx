@@ -3,6 +3,11 @@ import {
   Button,
   Input,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +17,9 @@ import {
 } from "@campshell/ui-components";
 import { Image as ImageIcon } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyInstagram.js";
+import { ACTORS } from "../lib/actors.js";
+import { ActorInfoCard } from "./ActorInfoCard.js";
+import { PROXY_COUNTRIES } from "../lib/options.js";
 
 interface Post {
   id: string;
@@ -34,16 +42,27 @@ export interface PostsScrapeViewProps {
 export function PostsScrapeView({ onExecute, isExecuting }: PostsScrapeViewProps) {
   const [username, setUsername] = useState("");
   const [postsLimit, setPostsLimit] = useState(20);
+  const [onlyNewerThan, setOnlyNewerThan] = useState("");
+  const [onlyOlderThan, setOnlyOlderThan] = useState("");
+  const [commentsLimit, setCommentsLimit] = useState(0);
+  const [proxyCountry, setProxyCountry] = useState("");
   const [posts, setPosts] = useState<Post[] | null>(null);
 
   const handleExecute = async () => {
     const u = username.trim().replace(/^@/, "");
     if (!u) return;
     try {
-      const data: any = await onExecute("posts-scrape", { username: u, postsLimit });
+      const data: any = await onExecute("posts-scrape", {
+        username: u,
+        postsLimit,
+        ...(onlyNewerThan ? { onlyPostsNewerThan: onlyNewerThan } : {}),
+        ...(onlyOlderThan ? { onlyPostsOlderThan: onlyOlderThan } : {}),
+        ...(commentsLimit > 0 ? { commentsLimit } : {}),
+        ...(proxyCountry ? { proxyCountry } : {}),
+      });
       setPosts(data.output?.posts ?? []);
     } catch {
-      // toast handled by hook
+      // toast handled
     }
   };
 
@@ -57,6 +76,7 @@ export function PostsScrapeView({ onExecute, isExecuting }: PostsScrapeViewProps
           </p>
         </div>
         <div className="flex-1 overflow-auto p-6 space-y-5">
+          <ActorInfoCard actor={ACTORS["apify/instagram-scraper"]} />
           <div className="space-y-2">
             <Label htmlFor="username">
               Username<span className="text-red-500 ml-1">*</span>
@@ -75,11 +95,49 @@ export function PostsScrapeView({ onExecute, isExecuting }: PostsScrapeViewProps
               id="postsLimit"
               type="number"
               min={1}
-              max={50}
+              max={200}
               value={postsLimit}
-              onChange={(e) => setPostsLimit(Math.min(50, Math.max(1, Number(e.target.value) || 20)))}
+              onChange={(e) => setPostsLimit(Math.min(200, Math.max(1, Number(e.target.value) || 20)))}
             />
-            <p className="text-xs text-muted-foreground">Max 50 per call.</p>
+            <p className="text-xs text-muted-foreground">Max 200 per call. Larger = slower + more cost.</p>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-2">
+              <Label htmlFor="newer">Newer than</Label>
+              <Input id="newer" type="date" value={onlyNewerThan} onChange={(e) => setOnlyNewerThan(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="older">Older than</Label>
+              <Input id="older" type="date" value={onlyOlderThan} onChange={(e) => setOnlyOlderThan(e.target.value)} />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="commentsLimit">Comments per post</Label>
+            <Input
+              id="commentsLimit"
+              type="number"
+              min={0}
+              max={50}
+              value={commentsLimit}
+              onChange={(e) => setCommentsLimit(Math.min(50, Math.max(0, Number(e.target.value) || 0)))}
+            />
+            <p className="text-xs text-muted-foreground">0 = no comments. Comments cost extra results.</p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="proxy">Proxy country</Label>
+            <Select value={proxyCountry || "auto"} onValueChange={(v) => setProxyCountry(v === "auto" ? "" : v)}>
+              <SelectTrigger id="proxy">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Automatic</SelectItem>
+                {PROXY_COUNTRIES.map((c) => (
+                  <SelectItem key={c.value} value={c.value}>
+                    {c.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="p-6 border-t border-border/40">

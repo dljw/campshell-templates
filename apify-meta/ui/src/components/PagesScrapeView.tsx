@@ -2,6 +2,11 @@ import { useState } from "react";
 import {
   Button,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +17,9 @@ import {
 } from "@campshell/ui-components";
 import { Users } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyMeta.js";
+import { ACTORS } from "../lib/actors.js";
+import { ActorInfoCard } from "./ActorInfoCard.js";
+import { PROXY_COUNTRIES } from "../lib/options.js";
 
 interface Page {
   pageId: string;
@@ -32,6 +40,7 @@ export interface PagesScrapeViewProps {
 
 export function PagesScrapeView({ onExecute, isExecuting }: PagesScrapeViewProps) {
   const [urlsText, setUrlsText] = useState("");
+  const [proxyCountry, setProxyCountry] = useState("");
   const [pages, setPages] = useState<Page[] | null>(null);
 
   const handleExecute = async () => {
@@ -41,7 +50,10 @@ export function PagesScrapeView({ onExecute, isExecuting }: PagesScrapeViewProps
       .filter((u) => u.length > 0);
     if (pageUrls.length === 0) return;
     try {
-      const data: any = await onExecute("pages-scrape", { pageUrls });
+      const data: any = await onExecute("pages-scrape", {
+        pageUrls,
+        ...(proxyCountry ? { proxyCountry } : {}),
+      });
       setPages(data.output?.pages ?? []);
     } catch {}
   };
@@ -56,6 +68,7 @@ export function PagesScrapeView({ onExecute, isExecuting }: PagesScrapeViewProps
           </p>
         </div>
         <div className="flex-1 overflow-auto p-6 space-y-5">
+          <ActorInfoCard actor={ACTORS["apify/facebook-pages-scraper"]} />
           <div className="space-y-2">
             <Label htmlFor="urls">
               Page URLs<span className="text-red-500 ml-1">*</span>
@@ -68,7 +81,23 @@ export function PagesScrapeView({ onExecute, isExecuting }: PagesScrapeViewProps
               rows={6}
               className="resize-none text-xs font-mono"
             />
-            <p className="text-xs text-muted-foreground">One per line. Max 10 per call.</p>
+            <p className="text-xs text-muted-foreground">One per line. Max 50 per call.</p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="proxy">Proxy country</Label>
+            <Select value={proxyCountry || "auto"} onValueChange={(v) => setProxyCountry(v === "auto" ? "" : v)}>
+              <SelectTrigger id="proxy">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Automatic</SelectItem>
+                {PROXY_COUNTRIES.map((c) => (
+                  <SelectItem key={c.value} value={c.value}>
+                    {c.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="p-6 border-t border-border/40">

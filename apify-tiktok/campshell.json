@@ -31,7 +31,7 @@
       "inputSchema": "schemas/profile-scrape.input.schema.json",
       "outputSchema": "schemas/profile-scrape.output.schema.json",
       "handler": "handlers/profile-scrape",
-      "timeout": 180000,
+      "timeout": 280000,
       "rateLimit": { "maxPerMinute": 5 }
     },
     "videos-scrape": {
@@ -39,7 +39,7 @@
       "inputSchema": "schemas/videos-scrape.input.schema.json",
       "outputSchema": "schemas/videos-scrape.output.schema.json",
       "handler": "handlers/videos-scrape",
-      "timeout": 180000,
+      "timeout": 280000,
       "rateLimit": { "maxPerMinute": 5 }
     },
     "hashtag-scrape": {
@@ -47,7 +47,7 @@
       "inputSchema": "schemas/hashtag-scrape.input.schema.json",
       "outputSchema": "schemas/hashtag-scrape.output.schema.json",
       "handler": "handlers/hashtag-scrape",
-      "timeout": 180000,
+      "timeout": 280000,
       "rateLimit": { "maxPerMinute": 5 }
     }
   },

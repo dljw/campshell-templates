@@ -1,10 +1,11 @@
-// Apify actor: https://console.apify.com/actors/GdWCkxBtKWOsKjdch (clockworks/free-tiktok-scraper)
+// Apify actor: https://apify.com/clockworks/free-tiktok-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
 
 const ACTOR_ID = "clockworks/free-tiktok-scraper";
 
 interface Input {
   usernames: string[];
+  proxyCountry?: string;
 }
 
 interface ProfileItem {
@@ -30,24 +31,25 @@ export default async function profileScrape(
   const { APIFY_TOKEN } = context.secrets;
   if (!APIFY_TOKEN) throw new Error("APIFY_TOKEN secret is not configured");
 
-  const profiles_urls = input.usernames.map(
-    (u) => `https://www.tiktok.com/@${u.replace(/^@/, "")}`,
-  );
+  const actorInput: Record<string, unknown> = {
+    profiles: input.usernames.map((u) => u.replace(/^@/, "")),
+    profileScrapeSections: ["videos"],
+    resultsPerPage: 1,
+    shouldDownloadVideos: false,
+    shouldDownloadCovers: false,
+    shouldDownloadSubtitles: false,
+    shouldDownloadSlideshowImages: false,
+    profileSorting: "latest",
+    excludePinnedPosts: false,
+  };
+  if (input.proxyCountry) {
+    actorInput.proxyConfiguration = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
+  }
 
   const items = await runApifyActor<Record<string, unknown>>({
     actorId: ACTOR_ID,
     token: APIFY_TOKEN,
-    input: {
-      profiles: input.usernames.map((u) => u.replace(/^@/, "")),
-      profileScrapeSections: ["videos"],
-      resultsPerPage: 1,
-      shouldDownloadVideos: false,
-      shouldDownloadCovers: false,
-      shouldDownloadSubtitles: false,
-      shouldDownloadSlideshowImages: false,
-      profileSorting: "latest",
-      excludePinnedPosts: false,
-    },
+    input: actorInput,
   });
 
   const seen = new Set<string>();
@@ -69,9 +71,6 @@ export default async function profileScrape(
       avatarUrl: String(author.avatar ?? author.avatarUrl ?? ""),
     });
   }
-
-  // unused — silences the compiler about the URL list above being intentional context
-  void profiles_urls;
 
   return { profiles };
 }

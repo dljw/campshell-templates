@@ -12,9 +12,15 @@
     "videosLimit": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 50,
+      "maximum": 200,
       "default": 20,
-      "description": "Max number of videos to fetch"
+      "description": "Max number of videos to fetch (1-200)"
+    },
+    "proxyCountry": {
+      "type": "string",
+      "enum": ["", "US", "GB", "DE", "FR", "JP", "BR", "IN", "AU", "CA"],
+      "default": "",
+      "description": "Apify proxy country (empty = automatic)"
     }
   },
   "additionalProperties": false

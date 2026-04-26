@@ -1,10 +1,11 @@
-// Apify actor: https://console.apify.com/actors/h7sDV53CddomktSi5 (streamers/youtube-scraper)
+// Apify actor: https://apify.com/streamers/youtube-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
 
 const ACTOR_ID = "streamers/youtube-scraper";
 
 interface Input {
   channelUrls: string[];
+  proxyCountry?: string;
 }
 
 interface ChannelItem {
@@ -28,15 +29,20 @@ export default async function channelScrape(
   const { APIFY_TOKEN } = context.secrets;
   if (!APIFY_TOKEN) throw new Error("APIFY_TOKEN secret is not configured");
 
+  const actorInput: Record<string, unknown> = {
+    startUrls: input.channelUrls.map((url) => ({ url })),
+    maxResults: 1,
+    maxResultsShorts: 0,
+    maxResultStreams: 0,
+  };
+  if (input.proxyCountry) {
+    actorInput.proxyConfiguration = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
+  }
+
   const items = await runApifyActor<Record<string, unknown>>({
     actorId: ACTOR_ID,
     token: APIFY_TOKEN,
-    input: {
-      startUrls: input.channelUrls.map((url) => ({ url })),
-      maxResults: 1,
-      maxResultsShorts: 0,
-      maxResultStreams: 0,
-    },
+    input: actorInput,
   });
 
   const seen = new Set<string>();

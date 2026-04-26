@@ -1,4 +1,4 @@
-// Apify actor: https://console.apify.com/actors/GdWCkxBtKWOsKjdch (clockworks/free-tiktok-scraper)
+// Apify actor: https://apify.com/clockworks/free-tiktok-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
 
 const ACTOR_ID = "clockworks/free-tiktok-scraper";
@@ -6,6 +6,7 @@ const ACTOR_ID = "clockworks/free-tiktok-scraper";
 interface Input {
   hashtag: string;
   videosLimit?: number;
+  proxyCountry?: string;
 }
 
 interface VideoItem {
@@ -28,20 +29,25 @@ export default async function hashtagScrape(
   const { APIFY_TOKEN } = context.secrets;
   if (!APIFY_TOKEN) throw new Error("APIFY_TOKEN secret is not configured");
 
-  const limit = Math.min(Math.max(input.videosLimit ?? 20, 1), 50);
+  const limit = Math.min(Math.max(input.videosLimit ?? 20, 1), 200);
   const tag = input.hashtag.replace(/^#/, "");
+
+  const actorInput: Record<string, unknown> = {
+    hashtags: [tag],
+    resultsPerPage: limit,
+    shouldDownloadVideos: false,
+    shouldDownloadCovers: false,
+    shouldDownloadSubtitles: false,
+    shouldDownloadSlideshowImages: false,
+  };
+  if (input.proxyCountry) {
+    actorInput.proxyConfiguration = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
+  }
 
   const items = await runApifyActor<Record<string, unknown>>({
     actorId: ACTOR_ID,
     token: APIFY_TOKEN,
-    input: {
-      hashtags: [tag],
-      resultsPerPage: limit,
-      shouldDownloadVideos: false,
-      shouldDownloadCovers: false,
-      shouldDownloadSubtitles: false,
-      shouldDownloadSlideshowImages: false,
-    },
+    input: actorInput,
   });
 
   const videos: VideoItem[] = items.slice(0, limit).map((item) => {

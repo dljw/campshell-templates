@@ -1,4 +1,4 @@
-// Apify actor: https://console.apify.com/actors/dSCLg0C3YEZ83HzYr (apify/instagram-scraper)
+// Apify actor: https://apify.com/apify/instagram-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
 
 const ACTOR_ID = "apify/instagram-scraper";
@@ -6,6 +6,10 @@ const ACTOR_ID = "apify/instagram-scraper";
 interface Input {
   username: string;
   postsLimit?: number;
+  onlyPostsNewerThan?: string;
+  onlyPostsOlderThan?: string;
+  commentsLimit?: number;
+  proxyCountry?: string;
 }
 
 interface PostItem {
@@ -31,18 +35,29 @@ export default async function postsScrape(
   const { APIFY_TOKEN } = context.secrets;
   if (!APIFY_TOKEN) throw new Error("APIFY_TOKEN secret is not configured");
 
-  const limit = Math.min(Math.max(input.postsLimit ?? 20, 1), 50);
+  const limit = Math.min(Math.max(input.postsLimit ?? 20, 1), 200);
   const username = input.username.replace(/^@/, "");
+
+  const actorInput: Record<string, unknown> = {
+    directUrls: [`https://www.instagram.com/${username}/`],
+    resultsType: "posts",
+    resultsLimit: limit,
+    addParentData: false,
+  };
+  if (input.onlyPostsNewerThan) actorInput.onlyPostsNewerThan = input.onlyPostsNewerThan;
+  if (input.onlyPostsOlderThan) actorInput.onlyPostsOlderThan = input.onlyPostsOlderThan;
+  if (input.commentsLimit && input.commentsLimit > 0) {
+    actorInput.scrapeComments = true;
+    actorInput.commentsLimit = Math.min(input.commentsLimit, 50);
+  }
+  if (input.proxyCountry) {
+    actorInput.proxy = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
+  }
 
   const items = await runApifyActor<Record<string, unknown>>({
     actorId: ACTOR_ID,
     token: APIFY_TOKEN,
-    input: {
-      directUrls: [`https://www.instagram.com/${username}/`],
-      resultsType: "posts",
-      resultsLimit: limit,
-      addParentData: false,
-    },
+    input: actorInput,
   });
 
   const posts: PostItem[] = items.slice(0, limit).map((item) => ({

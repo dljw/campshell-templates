@@ -3,6 +3,11 @@ import {
   Button,
   Input,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +17,9 @@ import {
 } from "@campshell/ui-components";
 import { Hash } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyTikTok.js";
+import { ACTORS } from "../lib/actors.js";
+import { ActorInfoCard } from "./ActorInfoCard.js";
+import { PROXY_COUNTRIES } from "../lib/options.js";
 
 interface VideoItem {
   id: string;
@@ -31,13 +39,18 @@ export interface HashtagScrapeViewProps {
 export function HashtagScrapeView({ onExecute, isExecuting }: HashtagScrapeViewProps) {
   const [hashtag, setHashtag] = useState("");
   const [videosLimit, setVideosLimit] = useState(20);
+  const [proxyCountry, setProxyCountry] = useState("");
   const [videos, setVideos] = useState<VideoItem[] | null>(null);
 
   const handleExecute = async () => {
     const tag = hashtag.trim().replace(/^#/, "");
     if (!tag) return;
     try {
-      const data: any = await onExecute("hashtag-scrape", { hashtag: tag, videosLimit });
+      const data: any = await onExecute("hashtag-scrape", {
+        hashtag: tag,
+        videosLimit,
+        ...(proxyCountry ? { proxyCountry } : {}),
+      });
       setVideos(data.output?.videos ?? []);
     } catch {}
   };
@@ -52,6 +65,7 @@ export function HashtagScrapeView({ onExecute, isExecuting }: HashtagScrapeViewP
           </p>
         </div>
         <div className="flex-1 overflow-auto p-6 space-y-5">
+          <ActorInfoCard actor={ACTORS["clockworks/free-tiktok-scraper"]} />
           <div className="space-y-2">
             <Label htmlFor="hashtag">
               Hashtag<span className="text-red-500 ml-1">*</span>
@@ -71,13 +85,27 @@ export function HashtagScrapeView({ onExecute, isExecuting }: HashtagScrapeViewP
               id="videosLimit"
               type="number"
               min={1}
-              max={50}
+              max={200}
               value={videosLimit}
-              onChange={(e) =>
-                setVideosLimit(Math.min(50, Math.max(1, Number(e.target.value) || 20)))
-              }
+              onChange={(e) => setVideosLimit(Math.min(200, Math.max(1, Number(e.target.value) || 20)))}
             />
-            <p className="text-xs text-muted-foreground">Max 50 per call.</p>
+            <p className="text-xs text-muted-foreground">Max 200 per call.</p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="proxy">Proxy country</Label>
+            <Select value={proxyCountry || "auto"} onValueChange={(v) => setProxyCountry(v === "auto" ? "" : v)}>
+              <SelectTrigger id="proxy">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Automatic</SelectItem>
+                {PROXY_COUNTRIES.map((c) => (
+                  <SelectItem key={c.value} value={c.value}>
+                    {c.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="p-6 border-t border-border/40">

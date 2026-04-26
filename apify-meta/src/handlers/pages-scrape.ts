@@ -1,10 +1,11 @@
-// Apify actor: https://console.apify.com/actors/JJghSZmShuco4j9gJ (apify/facebook-pages-scraper)
+// Apify actor: https://apify.com/apify/facebook-pages-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
 
 const ACTOR_ID = "apify/facebook-pages-scraper";
 
 interface Input {
   pageUrls: string[];
+  proxyCountry?: string;
 }
 
 interface PageItem {
@@ -29,12 +30,17 @@ export default async function pagesScrape(
   const { APIFY_TOKEN } = context.secrets;
   if (!APIFY_TOKEN) throw new Error("APIFY_TOKEN secret is not configured");
 
+  const actorInput: Record<string, unknown> = {
+    startUrls: input.pageUrls.map((url) => ({ url })),
+  };
+  if (input.proxyCountry) {
+    actorInput.proxyConfiguration = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
+  }
+
   const items = await runApifyActor<Record<string, unknown>>({
     actorId: ACTOR_ID,
     token: APIFY_TOKEN,
-    input: {
-      startUrls: input.pageUrls.map((url) => ({ url })),
-    },
+    input: actorInput,
   });
 
   const pages: PageItem[] = items.map((item) => ({

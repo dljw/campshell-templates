@@ -8,8 +8,14 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 },
       "minItems": 1,
-      "maxItems": 10,
-      "description": "Instagram usernames (no @, max 10 per call)"
+      "maxItems": 50,
+      "description": "Instagram usernames (no @, max 50 per call)"
+    },
+    "proxyCountry": {
+      "type": "string",
+      "enum": ["", "US", "GB", "DE", "FR", "JP", "BR", "IN", "AU", "CA"],
+      "default": "",
+      "description": "Apify proxy country (empty = automatic). Use when scraping is geo-sensitive."
     }
   },
   "additionalProperties": false

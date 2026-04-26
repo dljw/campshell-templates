@@ -770,6 +770,62 @@ importers:
         specifier: ^3.0.0
         version: 3.5.2(vite@6.4.1(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.3))
 
+  posthog:
+    dependencies:
+      '@campshell/core':
+        specifier: file:../../camp-shell/packages/core
+        version: file:../camp-shell/packages/core
+    devDependencies:
+      typescript:
+        specifier: ^5.6.0
+        version: 5.9.3
+
+  posthog/ui:
+    dependencies:
+      '@campshell/core':
+        specifier: file:../../../camp-shell/packages/core
+        version: file:../camp-shell/packages/core
+      '@campshell/ui-components':
+        specifier: file:../../../camp-shell/packages/ui-components
+        version: file:../camp-shell/packages/ui-components(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react-router-dom@7.13.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
+      '@campshell/ui-hooks':
+        specifier: file:../../../camp-shell/packages/ui-hooks
+        version: file:../camp-shell/packages/ui-hooks(react@19.2.4)
+      lucide-react:
+        specifier: ^0.503.0
+        version: 0.503.0(react@19.2.4)
+      sonner:
+        specifier: ^1.7.0
+        version: 1.7.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+    devDependencies:
+      '@tailwindcss/postcss':
+        specifier: ^4.0.0
+        version: 4.2.2
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.0.0
+        version: 19.2.3(@types/react@19.2.14)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.0
+        version: 4.7.0(vite@6.4.1(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.3))
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.4(react@19.2.4)
+      tailwindcss:
+        specifier: ^4.0.0
+        version: 4.2.2
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.1(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.3)
+      vite-plugin-css-injected-by-js:
+        specifier: ^3.0.0
+        version: 3.5.2(vite@6.4.1(@types/node@22.19.15)(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.3))
+
   seo-tracker:
     dependencies:
       '@campshell/core':

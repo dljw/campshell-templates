@@ -3,6 +3,11 @@ import {
   Button,
   Input,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +17,14 @@ import {
 } from "@campshell/ui-components";
 import { Search } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyYouTube.js";
+import { ACTORS } from "../lib/actors.js";
+import { ActorInfoCard } from "./ActorInfoCard.js";
+import {
+  DURATION_OPTIONS,
+  PROXY_COUNTRIES,
+  SEARCH_SORT_OPTIONS,
+  UPLOAD_DATE_OPTIONS,
+} from "../lib/options.js";
 
 interface Result {
   videoId: string;
@@ -31,13 +44,24 @@ export interface SearchScrapeViewProps {
 export function SearchScrapeView({ onExecute, isExecuting }: SearchScrapeViewProps) {
   const [query, setQuery] = useState("");
   const [maxResults, setMaxResults] = useState(20);
+  const [uploadDate, setUploadDate] = useState("all");
+  const [duration, setDuration] = useState("all");
+  const [sortBy, setSortBy] = useState("relevance");
+  const [proxyCountry, setProxyCountry] = useState("");
   const [results, setResults] = useState<Result[] | null>(null);
 
   const handleExecute = async () => {
     const q = query.trim();
     if (!q) return;
     try {
-      const data: any = await onExecute("search-scrape", { query: q, maxResults });
+      const data: any = await onExecute("search-scrape", {
+        query: q,
+        maxResults,
+        uploadDate,
+        duration,
+        sortBy,
+        ...(proxyCountry ? { proxyCountry } : {}),
+      });
       setResults(data.output?.results ?? []);
     } catch {}
   };
@@ -52,6 +76,7 @@ export function SearchScrapeView({ onExecute, isExecuting }: SearchScrapeViewPro
           </p>
         </div>
         <div className="flex-1 overflow-auto p-6 space-y-5">
+          <ActorInfoCard actor={ACTORS["streamers/youtube-scraper"]} />
           <div className="space-y-2">
             <Label htmlFor="query">
               Search query<span className="text-red-500 ml-1">*</span>
@@ -69,11 +94,72 @@ export function SearchScrapeView({ onExecute, isExecuting }: SearchScrapeViewPro
               id="maxResults"
               type="number"
               min={1}
-              max={50}
+              max={200}
               value={maxResults}
-              onChange={(e) => setMaxResults(Math.min(50, Math.max(1, Number(e.target.value) || 20)))}
+              onChange={(e) => setMaxResults(Math.min(200, Math.max(1, Number(e.target.value) || 20)))}
             />
-            <p className="text-xs text-muted-foreground">Max 50 per call.</p>
+            <p className="text-xs text-muted-foreground">Max 200 per call.</p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="uploadDate">Uploaded</Label>
+            <Select value={uploadDate} onValueChange={setUploadDate}>
+              <SelectTrigger id="uploadDate">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {UPLOAD_DATE_OPTIONS.map((o) => (
+                  <SelectItem key={o.value} value={o.value}>
+                    {o.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="duration">Duration</Label>
+            <Select value={duration} onValueChange={setDuration}>
+              <SelectTrigger id="duration">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {DURATION_OPTIONS.map((o) => (
+                  <SelectItem key={o.value} value={o.value}>
+                    {o.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="sortBy">Sort by</Label>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger id="sortBy">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {SEARCH_SORT_OPTIONS.map((o) => (
+                  <SelectItem key={o.value} value={o.value}>
+                    {o.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="proxy">Proxy country</Label>
+            <Select value={proxyCountry || "auto"} onValueChange={(v) => setProxyCountry(v === "auto" ? "" : v)}>
+              <SelectTrigger id="proxy">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Automatic</SelectItem>
+                {PROXY_COUNTRIES.map((c) => (
+                  <SelectItem key={c.value} value={c.value}>
+                    {c.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="p-6 border-t border-border/40">

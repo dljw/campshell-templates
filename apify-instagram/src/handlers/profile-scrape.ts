@@ -1,10 +1,11 @@
-// Apify actor: https://console.apify.com/actors/dSCLg0C3YEZ83HzYr (apify/instagram-scraper)
+// Apify actor: https://apify.com/apify/instagram-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
 
 const ACTOR_ID = "apify/instagram-scraper";
 
 interface Input {
   usernames: string[];
+  proxyCountry?: string;
 }
 
 interface ProfileItem {
@@ -29,15 +30,22 @@ export default async function profileScrape(
   const { APIFY_TOKEN } = context.secrets;
   if (!APIFY_TOKEN) throw new Error("APIFY_TOKEN secret is not configured");
 
+  const actorInput: Record<string, unknown> = {
+    directUrls: input.usernames.map(
+      (u) => `https://www.instagram.com/${u.replace(/^@/, "")}/`,
+    ),
+    resultsType: "details",
+    resultsLimit: input.usernames.length,
+    addParentData: false,
+  };
+  if (input.proxyCountry) {
+    actorInput.proxy = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
+  }
+
   const items = await runApifyActor<Record<string, unknown>>({
     actorId: ACTOR_ID,
     token: APIFY_TOKEN,
-    input: {
-      directUrls: input.usernames.map((u) => `https://www.instagram.com/${u.replace(/^@/, "")}/`),
-      resultsType: "details",
-      resultsLimit: input.usernames.length,
-      addParentData: false,
-    },
+    input: actorInput,
   });
 
   const profiles: ProfileItem[] = items.map((item) => ({

@@ -2,6 +2,11 @@ import { useState } from "react";
 import {
   Button,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +17,9 @@ import {
 } from "@campshell/ui-components";
 import { User } from "lucide-react";
 import type { RunHistoryItem } from "../hooks/useApifyInstagram.js";
+import { ACTORS } from "../lib/actors.js";
+import { ActorInfoCard } from "./ActorInfoCard.js";
+import { PROXY_COUNTRIES } from "../lib/options.js";
 
 interface Profile {
   username: string;
@@ -32,6 +40,7 @@ export interface ProfileScrapeViewProps {
 
 export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewProps) {
   const [usernamesText, setUsernamesText] = useState("");
+  const [proxyCountry, setProxyCountry] = useState("");
   const [profiles, setProfiles] = useState<Profile[] | null>(null);
 
   const handleExecute = async () => {
@@ -42,10 +51,13 @@ export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewP
     if (usernames.length === 0) return;
 
     try {
-      const data: any = await onExecute("profile-scrape", { usernames });
+      const data: any = await onExecute("profile-scrape", {
+        usernames,
+        ...(proxyCountry ? { proxyCountry } : {}),
+      });
       setProfiles(data.output?.profiles ?? []);
     } catch {
-      // toast handled by hook
+      // toast handled
     }
   };
 
@@ -59,6 +71,7 @@ export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewP
           </p>
         </div>
         <div className="flex-1 overflow-auto p-6 space-y-5">
+          <ActorInfoCard actor={ACTORS["apify/instagram-scraper"]} />
           <div className="space-y-2">
             <Label htmlFor="usernames">
               Usernames<span className="text-red-500 ml-1">*</span>
@@ -72,8 +85,25 @@ export function ProfileScrapeView({ onExecute, isExecuting }: ProfileScrapeViewP
               className="resize-none text-sm font-mono"
             />
             <p className="text-xs text-muted-foreground">
-              One per line or comma-separated. Max 10 per call. Skip the @.
+              One per line or comma-separated. Max 50 per call. Skip the @.
             </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="proxy">Proxy country</Label>
+            <Select value={proxyCountry || "auto"} onValueChange={(v) => setProxyCountry(v === "auto" ? "" : v)}>
+              <SelectTrigger id="proxy">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Automatic</SelectItem>
+                {PROXY_COUNTRIES.map((c) => (
+                  <SelectItem key={c.value} value={c.value}>
+                    {c.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">Use when scraping is geo-sensitive.</p>
           </div>
         </div>
         <div className="p-6 border-t border-border/40">

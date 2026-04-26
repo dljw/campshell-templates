@@ -1,4 +1,4 @@
-// Apify actor: https://console.apify.com/actors/GdWCkxBtKWOsKjdch (clockworks/free-tiktok-scraper)
+// Apify actor: https://apify.com/clockworks/free-tiktok-scraper
 import { runApifyActor, type ServiceContext } from "../lib/apify.js";
 
 const ACTOR_ID = "clockworks/free-tiktok-scraper";
@@ -6,6 +6,10 @@ const ACTOR_ID = "clockworks/free-tiktok-scraper";
 interface Input {
   username: string;
   videosLimit?: number;
+  onlyPostsNewerThan?: string;
+  onlyPostsOlderThan?: string;
+  sortBy?: "latest" | "oldest" | "popular";
+  proxyCountry?: string;
 }
 
 interface VideoItem {
@@ -31,23 +35,31 @@ export default async function videosScrape(
   const { APIFY_TOKEN } = context.secrets;
   if (!APIFY_TOKEN) throw new Error("APIFY_TOKEN secret is not configured");
 
-  const limit = Math.min(Math.max(input.videosLimit ?? 20, 1), 50);
+  const limit = Math.min(Math.max(input.videosLimit ?? 20, 1), 200);
   const username = input.username.replace(/^@/, "");
+  const sort = input.sortBy ?? "latest";
+
+  const actorInput: Record<string, unknown> = {
+    profiles: [username],
+    profileScrapeSections: ["videos"],
+    resultsPerPage: limit,
+    shouldDownloadVideos: false,
+    shouldDownloadCovers: false,
+    shouldDownloadSubtitles: false,
+    shouldDownloadSlideshowImages: false,
+    profileSorting: sort,
+    excludePinnedPosts: false,
+  };
+  if (input.onlyPostsNewerThan) actorInput.oldestPostDate = input.onlyPostsNewerThan;
+  if (input.onlyPostsOlderThan) actorInput.newestPostDateUnified = input.onlyPostsOlderThan;
+  if (input.proxyCountry) {
+    actorInput.proxyConfiguration = { useApifyProxy: true, apifyProxyCountry: input.proxyCountry };
+  }
 
   const items = await runApifyActor<Record<string, unknown>>({
     actorId: ACTOR_ID,
     token: APIFY_TOKEN,
-    input: {
-      profiles: [username],
-      profileScrapeSections: ["videos"],
-      resultsPerPage: limit,
-      shouldDownloadVideos: false,
-      shouldDownloadCovers: false,
-      shouldDownloadSubtitles: false,
-      shouldDownloadSlideshowImages: false,
-      profileSorting: "latest",
-      excludePinnedPosts: false,
-    },
+    input: actorInput,
   });
 
   const videos: VideoItem[] = items.slice(0, limit).map((item) => {

@@ -29,7 +29,7 @@
       "inputSchema": "schemas/pages-scrape.input.schema.json",
       "outputSchema": "schemas/pages-scrape.output.schema.json",
       "handler": "handlers/pages-scrape",
-      "timeout": 180000,
+      "timeout": 280000,
       "rateLimit": { "maxPerMinute": 5 }
     },
     "posts-scrape": {
@@ -37,7 +37,7 @@
       "inputSchema": "schemas/posts-scrape.input.schema.json",
       "outputSchema": "schemas/posts-scrape.output.schema.json",
       "handler": "handlers/posts-scrape",
-      "timeout": 180000,
+      "timeout": 280000,
       "rateLimit": { "maxPerMinute": 5 }
     }
   },
